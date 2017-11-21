@@ -1,0 +1,17 @@
+Duplicate line:
+Ctrl + Shift + D
+
+Move the current line Up or Down:
+Ctrl + Up (or Down) Arrow
+
+Select the next matching characters:
+Ctrl + D
+
+Unselect the next matching characters:
+Ctrl + U
+
+Select all matching characters:
+Alt + F3
+
+Toggle comments (on and off):
+Ctrl + /
