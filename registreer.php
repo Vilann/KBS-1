@@ -26,6 +26,7 @@
             <td></td>
           </tr>
         </table>
+        <input type="submit" value="registreer" name="registreer">
     </form>
 
   </body>
