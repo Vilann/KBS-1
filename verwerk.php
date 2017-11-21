@@ -9,7 +9,7 @@ if (($email = filter_input(INPUT_POST, 'email')) && ($ww = filter_input(INPUT_PO
     $stmt = $pdo->prepare("SELECT wachtwoord FROM login WHERE lidID=(SELECT lidID FROM lid WHERE ZHTC-emailadres = ?)");
     $stmt->execute(array($email));
     $dbww = $stmt->fetch();
-    // password_verify is een functie om een gehasht wachtwoord dat gemaakt is met password_hash() te checken
+    // password_verify is een functie om een gehasht wachtwoord dat gemaakt is met password_hash()
     if ($dbww['wachtwoord'] == password_verify($ww)) {
         session_start();
         $_SESSION['$email'] = $email;
