@@ -6,12 +6,7 @@ and open the template in the editor.
 -->
 <html>
     <head>
-        <meta charset="UTF-8">
-        <title></title>
-    </head>
-    <body>
-        <?php
-        print ("Hello Jumbo!");
-        ?>
+        <title>Home</title>
+        <?php include 'includes/header.php' ?>
     </body>
 </html>
