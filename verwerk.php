@@ -1,5 +1,5 @@
 <?php
-// Filter_input is een functie die kijkt of de informatie bestaat/volgens (hier niet) gespecificeerde regels voldoet.
+// Filter_input is een functie die kijkt of de informatie bestaat/aan (hier niet) gespecificeerde regels voldoet.
 if (($email = filter_input(INPUT_POST, 'email')) && ($ww = filter_input(INPUT_POST, 'wachtwoord'))) {
     $db = "mysql:host=localhost;dbname=ZHTC;port=3306";
     $user = "root";
@@ -9,6 +9,7 @@ if (($email = filter_input(INPUT_POST, 'email')) && ($ww = filter_input(INPUT_PO
     $stmt = $pdo->prepare("SELECT wachtwoord FROM login WHERE lidID=(SELECT lidID FROM lid WHERE ZHTC-emailadres = ?)");
     $stmt->execute(array($email));
     $dbww = $stmt->fetch();
+    // password_verify is een functie om een gehasht wachtwoord dat gemaakt is met password_hash() te checken
     if ($dbww['wachtwoord'] == password_verify($ww)) {
         session_start();
         $_SESSION['$email'] = $email;

@@ -8,8 +8,8 @@
     <form action="verwerk.php" method="post">
       <table>
         <tr>
-          <td><label for="Naam">E-mail: </label></td>
-          <td><input id="Naam" type="email" name="naam" placeholder="ZHTC-emailadres"></td>
+          <td><label for="email">E-mail: </label></td>
+          <td><input id="email" type="email" name="email" placeholder="ZHTC-emailadres"></td>
         </tr>
         <tr>
           <td><label for="Wachtwoord">Wachtwoord: </label></td>

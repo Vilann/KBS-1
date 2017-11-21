@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<title></title>
-		<?php include 'header.php'; ?>
+		<?php include 'includes/header.php'; ?>
 
 
 		<div class="dispuutfoto">
