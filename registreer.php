@@ -26,12 +26,7 @@
           </tr>
           <tr>
             <td> <label for="geboortedatum">Geboortedatum:</label> </td>
-            <td> <input id="geboortedatum" type="date" name="Geboortedatum" max="
-            <?php
-              $date = strtotime("-16 year");
-              print(date('Y-m-d', $date));
-            ?>
-            "></td>
+            <td> <input id="geboortedatum" type="date" name="Geboortedatum" max="<?php$date = strtotime("-16 year"); print(date('Y-m-d', $date));?>"></td>
           </tr>
           <tr>
             <td> <label for="adres">Adres:</label> </td>
