@@ -44,7 +44,8 @@
           </tr>
           <tr>
             <td> <label for="geslacht">Geslacht:</label> </td>
-            <td> <input type="radio" name="gender" value="man" required> Man <br>
+            <td>
+              <input type="radio" name="gender" value="man" required> Man <br>
                  <input type="radio" name="gender" value="vrouw"> Vrouw <br>
                  <input type="radio" name="gender" value="lgbt"> lgbt <br>
                  <input type="radio" name="gender" value="gevechtshelikopter"> gevechtshelikopter <br>
