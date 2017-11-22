@@ -55,6 +55,13 @@ if (isset($_POST['registreer'])) {//als er op de registreer knop wordt gedrukt e
                          $_POST["Emailadres"],$_POST["Rekeningnummer"],$_POST["Noodnummer"],$_POST["shirtmaat"],
                          $_POST["Medicatie"],$_POST["Dieetwensen"],$_POST["Opmerking"],$_POST["emailadres"]));
 }
+<<<<<<< HEAD
+=======
+// NOTE: https://secure.php.net/manual/en/filter.filters.sanitize.php hier zullen we ongetwijfeld nog iets mee moeten
+//        maar daar ben ik nu te moe voor weltrusten. Gr Kai
+//        + vraag morgen ff die try, catch, en throw aan Hugo Gr Kai
+// Filter_input zorgt ervoor dat 1) de informatie gefilterd wordt en 2) de informatie 'veilig' is. //NOTE: hoe dan?
+>>>>>>> 5f04027d8427830532af9be6de3c9c119be8f0e4
 
 if (isset($_SESSION['email'])) {
     print($_SESSION['email']);
