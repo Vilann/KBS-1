@@ -9,6 +9,9 @@ if (isset($_POST['login'])) {
     // allereerst wordt er gekeken of de email en het wachtwoord overeen komen.
     // Filter_input is een functie die kijkt of de informatie bestaat.
     // en of de info aan (hier niet) gespecificeerde regels voldoet.
+    //
+    // Filter_input zorgt ervoor dat 1) de informatie gefilterd wordt en 2) de informatie 'veilig' is. //NOTE: hoe dan?
+
     if (($email = filter_input(INPUT_POST, 'email')) && ($ww = filter_input(INPUT_POST, 'wachtwoord'))) {
         // de database(db), de gebruikersnaam daarvoor en het wachtwoord worden
         // in de variabelen(var) $db, $user en $pass gestopt.
@@ -37,6 +40,10 @@ if (isset($_POST['registreer'])) {//als er op de registreer knop wordt gedrukt e
     // TODO: Logica toevoegen
     // TODO: alle attributen in de db laten beginnen met een
     //       kleine letter?
+    //
+
+    if ($filter_input_array(INPUT_POST, $args)) {
+    }
     $sql = "INSERT INTO Lid (Voornaam, Tussenvoegsel, Geboortedatum,
                               Adres, Woonplaats, Postcode, Geslacht,
                               Emailadres, Rekeningnummer, Noodnummer, T-shirtmaat,
@@ -48,7 +55,6 @@ if (isset($_POST['registreer'])) {//als er op de registreer knop wordt gedrukt e
                          $_POST["Emailadres"],$_POST["Rekeningnummer"],$_POST["Noodnummer"],$_POST["shirtmaat"],
                          $_POST["Medicatie"],$_POST["Dieetwensen"],$_POST["Opmerking"],$_POST["emailadres"]));
 }
-// Filter_input zorgt ervoor dat 1) de informatie gefilterd wordt en 2) de informatie 'veilig' is. //NOTE: hoe dan?
 
 if (isset($_SESSION['email'])) {
     print($_SESSION['email']);

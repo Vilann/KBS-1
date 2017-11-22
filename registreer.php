@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title></title>
+    <title>ZHTC - Registreren</title>
     <?php include 'includes/header.php' ?>
 
     <h1>Registreer</h1>
