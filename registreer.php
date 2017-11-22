@@ -13,25 +13,29 @@
     <form action="verwerk.php" method="post">
         <table>
         <tr>
-            <td> Naam: </td>
-            <td> <input type="text" name="naam" placeholder="Voornaam" required> </td>
+            <td> <label for="voornaam">Naam:</label> </td>
+            <td> <input id="voornaam" type="text" name="naam" placeholder="Voornaam" required> </td>
           </tr>
           <tr>
-            <td> Tussenvoegsel: </td>
-            <td> <input type="text" name="tussenvoegsel" placeholder="Tussenvoegsel"> </td>
+            <td> <label for="tussenvoegsel">Tussenvoegsel:</label> </td>
+            <td> <input id="tussenvoegsel" type="text" name="tussenvoegsel" placeholder="Tussenvoegsel"> </td>
           </tr>
           <tr>
-            <td> Achternaam: </td>
-            <td> <input type="text" name="achternaam" placeholder="Achternaam"> </td>
+            <td> <label for="achternaam">Achternaam:</label> </td>
+            <td> <input id="achternaam" type="text" name="achternaam" placeholder="Achternaam" required> </td>
           </tr>
           <tr>
-            <?php $timezone = "Europe/Amsterdam"; DateTimeZone::__construct($timezone); date("Y-m-d")?>
-            <td> Geboortedatum: </td>
-            <td> <input type="date" name="Geboortedatum" max=""> </td>
+            <td> <label for="geboortedatum">Geboortedatum:</label> </td>
+            <td> <input id="geboortedatum" type="date" name="Geboortedatum" max="
+            <?php
+              $date = strtotime("-16 year");
+              print(date('Y-m-d', $date));
+            ?>
+            "></td>
           </tr>
           <tr>
-            <td> Adres: </td>
-            <td> <input type="text" name="adres" placeholder="Thomas á Kempisstraat 13"> </td>
+            <td> <label for="adres">Adres:</label> </td>
+            <td> <input id="adres" type="text" name="adres" placeholder="Thomas á Kempisstraat 13" required> </td>
           </tr>
           <tr>
             <td> Postcode en woonplaats: </td>
@@ -39,8 +43,8 @@
             <td> <input type="text" name="woonplaats" placeholder="Zwolle"> </td>
           </tr>
           <tr>
-            <td> Geslacht: </td>
-            <td> <input type="radio" name="gender" value="man"> Man <br>
+            <td> <label for="geslacht">Geslacht:</label> </td>
+            <td> <input type="radio" name="gender" value="man" required> Man <br>
                  <input type="radio" name="gender" value="vrouw"> Vrouw <br>
                  <input type="radio" name="gender" value="lgbt"> lgbt <br>
                  <input type="radio" name="gender" value="gevechtshelikopter"> gevechtshelikopter <br>
@@ -50,11 +54,11 @@
           </tr>
           <tr>
             <td> Emaildres: </td>
-            <td> <input type="email" name="email" placeholder="lid@zhtc.nl"> </td>
+            <td> <input type="email" name="email" placeholder="lid@zhtc.nl" required> </td>
           </tr>
           <tr>
             <td> Rekeningnummer: </td>
-            <td> <input type="text" name="iban" placeholder="NL12RABO0123456789"> </td>
+            <td> <input type="text" name="iban" placeholder="NL12RABO0123456789" required> </td>
             <?php // NOTE: http://formvalidation.io/validators/iban/ ff checken #javascirpt Gr Kai ?>
           </tr>
           <tr>
@@ -63,7 +67,7 @@
           </tr>
           <tr>
             <td> T-shirtmaat: </td>
-            <td> <input type="radio" name="maat" value="xs"> XS
+            <td> <input type="radio" name="maat" value="xs" required > XS
                  <input type="radio" name="maat" value="s"> S
                  <input type="radio" name="maat" value="m"> M
                  <input type="radio" name="maat" value="l"> L
@@ -73,15 +77,15 @@
           </tr>
           <tr>
             <td> Medicatie: </td>
-            <td> <input type="text" name="noodnummer" placeholder="pillen en veel"> </td>
+            <td><textarea name="medicatie" placeholder="Medicatie"></textarea></td>
           </tr>
           <tr>
             <td> Dieetwensen: </td>
-            <td> <input type="text" name="dieetwensen" placeholder="vlees en veel, lactose tollerant, liever kips leverworst dan gewone leverworst"> </td>
+            <td> <textarea type="text" name="dieetwensen" placeholder="vlees en veel, lactose tollerant, liever kips leverworst dan gewone leverworst"></textarea> </td>
           </tr>
           <tr>
             <td> Opmerking: </td>
-            <td> <input type="text" name="opmerking" placeholder="jullie hebben een hele coole getinte man als lid, wie is die toffe gozer?"> </td>
+            <td> <textarea type="text" name="opmerking" placeholder="jullie hebben een hele coole getinte man als lid, wie is die toffe gozer?"></textarea> </td>
           </tr>
           <input type="hidden" name="ZHTC-emailadress" value="voornaam.achternaam@zhtc.nl">
           <?php // TODO: de info voor de email ergens vandaan toveren Gr Kai?>
