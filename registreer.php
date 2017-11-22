@@ -27,7 +27,9 @@
           <tr>
             <?php $timezone = "Europe/Amsterdam"; DateTimeZone::__construct($timezone); date("Y-m-d")?>
             <td> Geboortedatum: </td>
-            <td> <input type="date" name="Geboortedatum" max=""> </td>
+            <td> <input type="date" name="Geboortedatum" max="<?php
+            $date = strtotime("-16 year");
+            echo date('Y-m-d', $date);?>"> </td>
           </tr>
           <tr>
             <td> Adres: </td>
