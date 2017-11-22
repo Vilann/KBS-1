@@ -46,6 +46,7 @@
                  <input type="radio" name="gevechtsheli"> gevechtshelikopter <br>
                  <input type="radio" name="geen van bovenstaande"> geen van bovenstaande <br>
             </td>
+            <?php // NOTE: ik heb de radiobuttons verneukt Gr Kai ?>
           </tr>
           <tr>
             <td> Emaildres: </td>
@@ -54,6 +55,7 @@
           <tr>
             <td> Rekeningnummer: </td>
             <td> <input type="text" name="iban" placeholder="NL12RABO0123456789"> </td>
+            <?php // NOTE: http://formvalidation.io/validators/iban/ ff checken #javascirpt Gr Kai ?>
           </tr>
           <tr>
             <td> Noodnummer: </td>
