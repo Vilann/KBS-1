@@ -14,7 +14,7 @@
         <table>
         <tr>
             <td> Naam: </td>
-            <td> <input type="text" name="naam" placeholder="Voornaam"> </td>
+            <td> <input type="text" name="naam" placeholder="Voornaam" required> </td>
           </tr>
           <tr>
             <td> Tussenvoegsel: </td>
@@ -25,8 +25,9 @@
             <td> <input type="text" name="achternaam" placeholder="Achternaam"> </td>
           </tr>
           <tr>
+            <?php $timezone = "Europe/Amsterdam"; DateTimeZone::__construct($timezone); date("Y-m-d")?>
             <td> Geboortedatum: </td>
-            <td> <input type="date" name="Geboortedatum"> </td>
+            <td> <input type="date" name="Geboortedatum" max=""> </td>
           </tr>
           <tr>
             <td> Adres: </td>
@@ -39,11 +40,11 @@
           </tr>
           <tr>
             <td> Geslacht: </td>
-            <td> <input type="radio" name="Man"> Man <br>
-                 <input type="radio" name="Vrouw"> Vrouw <br>
-                 <input type="radio" name="lgbt"> lgbt <br>
-                 <input type="radio" name="gevechtsheli"> gevechtshelikopter <br>
-                 <input type="radio" name="geen van bovenstaande"> geen van bovenstaande <br>
+            <td> <input type="radio" name="gender" value="man"> Man <br>
+                 <input type="radio" name="gender" value="vrouw"> Vrouw <br>
+                 <input type="radio" name="gender" value="lgbt"> lgbt <br>
+                 <input type="radio" name="gender" value="gevechtshelikopter"> gevechtshelikopter <br>
+                 <input type="radio" name="gender" value="geen van bovenstaande"> geen van bovenstaande <br>
             </td>
             <?php // NOTE: ik heb de radiobuttons verneukt Gr Kai ?>
           </tr>
@@ -62,12 +63,12 @@
           </tr>
           <tr>
             <td> T-shirtmaat: </td>
-            <td> <input type="radio" name="maatxs"> XS
-                 <input type="radio" name="maats"> S
-                 <input type="radio" name="maatm"> M
-                 <input type="radio" name="maatl"> L
-                 <input type="radio" name="maatxl"> XL
-                 <input type="radio" name="maatxxl"> XXL
+            <td> <input type="radio" name="maat" value="xs"> XS
+                 <input type="radio" name="maat" value="s"> S
+                 <input type="radio" name="maat" value="m"> M
+                 <input type="radio" name="maat" value="l"> L
+                 <input type="radio" name="maat" value="xl"> XL
+                 <input type="radio" name="maat" value="xxl"> XXL
             </td>
           </tr>
           <tr>
