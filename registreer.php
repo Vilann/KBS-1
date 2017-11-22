@@ -25,7 +25,6 @@
             <td> <input type="text" name="achternaam" placeholder="Achternaam"> </td>
           </tr>
           <tr>
-            <?php $timezone = "Europe/Amsterdam"; DateTimeZone::__construct($timezone); date("Y-m-d")?>
             <td> Geboortedatum: </td>
             <td> <input type="date" name="Geboortedatum" max="<?php
             $date = strtotime("-16 year");
