@@ -12,8 +12,7 @@
 
     <form action="verwerk.php" method="post">
         <table>
-          <input type="hidden" name="lidID" value="1"> <?php // NOTE: Stiekem de het lidId meesturen? Gr Kai ?>
-          <tr>
+        <tr>
             <td> Naam: </td>
             <td> <input type="text" name="naam" placeholder="Voornaam"> </td>
           </tr>
@@ -84,9 +83,9 @@
             <td> <input type="text" name="opmerking" placeholder="jullie hebben een hele coole getinte man als lid, wie is die toffe gozer?"> </td>
           </tr>
           <input type="hidden" name="ZHTC-emailadress" value="voornaam.achternaam@zhtc.nl">
-          <?php // TODO: de info voor de email ergens vandaan toveren Gr Kai ?>
+          <?php // TODO: de info voor de email ergens vandaan toveren Gr Kai?>
         </table>
-        <?php // NOTE: door op deze knop te drukken wordt al deze info gestopt in de value registreer. *zie verwerk.php Gr Kai ?>
+        <?php // NOTE: door op deze knop te drukken wordt al deze info gestopt in de value registreer. *zie verwerk.php Gr Kai?>
         <input type="submit" value="registreer" name="registreer">
     </form>
 

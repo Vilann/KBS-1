@@ -37,13 +37,13 @@ if (isset($_POST['registreer'])) {//als er op de registreer knop wordt gedrukt e
     // TODO: Logica toevoegen
     // TODO: alle attributen in de db laten beginnen met een
     //       kleine letter?
-    $sql = "INSERT INTO Lid (LidID, Voornaam, Tussenvoegsel, Geboortedatum,
+    $sql = "INSERT INTO Lid (Voornaam, Tussenvoegsel, Geboortedatum,
                               Adres, Woonplaats, Postcode, Geslacht,
                               Emailadres, Rekeningnummer, Noodnummer, T-shirtmaat,
                               Medicatie, Dieetwensen, Opmerking, ZHTC-emailadres)
-            VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+            VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
     $stmt = $pdo->prepare($sql);
-    $stmt->execute(array($_POST["LidID"],$_POST["Voornaam"],$_POST["Tussenvoegsel"],$_POST["Geboortedatum"],
+    $stmt->execute(array($_POST["Voornaam"],$_POST["Tussenvoegsel"],$_POST["Geboortedatum"],
                          $_POST["Adres"],$_POST["Woonplaats"],$_POST["Postcode"],$_POST["Geslacht"],
                          $_POST["Emailadres"],$_POST["Rekeningnummer"],$_POST["Noodnummer"],$_POST["shirtmaat"],
                          $_POST["Medicatie"],$_POST["Dieetwensen"],$_POST["Opmerking"],$_POST["emailadres"]));
