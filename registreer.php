@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title></title>
+    <title>ZHTC - Registreren</title>
     <?php include 'includes/header.php' ?>
 
     <h1>Registreer</h1>
@@ -13,8 +13,8 @@
     <form action="verwerk.php" method="post">
         <table>
         <tr>
-            <td> <label for="voornaam">Naam:</label> </td>
-            <td> <input id="voornaam" type="text" name="naam" placeholder="Voornaam" required> </td>
+            <td> <label for="voornaam">Voornaam:</label> </td>
+            <td> <input id="voornaam" type="text" name="voornaam" placeholder="Voornaam" required> </td>
           </tr>
           <tr>
             <td> <label for="tussenvoegsel">Tussenvoegsel:</label> </td>
@@ -33,9 +33,9 @@
             <td> <input id="adres" type="text" name="adres" placeholder="Thomas á Kempisstraat 13" required> </td>
           </tr>
           <tr>
-            <td> Postcode en woonplaats: </td>
-            <td> <input type="text" name="postcode" placeholder="1234 AB"> </td>
-            <td> <input type="text" name="woonplaats" placeholder="Zwolle"> </td>
+            <td> <label for="postcode">Postcode</label> en <label for="woonplaats">woonplaats</label>: </td>
+            <td> <input id="postcode" type="text" name="postcode" placeholder="1234 AB"> </td>
+            <td> <input id="woonplaats" type="text" name="woonplaats" placeholder="Zwolle"> </td>
           </tr>
           <tr>
             <td> <label for="geslacht">Geslacht:</label> </td>
@@ -46,23 +46,23 @@
                  <input type="radio" name="gender" value="gevechtshelikopter"> gevechtshelikopter <br>
                  <input type="radio" name="gender" value="geen van bovenstaande"> geen van bovenstaande <br>
             </td>
-            <?php // NOTE: ik heb de radiobuttons verneukt Gr Kai ?>
+            <?php // NOTE: ik heb de radiobuttons verneukt Gr Kai?>
           </tr>
           <tr>
-            <td> Emaildres: </td>
-            <td> <input type="email" name="email" placeholder="lid@zhtc.nl" required> </td>
+            <td> <label for="email">Emailadres:</label> </td>
+            <td> <input id="email" type="email" name="email" placeholder="lid@zhtc.nl" required> </td>
           </tr>
           <tr>
-            <td> Rekeningnummer: </td>
-            <td> <input type="text" name="iban" placeholder="NL12RABO0123456789" required> </td>
-            <?php // NOTE: http://formvalidation.io/validators/iban/ ff checken #javascirpt Gr Kai ?>
+            <td> <label for="rekening">Rekeningnummer:</label> </td>
+            <td> <input id="rekening" type="text" name="iban" placeholder="NL12RABO0123456789" required> </td>
+            <?php // NOTE: http://formvalidation.io/validators/iban/ ff checken #javascirpt Gr Kai?>
           </tr>
           <tr>
-            <td> Noodnummer: </td>
-            <td> <input type="tel" name="noodnummer" placeholder="06 123 45 678"> </td>
+            <td> <label for="noodnummer">Noodnummer:</label> </td>
+            <td> <input id="noodnummer" type="tel" name="noodnummer" placeholder="06 123 45 678"> </td>
           </tr>
           <tr>
-            <td> T-shirtmaat: </td>
+            <td><label for="maat"> T-shirtmaat:</label> </td>
             <td> <input type="radio" name="maat" value="xs" required > XS
                  <input type="radio" name="maat" value="s"> S
                  <input type="radio" name="maat" value="m"> M
@@ -72,18 +72,17 @@
             </td>
           </tr>
           <tr>
-            <td> Medicatie: </td>
-            <td><textarea name="medicatie" placeholder="Medicatie"></textarea></td>
+            <td> <label for="medicatie">Medicatie:</label> </td>
+            <td><textarea id="medicatie" name="medicatie" placeholder="Medicatie"></textarea></td>
           </tr>
           <tr>
-            <td> Dieetwensen: </td>
-            <td> <textarea type="text" name="dieetwensen" placeholder="vlees en veel, lactose tollerant, liever kips leverworst dan gewone leverworst"></textarea> </td>
+            <td> <label for="dieetwensen">Dieetwensen:</label> </td>
+            <td> <textarea id="dieetwensen" type="text" name="dieetwensen" placeholder="vlees en veel, lactose tollerant, liever kips leverworst dan gewone leverworst"></textarea> </td>
           </tr>
           <tr>
-            <td> Opmerking: </td>
-            <td> <textarea type="text" name="opmerking" placeholder="jullie hebben een hele coole getinte man als lid, wie is die toffe gozer?"></textarea> </td>
+            <td> <label for="opmerking">Opmerking:</label> </td>
+            <td> <textarea id="opmerking" type="text" name="opmerking" placeholder="jullie hebben een hele coole getinte man als lid, wie is die toffe gozer?"></textarea> </td>
           </tr>
-          <input type="hidden" name="ZHTC-emailadress" value="voornaam.achternaam@zhtc.nl">
           <?php // TODO: de info voor de email ergens vandaan toveren Gr Kai?>
         </table>
         <?php // NOTE: door op deze knop te drukken wordt al deze info gestopt in de value registreer. *zie verwerk.php Gr Kai?>
