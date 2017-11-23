@@ -26,12 +26,7 @@
           </tr>
           <tr>
             <td> <label for="geboortedatum">Geboortedatum:</label> </td>
-            <td> <input id="geboortedatum" type="date" name="geboortedatum" max="
-            <?php
-              $date = strtotime("-16 year");
-              print(date('Y-m-d', $date));
-            ?>
-            "></td>
+            <td> <input id="geboortedatum" type="date" name="Geboortedatum" max="<?php$date = strtotime("-16 year"); print(date('Y-m-d', $date));?>"></td>
           </tr>
           <tr>
             <td> <label for="adres">Adres:</label> </td>
@@ -44,7 +39,8 @@
           </tr>
           <tr>
             <td> <label for="geslacht">Geslacht:</label> </td>
-            <td> <input type="radio" name="gender" value="man" required> Man <br>
+            <td>
+              <input type="radio" name="gender" value="man" required> Man <br>
                  <input type="radio" name="gender" value="vrouw"> Vrouw <br>
                  <input type="radio" name="gender" value="lgbt"> lgbt <br>
                  <input type="radio" name="gender" value="gevechtshelikopter"> gevechtshelikopter <br>

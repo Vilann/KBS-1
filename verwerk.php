@@ -1,4 +1,5 @@
 <?php
+
 /*
 Het registratieformulier en loginformulier hebben allebei een verstuurknop met een naam, login en registreer.
 De buitenste if-statements kijken welke van de 2 gebruikt is. Bij login wordt het eerste gebruikt, de loginfunctionaliteit.
@@ -13,30 +14,24 @@ if (isset($_POST['login'])) {
     // Filter_input zorgt ervoor dat 1) de informatie gefilterd wordt en 2) de informatie 'veilig' is. //NOTE: hoe dan?
 
     if (($email = filter_input(INPUT_POST, 'email')) && ($ww = filter_input(INPUT_POST, 'wachtwoord'))) {
-        // de database(db), de gebruikersnaam daarvoor en het wachtwoord worden
-        // in de variabelen(var) $db, $user en $pass gestopt.
-        // vervolgens maken we met "new PDO" een verbinding met de database en vullen we
-        // de credentials in die we in die variabelen hebben gestopt.
         $db = "mysql:host=localhost;dbname=ZHTC;port=3306";
         $user = "root";
         $pass = "";
         $pdo = new PDO($db, $user, $pass);
-
-        // Dan halen we het wachtwoord op van het lid met het lidID dat bij het
-        // (bij login ingevulde) emailadres staat. en stoppen dat in de var stmt.
+        // We halen het wachtwoord op van het lid met het lidID dat bij het emailadres staat.
         $stmt = $pdo->prepare("SELECT wachtwoord FROM login WHERE lidID=(SELECT lidID FROM lid WHERE ZHTC-emailadres = ?)");
-        $stmt->execute(array($email));//Hier wordt de email voor het vraagteken in de query ingevuld.
-        $dbww = $stmt->fetch();//Het wachtwoord wat uit deze query komt wordt in de vardbww (database wachtwoord)gestopt.
-        // password_verify is een functie om een gehasht wachtwoord dat gemaakt is met password_hash() // NOTE: halve zin? gr Kai
+        $stmt->execute(array($email));
+        $dbww = $stmt->fetch();
+        // password_verify is een functie om een gehasht wachtwoord dat gemaakt is met password_hash()
         if ($dbww['wachtwoord'] == password_verify($ww)) {
             session_start();
             $_SESSION['$email'] = $email;
         }
 
-        $pdo = null; // hier wordt de db-verbinding weer verbroken.
+        $pdo = null;
     }
 }
-if (isset($_POST['registreer'])) {//als er op de registreer knop wordt gedrukt en alles is ingevuld? gr Kai
+if (isset($_POST['registreer'])) {
     // TODO: Logica toevoegen
     // TODO: alle attributen in de db laten beginnen met een
     //       kleine letter?
@@ -68,10 +63,8 @@ if (isset($_POST['registreer'])) {//als er op de registreer knop wordt gedrukt e
         }
     }
 }
-// NOTE: https://secure.php.net/manual/en/filter.filters.sanitize.php hier zullen we ongetwijfeld nog iets mee moeten
-//        maar daar ben ik nu te moe voor weltrusten. Gr Kai
-//        + vraag morgen ff die try, catch, en throw aan Hugo Gr Kai
-// Filter_input zorgt ervoor dat 1) de informatie gefilterd wordt en 2) de informatie 'veilig' is. //NOTE: hoe dan?
+
+// Filter_input zorgt ervoor dat 1) de informatie gefilterd wordt en 2) de informatie 'veilig' is.
 
 if (isset($_SESSION['email'])) {
     print($_SESSION['email']);
