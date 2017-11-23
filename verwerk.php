@@ -42,26 +42,36 @@ if (isset($_POST['registreer'])) {//als er op de registreer knop wordt gedrukt e
     //       kleine letter?
     //
 
-    if ($filter_input_array(INPUT_POST, $args)) {
+
+    if ($filterPost = filter_input_array(INPUT_POST)) {
+        $ZHTCemailadres = $filterPost['voornaam'] . "." . $filterPost['achternaam'] . "@zhtc.nl";
+        print($ZHTCemailadres);
+
+
+        try {
+            $db = "mysql:host=localhost;dbname=ZHTC;port=3306";
+            $user = "root";
+            $pass = "";
+            $pdo = new PDO($db, $user, $pass);
+            $sql = "INSERT INTO Lid (Voornaam, Tussenvoegsel, achternaam, Geboortedatum,
+                                Adres, Woonplaats, Postcode, Geslacht,
+                                Emailadres, Rekeningnummer, Noodnummer, T-shirtmaat,
+                                Medicatie, Dieetwensen, Opmerking, ZHTC-emailadres)
+              VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute(array($filterPost["voornaam"],$filterPost["tussenvoegsel"], $filterPost["achternaam"], $filterPost["geboortedatum"],
+                           $filterPost["adres"],$filterPost["woonplaats"],$filterPost["postcode"],$filterPost["gender"],
+                           $filterPost["email"],$filterPost["iban"],$filterPost["noodnummer"],$filterPost["maat"],
+                           $filterPost["medicatie"],$filterPost["dieetwensen"],$filterPost["opmerking"],$ZHTCemailadres));
+        } catch (exception $e) {
+            print($e);
+        }
     }
-    $sql = "INSERT INTO Lid (Voornaam, Tussenvoegsel, Geboortedatum,
-                              Adres, Woonplaats, Postcode, Geslacht,
-                              Emailadres, Rekeningnummer, Noodnummer, T-shirtmaat,
-                              Medicatie, Dieetwensen, Opmerking, ZHTC-emailadres)
-            VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute(array($_POST["Voornaam"],$_POST["Tussenvoegsel"],$_POST["Geboortedatum"],
-                         $_POST["Adres"],$_POST["Woonplaats"],$_POST["Postcode"],$_POST["Geslacht"],
-                         $_POST["Emailadres"],$_POST["Rekeningnummer"],$_POST["Noodnummer"],$_POST["shirtmaat"],
-                         $_POST["Medicatie"],$_POST["Dieetwensen"],$_POST["Opmerking"],$_POST["emailadres"]));
 }
-<<<<<<< HEAD
-=======
 // NOTE: https://secure.php.net/manual/en/filter.filters.sanitize.php hier zullen we ongetwijfeld nog iets mee moeten
 //        maar daar ben ik nu te moe voor weltrusten. Gr Kai
 //        + vraag morgen ff die try, catch, en throw aan Hugo Gr Kai
 // Filter_input zorgt ervoor dat 1) de informatie gefilterd wordt en 2) de informatie 'veilig' is. //NOTE: hoe dan?
->>>>>>> 5f04027d8427830532af9be6de3c9c119be8f0e4
 
 if (isset($_SESSION['email'])) {
     print($_SESSION['email']);
