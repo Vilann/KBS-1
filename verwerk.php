@@ -5,7 +5,6 @@ Het registratieformulier en loginformulier hebben allebei een verstuurknop met e
 De buitenste if-statements kijken welke van de 2 gebruikt is. Bij login wordt het eerste gebruikt, de loginfunctionaliteit.
 Bij registreren wordt het tweede blok gebruikt.
  */
-
 if (isset($_POST['login'])) {
     // allereerst wordt er gekeken of de email en het wachtwoord overeen komen.
     // Filter_input is een functie die kijkt of de informatie bestaat.
@@ -19,15 +18,18 @@ if (isset($_POST['login'])) {
         $pass = "";
         $pdo = new PDO($db, $user, $pass);
         // We halen het wachtwoord op van het lid met het lidID dat bij het emailadres staat.
-        $stmt = $pdo->prepare("SELECT wachtwoord FROM login WHERE lidID=(SELECT lidID FROM lid WHERE ZHTC-emailadres = ?)");
+        $stmt = $pdo->prepare("SELECT Wachtwoord FROM login WHERE lidID=(SELECT lidID FROM lid WHERE ZHTCemailadres = ?)");
         $stmt->execute(array($email));
         $dbww = $stmt->fetch();
+        $dbww = $dbww["Wachtwoord"];
         // password_verify is een functie om een gehasht wachtwoord dat gemaakt is met password_hash()
-        if ($dbww['wachtwoord'] == password_verify($ww)) {
+        if (password_verify($ww, $dbww)) {
             session_start();
-            $_SESSION['$email'] = $email;
+            $_SESSION['email'] = $email;
+        } else {
+            //password false
+            echo $ww."<br>".$dbww;
         }
-
         $pdo = null;
     }
 }
@@ -67,6 +69,7 @@ if (isset($_POST['registreer'])) {
 // Filter_input zorgt ervoor dat 1) de informatie gefilterd wordt en 2) de informatie 'veilig' is.
 
 if (isset($_SESSION['email'])) {
+    print("Succesvol ingelogd!<br>");
     print($_SESSION['email']);
 } else {
     print("Je hebt het niet goed ingevuld, ga terug!");

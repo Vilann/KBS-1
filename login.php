@@ -17,7 +17,7 @@
         </tr>
       </table>
       <br>
-      <input type="submit" name="Verstuur" value="login">
+      <input type="submit" name="login" value="login">
 
       <p>
         <b>Nog geen lid?</b> <br>
