@@ -34,40 +34,36 @@ if (isset($_POST['login'])) {
     }
 }
 if (isset($_POST['registreer'])) {
-    // TODO: Logica toevoegen
-    // TODO: alle attributen in de db laten beginnen met een
-    //       kleine letter?
-    //
+    // TODO: check naar de verplichte velden
 
+    // Een lid krijgt een zhtc-emailadres, dat is 'voornaam'.'achternaam'@zhtc.nl
+    // Dit wordt samen met het eigen emailadres opgeslagen
+    $ZHTCemailadres = $_POST['voornaam'] . "." . $_POST['achternaam'] . "@zhtc.nl";
 
-    if ($filterPost = filter_input_array(INPUT_POST)) {
-        $ZHTCemailadres = $filterPost['voornaam'] . "." . $filterPost['achternaam'] . "@zhtc.nl";
-        print($ZHTCemailadres);
-
-
-        try {
-            $db = "mysql:host=localhost;dbname=ZHTC;port=3306";
-            $user = "root";
-            $pass = "";
-            $pdo = new PDO($db, $user, $pass);
-            $sql = "INSERT INTO Lid (Voornaam, Tussenvoegsel, achternaam, Geboortedatum,
+    // try-catch om te kijken of de registratie gelukt is
+    try {
+        $db = "mysql:host=localhost;dbname=ZHTC;port=3306";
+        $user = "root";
+        $pass = "";
+        $pdo = new PDO($db, $user, $pass);
+        $sql = "INSERT INTO Lid (Voornaam, Tussenvoegsel, achternaam, Geboortedatum,
                                 Adres, Woonplaats, Postcode, Geslacht,
-                                Emailadres, Rekeningnummer, Noodnummer, T-shirtmaat,
-                                Medicatie, Dieetwensen, Opmerking, ZHTC-emailadres)
+                                Emailadres, Rekeningnummer, Noodnummer, shirtmaat,
+                                Medicatie, Dieetwensen, Opmerking, ZHTCemailadres)
               VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-            $stmt = $pdo->prepare($sql);
-            $stmt->execute(array($filterPost["voornaam"],$filterPost["tussenvoegsel"], $filterPost["achternaam"], $filterPost["geboortedatum"],
-                           $filterPost["adres"],$filterPost["woonplaats"],$filterPost["postcode"],$filterPost["gender"],
-                           $filterPost["email"],$filterPost["iban"],$filterPost["noodnummer"],$filterPost["maat"],
-                           $filterPost["medicatie"],$filterPost["dieetwensen"],$filterPost["opmerking"],$ZHTCemailadres));
-        } catch (exception $e) {
-            print($e);
-        }
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(array($_POST["voornaam"],$_POST["tussenvoegsel"], $_POST["achternaam"], $_POST["geboortedatum"],
+                           $_POST["adres"],$_POST["woonplaats"],$_POST["postcode"],$_POST["gender"],
+                           $_POST["email"],$_POST["iban"],$_POST["noodnummer"],$_POST["maat"],
+                           $_POST["medicatie"],$_POST["dieetwensen"],$_POST["opmerking"],$ZHTCemailadres));
+        print($stmt->RowCount());
+    } catch (exception $e) {
+        print($e);
     }
 }
 
 // Filter_input zorgt ervoor dat 1) de informatie gefilterd wordt en 2) de informatie 'veilig' is.
-
+// Testcode om te kijken of de sessie werkt
 if (isset($_SESSION['email'])) {
     print("Succesvol ingelogd!<br>");
     print($_SESSION['email']);
