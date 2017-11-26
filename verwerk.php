@@ -34,35 +34,37 @@ if (isset($_POST['login'])) {
     }
 }
 if (isset($_POST['registreer'])) {
-    // TODO: check naar de verplichte velden
+    // TODO: zorgen dat het beveiligd is tegen hacks/cracks/cheats etc. dus dat je niet een situatie krijgt als in "; drop table users" (zie xkcd)
 
-    // Een lid krijgt een zhtc-emailadres, dat is 'voornaam'.'achternaam'@zhtc.nl
-    // Dit wordt samen met het eigen emailadres opgeslagen
-    $ZHTCemailadres = $_POST['voornaam'] . "." . $_POST['achternaam'] . "@zhtc.nl";
+    // kijken of elke not-null waarde is ingevuld in het formulier
+    if (isset($_POST['voornaam']) && isset($_POST['achternaam']) && isset($_POST['geboortedatum']) && isset($_POST['adres']) && isset($_POST['postcode'])
+    && isset($_POST['woonplaats']) && isset($_POST['gender']) && isset($_POST['email']) && isset($_POST['iban']) && isset($_POST['noodnummer']) && isset($_POST['maat'])) {
+        // Een lid krijgt een zhtc-emailadres, dat is 'voornaam'.'achternaam'@zhtc.nl
+        // Dit wordt samen met het eigen emailadres opgeslagen, dus een lid heeft 2 emailadressen
+        $ZHTCemailadres = $_POST['voornaam'] . "." . $_POST['achternaam'] . "@zhtc.nl";
 
-    // try-catch om te kijken of de registratie gelukt is
-    try {
-        $db = "mysql:host=localhost;dbname=ZHTC;port=3306";
+        // try-catch heb ik verwijderd, die catcht geen fout :(
+
+        $db = "mysql:host=localhost;dbname=zhtc;port=3306";
         $user = "root";
         $pass = "";
         $pdo = new PDO($db, $user, $pass);
-        $sql = "INSERT INTO Lid (Voornaam, Tussenvoegsel, achternaam, Geboortedatum,
-                                Adres, Woonplaats, Postcode, Geslacht,
-                                Emailadres, Rekeningnummer, Noodnummer, shirtmaat,
-                                Medicatie, Dieetwensen, Opmerking, ZHTCemailadres)
-              VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+
+        $sql = "INSERT INTO lid (Voornaam, Tussenvoegsel, Achternaam, Geboortedatum,
+                                    Adres, Woonplaats, Postcode, Geslacht,
+                                    Emailadres, Rekeningnummer, Noodnummer, shirtmaat,
+                                    Medicatie, Dieetwensen, Opmerking, ZHTCemailadres)
+                  VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
         $stmt = $pdo->prepare($sql);
+        // str_replace haalt alle spaties uit de postcode zodat het altijd 6 tekens is
         $stmt->execute(array($_POST["voornaam"],$_POST["tussenvoegsel"], $_POST["achternaam"], $_POST["geboortedatum"],
-                           $_POST["adres"],$_POST["woonplaats"],$_POST["postcode"],$_POST["gender"],
-                           $_POST["email"],$_POST["iban"],$_POST["noodnummer"],$_POST["maat"],
-                           $_POST["medicatie"],$_POST["dieetwensen"],$_POST["opmerking"],$ZHTCemailadres));
+                               $_POST["adres"],$_POST["woonplaats"],str_replace(' ', '', $_POST["postcode"]),$_POST["gender"],
+                               $_POST["email"],$_POST["iban"],$_POST["noodnummer"],$_POST["maat"],
+                               $_POST["medicatie"],$_POST["dieetwensen"],$_POST["opmerking"],$ZHTCemailadres));
         print($stmt->RowCount());
-    } catch (exception $e) {
-        print($e);
-    }
+    };
 }
 
-// Filter_input zorgt ervoor dat 1) de informatie gefilterd wordt en 2) de informatie 'veilig' is.
 // Testcode om te kijken of de sessie werkt
 if (isset($_SESSION['email'])) {
     print("Succesvol ingelogd!<br>");
