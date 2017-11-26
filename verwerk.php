@@ -48,20 +48,23 @@ if (isset($_POST['registreer'])) {
         $db = "mysql:host=localhost;dbname=zhtc;port=3306";
         $user = "root";
         $pass = "";
-        $pdo = new PDO($db, $user, $pass);
-
-        $sql = "INSERT INTO lid (Voornaam, Tussenvoegsel, Achternaam, Geboortedatum,
+        $link = new PDO($db, $user, $pass);
+        //zet de juiste error reporting zodat fouten kunnen worden opgevangen
+        $link->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $statement = $link->prepare("INSERT INTO lid (Voornaam, Tussenvoegsel, Achternaam, Geboortedatum,
                                     Adres, Woonplaats, Postcode, Geslacht,
                                     Emailadres, Rekeningnummer, Noodnummer, shirtmaat,
                                     Medicatie, Dieetwensen, Opmerking, ZHTCemailadres)
-                  VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-        $stmt = $pdo->prepare($sql);
+                  VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
         // str_replace haalt alle spaties uit de postcode zodat het altijd 6 tekens is
-        $stmt->execute(array($_POST["voornaam"],$_POST["tussenvoegsel"], $_POST["achternaam"], $_POST["geboortedatum"],
+        $statement->execute(array($_POST["voornaam"],$_POST["tussenvoegsel"], $_POST["achternaam"], $_POST["geboortedatum"],
                                $_POST["adres"],$_POST["woonplaats"],str_replace(' ', '', $_POST["postcode"]),$_POST["gender"],
                                $_POST["email"],$_POST["iban"],$_POST["noodnummer"],$_POST["maat"],
                                $_POST["medicatie"],$_POST["dieetwensen"],$_POST["opmerking"],$ZHTCemailadres));
-        print($stmt->RowCount());
+
+        if($statement->RowCount()){
+          print("succes!<br>");
+        }
     };
 }
 
