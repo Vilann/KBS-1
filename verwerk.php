@@ -39,33 +39,48 @@ if (isset($_POST['registreer'])) {
     // kijken of elke not-null waarde is ingevuld in het formulier
     if (isset($_POST['voornaam']) && isset($_POST['achternaam']) && isset($_POST['geboortedatum']) && isset($_POST['adres']) && isset($_POST['postcode'])
     && isset($_POST['woonplaats']) && isset($_POST['gender']) && isset($_POST['email']) && isset($_POST['iban']) && isset($_POST['noodnummer']) && isset($_POST['maat'])) {
+        // Als de errors variabele na alle checks fout is, wordt de gebruiker teruggestuurd naar de registratiepagina.
+        $errors = false;
+
         // Een lid krijgt een zhtc-emailadres, dat is 'voornaam'.'achternaam'@zhtc.nl
         // Dit wordt samen met het eigen emailadres opgeslagen, dus een lid heeft 2 emailadressen
         $ZHTCemailadres = $_POST['voornaam'] . "." . $_POST['achternaam'] . "@zhtc.nl";
 
-        // try-catch heb ik verwijderd, die catcht geen fout :(
+        // Als het geslacht niet in de array voorkomt, dan is er met het formulier geknoeid en accepteren we het niet.
+        if (!in_array($_POST['gender'], array('man', 'vrouw', 'anders'))) {
+            $errors = true;
+        }
+        // als de geboortedatum nieuwer dan vandaag - 16 is, is er geknoeid met de geboortedatum
+        if ($_POST['geboortedatum'] > date('Y-m-d', strtotime("-16 year"))) {
+            $errors = true;
+        }
 
-        $db = "mysql:host=localhost;dbname=zhtc;port=3306";
-        $user = "root";
-        $pass = "";
-        $link = new PDO($db, $user, $pass);
-        //zet de juiste error reporting zodat fouten kunnen worden opgevangen
-        $link->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $statement = $link->prepare("INSERT INTO lid (Voornaam, Tussenvoegsel, Achternaam, Geboortedatum,
+        if ($errors) {
+            header("location:index.php");
+        } else {
+            $db = "mysql:host=localhost;dbname=zhtc;port=3306";
+            $user = "root";
+            $pass = "";
+            $link = new PDO($db, $user, $pass);
+            //zet de juiste error reporting zodat fouten kunnen worden opgevangen
+            $link->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $statement = $link->prepare("INSERT INTO lid (Voornaam, Tussenvoegsel, Achternaam, Geboortedatum,
                                     Adres, Woonplaats, Postcode, Geslacht,
                                     Emailadres, Rekeningnummer, Noodnummer, shirtmaat,
                                     Medicatie, Dieetwensen, Opmerking, ZHTCemailadres)
                   VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-        // str_replace haalt alle spaties uit de postcode zodat het altijd 6 tekens is
-        $statement->execute(array($_POST["voornaam"],$_POST["tussenvoegsel"], $_POST["achternaam"], $_POST["geboortedatum"],
+
+            // str_replace haalt alle spaties uit de postcode zodat het altijd 6 tekens is
+            $statement->execute(array($_POST["voornaam"],$_POST["tussenvoegsel"], $_POST["achternaam"], $_POST["geboortedatum"],
                                $_POST["adres"],$_POST["woonplaats"],str_replace(' ', '', $_POST["postcode"]),$_POST["gender"],
                                $_POST["email"],$_POST["iban"],$_POST["noodnummer"],$_POST["maat"],
                                $_POST["medicatie"],$_POST["dieetwensen"],$_POST["opmerking"],$ZHTCemailadres));
 
-        if($statement->RowCount()){
-          print("succes!<br>");
+            if ($statement->RowCount()) {
+                print("succes!<br>");
+            }
         }
-    };
+    }
 }
 
 // Testcode om te kijken of de sessie werkt
