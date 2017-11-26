@@ -43,7 +43,7 @@
                  <input type="radio" name="gender" value="man" required> Man <br>
                  <input type="radio" name="gender" value="vrouw"> Vrouw <br>
                  <!-- helaas heren, geen gevechtshelikopter -->
-                 <input type="radio" name="gender" value="geen van bovenstaande"> geen van bovenstaande <br>
+                 <input type="radio" name="gender" value="anders"> geen van bovenstaande <br>
             </td>
             <!-- NOTE: ik heb de radiobuttons verneukt Gr Kai?> -->
           </tr>
