@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title></title>
+    <title>ZHTC - Login</title>
 
     <?php include 'includes/header.php' ?>
     <h1>Log in</h1>
@@ -9,11 +9,11 @@
       <table>
         <tr>
           <td><label for="email">E-mail: </label></td>
-          <td><input id="email" type="email" name="email" placeholder="ZHTC-emailadres"></td>
+          <td><input id="email" type="email" name="email" placeholder="ZHTC-emailadres" required></td>
         </tr>
         <tr>
           <td><label for="Wachtwoord">Wachtwoord: </label></td>
-          <td><input id="Wachtwoord" type="password" name="wachtwoord" value=""></td>
+          <td><input id="Wachtwoord" type="password" name="wachtwoord" value="" required></td>
         </tr>
       </table>
       <br>
@@ -22,7 +22,7 @@
       <p>
         <b>Nog geen lid?</b> <br>
         Wil jij lid worden van ZHTC? <br>
-        Klik <a href="registreer.php">hier</a> <!-- TODO: website invullen -->
+        Klik <a href="registreer.php">hier</a>
       </p>
     </form>
   </body>
