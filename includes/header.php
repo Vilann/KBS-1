@@ -24,7 +24,7 @@
 				<li><a href="disputen.php">Disputen</a></li>
 				<li><a href="#">Activiteiten</a></li>
 				<li id="lustrum"><a href="#">Lustrum</a></li>
-				<li><a href="#">Contact</a></li>
+				<li><a href="Contact.php">Contact</a></li>
 				<li><a href='login.php'>Log in/registreer</a></li>
 			</ul>
 		</nav>
