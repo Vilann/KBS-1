@@ -12,17 +12,26 @@
         <p>Test banaan</p>
 
         <form Method="POST" Action='contact.php'>
-
-            <label for="contactmail">Emailadres:</label>
-            <input id="contactmail" type="mail" name="contactmail" placeholder="Uwmailadres@voorbeeld.com" required>
-            <label for="contactnaam">Naam:</label>
-            <input id="contactnaam" type="text" name="contactnaam" placeholder="Uw naam" required>
-            <label for="contactbericht">Bericht:</label>
-            <input id="contactbericht" type="textarea" name="contactbericht" placeholder="Uw vragen, opmerkingen of tips" required>
-            <input type="submit" name="Verzend" value="Verzend">
+          <table>
+            <tr>
+              <td><label for="contactmail">Emailadres:</label></td>
+              <td><input id="contactmail" type="mail" name="contactmail" placeholder="Uwmailadres@voorbeeld.com" required></td>
+            </tr>
+            <tr>
+              <td><label for="contactnaam">Naam:</label></td>
+              <td><input id="contactnaam" type="text" name="contactnaam" placeholder="Uw naam" required></td>
+            </tr>
+            <tr>
+              <td><label for="contactbericht">Bericht:</label></td>
+              <td><textarea id="contactbericht" name="contactbericht" placeholder="Uw vragen, opmerkingen of tips" required></textarea></td>
+            </tr>
+          </table>
+            <input type="submit" name="verzend" value="Verzend">
         </form>
         <?php
-
+        if (isset($_POST['verzend'])) {
+            print_r($_POST);
+        }
         if (isset($_POST['verzend']) && isset($_POST['contactmail']) && isset($_POST['contactnaam']) && isset($_POST['contactbericht'])) {
             $naam = $_POST['contactnaam'];
             $emailadres = $_POST['contactmail'];
@@ -33,6 +42,7 @@
             mail($zhtcmailadres, $onderwerp, $mailbericht);
             print("hoho klopt ... $mailbericht");
         };
+        print("hoho klopt ... $mailbericht");
         ?>
 
 

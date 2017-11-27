@@ -25,7 +25,15 @@
 				<li><a href="#">Activiteiten</a></li>
 				<li id="lustrum"><a href="#">Lustrum</a></li>
 				<li><a href="Contact.php">Contact</a></li>
-				<li><a href='login.php'>Log in/registreer</a></li>
+
+				<?php
+                session_start();
+                if (!isset($_SESSION['email'])) {
+                    print("<li><a href='login.php'>Log in/registreer</a></li>");
+                } else {
+                    print("<li><a href='#'>Hallo, met je email " . $_SESSION['email'] . " </a></li>");
+                }
+        ?>
 			</ul>
 		</nav>
 	</body>
