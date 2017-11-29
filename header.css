@@ -14,17 +14,21 @@
 	  justify-content:center;
 	}
 
-	.navigation a {
+	.navigation .nav-link {
 	  text-decoration: none;
 	  display: block;
 	  padding: 1em;
 	  color: white;
 	}
 
-	.navigation a:hover {
+	.navigation .nav-item:hover {
 	  background: deepskyblue;
 	}
 
-	#lustrum a:hover{
+	#lustrum:hover{
 		background: #9a8214;
 	}
+
+.dropdown-menu {
+	width:250px;
+}
