@@ -31,7 +31,7 @@
             $onderwerp = "Een mail van $naam";
             $mailbericht = "$naam heeft het volgende verstuurd: $bericht het emailadres van $naam is $emailadres";
             mail($zhtcmailadres, $onderwerp, $mailbericht);
-            print("hoho klopt ... $mailbericht");
+            print("hoho klopt ... $mailbericht je ip is $ip");
         };
         ?>
 
