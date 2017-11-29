@@ -30,13 +30,13 @@
 		        <a class="nav-link" href="#">De vereniging</a>
 		      </li>
 		      <li class="nav-item">
-		        <a class="nav-link" href="sidebar_commissie.php">Commissies</a>
+		        <a class="nav-link" href="commissie.php">Commissies</a>
 		      </li>
 		      <li class="nav-item">
 		        <a class="nav-link" href="disputen.php">Disputen</a>
 		      </li>
 					<li class="nav-item">
-		        <a class="nav-link" href="disputen.php">Disputen</a>
+		        <a class="nav-link" href="#">Activiteiten</a>
 		      </li>
 					<li class="nav-item">
 		        <a id="lustrum" class="nav-link" href="#">Lustrum</a>

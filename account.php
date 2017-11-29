@@ -48,7 +48,7 @@
                 <div class="form-group row">
                     <label for="inputPassword" class="col-sm-3 col-form-label">Geboortedatum:</label>
                     <div class="col-sm-9 px-0">
-                      <input type="date" class="form-control" id="inputPassword" value="23-05-1988" placeholder="23-02-1970" readonly>
+                      <input type="date" class="form-control" value="23-05-1988" placeholder="23-02-1970" readonly>
                     </div>
                 </div>
                 <div class="form-group row">
