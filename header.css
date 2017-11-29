@@ -32,3 +32,21 @@
 .dropdown-menu {
 	width:250px;
 }
+.navbar-toggler {
+	float:right;
+}
+.navbar-toggler-icon {
+	color: white;
+}
+
+.name_banner {
+	background-color: lightgrey;
+}
+.vcenter {
+    display: inline-block;
+    vertical-align: middle;
+    float: none;
+}
+.media {
+	margin:1.6em;
+}
