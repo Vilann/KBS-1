@@ -72,15 +72,15 @@
           </tr>
           <tr>
             <td> <label for="medicatie">Medicatie:</label> </td>
-            <td><textarea id="medicatie" name="medicatie" placeholder="Medicatie"></textarea></td>
+            <td><textarea id="medicatie" name="medicatie" placeholder="Ik gebruik deze medicatie"></textarea></td>
           </tr>
           <tr>
             <td> <label for="dieetwensen">Dieetwensen:</label> </td>
-            <td> <textarea id="dieetwensen" type="text" name="dieetwensen" placeholder="vlees en veel, lactose tollerant, liever kips leverworst dan gewone leverworst"></textarea> </td>
+            <td> <textarea id="dieetwensen" type="text" name="dieetwensen" placeholder="Ik ... lust geen chocola. Ik ... ben allergisch voor gluten"></textarea> </td>
           </tr>
           <tr>
             <td> <label for="opmerking">Opmerking:</label> </td>
-            <td> <textarea id="opmerking" type="text" name="opmerking" placeholder="jullie hebben een hele coole getinte man als lid, wie is die toffe gozer?"></textarea> </td>
+            <td> <textarea id="opmerking" type="text" name="opmerking" placeholder="Wil je nog wat kwijt?"></textarea> </td>
           </tr>
         </table>
         <!-- NOTE: door op deze knop te drukken wordt al deze info gestopt in de value registreer. *zie verwerk.php Gr Kai -->
