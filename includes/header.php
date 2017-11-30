@@ -41,19 +41,13 @@
 					<li class="nav-item">
 		        <a class="nav-link" href="contact">Contact</a>
 		      </li>
-
 				<?php
-<<<<<<< HEAD
                 if (!isset($_SESSION['lid'])) {
 										?>
 										<li class="nav-item">
 							        <a class="nav-link" href="login">Log in/registreer</a>
 							      </li>
 										<?php
-=======
-                if (!isset($_SESSION['voornaam'])) {
-                    print("<li><a href='login'>Log in/registreer</a></li>");
->>>>>>> d7da3c48ebbc173c91cc2e987dcbcaaba0181c6a
                 } else {
                     ?>
 										<li class='nav-item dropdown'>
