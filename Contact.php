@@ -39,9 +39,8 @@
                 <input type="submit" name="verzend" value="Verzend">
             </form>
             <?php
-            if (isset($_POST['verzend'])) {
-                print_r($_POST);
-            }
+
+            
             if (isset($_POST['verzend']) && isset($_POST['contactmail']) && isset($_POST['contactnaam']) && isset($_POST['contactbericht'])) {
                 $naam = $_POST['contactnaam'];
                 $emailadres = $_POST['contactmail'];
@@ -50,9 +49,9 @@
                 $onderwerp = "Een mail van $naam";
                 $mailbericht = "$naam heeft het volgende verstuurd: $bericht het emailadres van $naam is $emailadres";
                 mail($zhtcmailadres, $onderwerp, $mailbericht);
-                print("hoho klopt ... $mailbericht je ip is $ip");
+                print("hoho klopt ... $mailbericht ");
             };
-            print("hoho klopt ... $mailbericht");
+
             ?>
 
         </div>
