@@ -3,7 +3,7 @@
 <html>
 	<head>
 		<link rel="stylesheet" type="text/css" href="disputen.css">
-		<title></title>
+		<title>ZHTC - Disputen</title>
 
 		<?php include 'includes/header.php'; ?>
 

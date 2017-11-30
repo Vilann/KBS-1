@@ -1,8 +1,5 @@
-<!DOCTYPE html>
-<html>
-	<head>
+
 		<meta charset="utf-8">
-		<title></title>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"
 		integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
 		<link rel="stylesheet" href="header.css">
@@ -44,29 +41,24 @@
 					<li class="nav-item">
 		        <a class="nav-link" href="contact">Contact</a>
 		      </li>
-		<!--
-		<nav>
-			<ul class="navigation">
-				<li><a href="index">Home</a></li>
-				<li><a href="#">De vereniging</a></li>
-				<li><a href="sidebar_commissie">Commissies</a></li>
-				<li><a href="disputen">Disputen</a></li>
-				<li><a href="#">Activiteiten</a></li>
-				<li id="lustrum"><a href="#">Lustrum</a></li>
-				<li><a href="contact">Contact</a></li>
-			-->
+
 				<?php
+<<<<<<< HEAD
                 if (!isset($_SESSION['lid'])) {
 										?>
 										<li class="nav-item">
 							        <a class="nav-link" href="login">Log in/registreer</a>
 							      </li>
 										<?php
+=======
+                if (!isset($_SESSION['voornaam'])) {
+                    print("<li><a href='login'>Log in/registreer</a></li>");
+>>>>>>> d7da3c48ebbc173c91cc2e987dcbcaaba0181c6a
                 } else {
                     ?>
 										<li class='nav-item dropdown'>
 						        <a class='nav-link dropdown-toggle' href='#' id='navbarDropdown' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
-										<img src='http://via.placeholder.com/30x30'> <?php print($_SESSION['lid']) ?>
+										<img src='http://via.placeholder.com/30x30'> <?php print($_SESSION['voornaam']) ?>
 										</a>
 						        <div class='dropdown-menu' aria-labelledby='navbarDropdown'>
 										<div class='container'>
@@ -91,9 +83,3 @@
 			</ul>
 		</div>
 	</nav>
-				<!--
-			</ul>
-		</nav>
-	-->
-	</body>
-</html>
