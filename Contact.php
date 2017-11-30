@@ -38,8 +38,8 @@
                 <input type="submit" name="verzend" value="Verzend">
             </form>
             <?php
-          
-            }
+
+            
             if (isset($_POST['verzend']) && isset($_POST['contactmail']) && isset($_POST['contactnaam']) && isset($_POST['contactbericht'])) {
                 $naam = $_POST['contactnaam'];
                 $emailadres = $_POST['contactmail'];
