@@ -1,3 +1,4 @@
+<?php session_start(); ?>
 <!DOCTYPE html>
 <html>
     <head>
@@ -20,7 +21,7 @@
           <p>Test banaan</p>
         </div>
           <div class="col">
-            <form Method="POST" Action='contact.php'>
+            <form Method="POST" Action='contact'>
               <table>
                 <tr>
                   <td><label for="contactmail">Emailadres:</label></td>

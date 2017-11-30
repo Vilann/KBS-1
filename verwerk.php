@@ -18,19 +18,34 @@ if (isset($_POST['login'])) {
         $pass = "";
         $pdo = new PDO($db, $user, $pass);
         // We halen het wachtwoord op van het lid met het lidID dat bij het emailadres staat.
-        $stmt = $pdo->prepare("SELECT Wachtwoord FROM login WHERE lidID=(SELECT lidID FROM lid WHERE ZHTCemailadres = ?)");
+        $stmt = $pdo->prepare("SELECT * FROM login WHERE lidID = (SELECT lidID FROM emailadres WHERE email = ?)");
         $stmt->execute(array($email));
-        $dbww = $stmt->fetch();
-        $dbww = $dbww["Wachtwoord"];
-        // password_verify is een functie om een gehasht wachtwoord dat gemaakt is met password_hash()
-        if (password_verify($ww, $dbww)) {
-            session_start();
-            $_SESSION['email'] = $email;
+        if ($stmt->rowCount() == 1) {
+            $dbww = $stmt->fetch(PDO::FETCH_ASSOC);
+
+
+            // password_verify is een functie om een gehasht wachtwoord dat gemaakt is met password_hash()
+            if (password_verify($ww, $dbww["Wachtwoord"])) {
+                // $gebruikersinfo = $pdo->prepare("SELECT * FROM lid WHERE lidID = ?");
+                // $gebruikersinfo->execute(array($dbww['lidID']));
+                session_start();
+                $_SESSION['lid'] = $dbww['LidID'];
+                // $_SESSION['voornaam'] = $gebruikersinfo->fetch(PDO::FETCH_ASSOC)['voornaam'];
+            } else {
+                print("Wachtwoord klopt niet");
+            }
+            $pdo = null;
         } else {
-            //password false
-            echo $ww."<br>".$dbww;
+            print("Het emailadres bestaat niet");
         }
-        $pdo = null;
+    }
+
+
+    // Testcode om te kijken of de sessie werkt
+    if (isset($_SESSION['lid'])) {
+        header("Location: index");
+    } else {
+        print("Je hebt het niet goed ingevuld, ga terug!");
     }
 }
 if (isset($_POST['registreer'])) {
@@ -56,7 +71,7 @@ if (isset($_POST['registreer'])) {
         }
 
         if ($errors) {
-            header("location:index.php");
+            header("location:index");
         } else {
             $db = "mysql:host=localhost;dbname=zhtc;port=3306";
             $user = "root";
@@ -81,12 +96,4 @@ if (isset($_POST['registreer'])) {
             }
         }
     }
-}
-
-// Testcode om te kijken of de sessie werkt
-if (isset($_SESSION['email'])) {
-    print("Succesvol ingelogd!<br>");
-    print($_SESSION['email']);
-} else {
-    print("Je hebt het niet goed ingevuld, ga terug!");
 }

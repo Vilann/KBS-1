@@ -1,3 +1,9 @@
+<?php
+include('includes/beveiligd.php');
+if (isset($_SESSION['lid'])) {
+    header("Location: index");
+} else {
+    ?>
 <!DOCTYPE html>
 <html>
   <head>
@@ -5,11 +11,12 @@
 
     <?php include 'includes/header.php' ?>
     <h1>Log in</h1>
-    <form action="verwerk.php" method="post">
+    <form action="verwerk" method="post">
       <table>
         <tr>
           <td><label for="email">E-mail: </label></td>
           <td><input id="email" type="email" name="email" placeholder="ZHTC-emailadres" required></td>
+
         </tr>
         <tr>
           <td><label for="Wachtwoord">Wachtwoord: </label></td>
@@ -22,8 +29,11 @@
       <p>
         <b>Nog geen lid?</b> <br>
         Wil jij lid worden van ZHTC? <br>
-        Klik <a href="registreer.php">hier</a>
+        Klik <a href="registreer">hier</a>
       </p>
     </form>
   </body>
 </html>
+<?php
+}
+ ?>

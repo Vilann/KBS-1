@@ -1,3 +1,4 @@
+<?php include('includes/beveiligd.php'); ?>
 <!DOCTYPE html>
 <html>
   <head>
@@ -10,7 +11,7 @@
       contributie per halfjaar van je rekening halen.</p>
       <p class="belangrijk">De velden met een * zijn verlicht.</p>
 
-    <form action="verwerk.php" method="post">
+    <form action="verwerk" method="post">
         <table>
         <tr>
             <td> <label for="voornaam">* Voornaam:</label> </td>
@@ -83,7 +84,7 @@
             <td> <textarea id="opmerking" type="text" name="opmerking" placeholder="Wil je nog wat kwijt?"></textarea> </td>
           </tr>
         </table>
-        <!-- NOTE: door op deze knop te drukken wordt al deze info gestopt in de value registreer. *zie verwerk.php Gr Kai -->
+        <!-- NOTE: door op deze knop te drukken wordt al deze info gestopt in de value registreer. *zie verwerk Gr Kai -->
         <input type="submit" value="registreer" name="registreer">
     </form>
 
