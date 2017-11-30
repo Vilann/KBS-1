@@ -57,7 +57,11 @@
 			-->
 				<?php
                 if (!isset($_SESSION['lid'])) {
-                    print("<li><a href='login'>Log in/registreer</a></li>");
+										?>
+										<li class="nav-item">
+							        <a class="nav-link" href="login">Log in/registreer</a>
+							      </li>
+										<?php
                 } else {
                     ?>
 										<li class='nav-item dropdown'>

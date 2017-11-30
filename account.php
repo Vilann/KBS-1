@@ -28,7 +28,6 @@
               <h3>
                 Persoonlijke Gegevens
               </h3>
-              <i class="fa fa-paper-plane" area-hidden="true"></i>
               <form>
                 <div class="form-group row">
                     <label for="inputPassword" class="col-sm-3 col-form-label">Naam:</label>
