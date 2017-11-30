@@ -13,12 +13,9 @@ if (isset($_POST['login'])) {
     // Filter_input zorgt ervoor dat 1) de informatie gefilterd wordt en 2) de informatie 'veilig' is. //NOTE: hoe dan?
 
     if (($email = filter_input(INPUT_POST, 'email')) && ($ww = filter_input(INPUT_POST, 'wachtwoord'))) {
-        $db = "mysql:host=localhost;dbname=ZHTC;port=3306";
-        $user = "root";
-        $pass = "";
-        $pdo = new PDO($db, $user, $pass);
+        include 'includes/dbconnect.php';
         // We halen het wachtwoord op van het lid met het lidID dat bij het emailadres staat.
-        $stmt = $pdo->prepare("SELECT * FROM lid WHERE lidID = (SELECT lidID FROM emailadres WHERE email = ?)");
+        $stmt = $pdo->prepare("SELECT * FROM lid WHERE emailadres = ?");
         $stmt->execute(array($email));
         if ($stmt->rowCount() == 1) {
             $info = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -83,10 +80,7 @@ if (isset($_POST['registreer'])) {
             header("Location: index");
             // anders voert het de gegevens in ($insert), en daarna het emailadres ($emailinsert)
         } else {
-            $db = "mysql:host=localhost;dbname=zhtc;port=3306";
-            $user = "root";
-            $pass = "";
-            $pdo = new PDO($db, $user, $pass);
+            include 'includes/dbconnect.php';
             //zet de juiste error reporting zodat fouten kunnen worden opgevangen
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $insert = $pdo->prepare("INSERT INTO lid (voornaam, tussenvoegsel, achternaam, geboortedatum,

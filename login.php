@@ -15,7 +15,7 @@ if (isset($_SESSION['lid'])) {
       <table>
         <tr>
           <td><label for="email">E-mail: </label></td>
-          <td><input id="email" type="email" name="email" placeholder="ZHTC-emailadres" required></td>
+          <td><input id="email" type="email" name="email" placeholder="Je eigen emailadres" required></td>
 
         </tr>
         <tr>
