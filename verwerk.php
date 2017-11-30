@@ -18,31 +18,31 @@ if (isset($_POST['login'])) {
         $pass = "";
         $pdo = new PDO($db, $user, $pass);
         // We halen het wachtwoord op van het lid met het lidID dat bij het emailadres staat.
-        $stmt = $pdo->prepare("SELECT * FROM login WHERE lidID = (SELECT lidID FROM emailadres WHERE email = ?)");
+        $stmt = $pdo->prepare("SELECT * FROM lid WHERE lidID = (SELECT lidID FROM emailadres WHERE email = ?)");
         $stmt->execute(array($email));
         if ($stmt->rowCount() == 1) {
-            $dbww = $stmt->fetch(PDO::FETCH_ASSOC);
-
-
+            $info = $stmt->fetch(PDO::FETCH_ASSOC);
             // password_verify is een functie om een gehasht wachtwoord dat gemaakt is met password_hash()
-            if (password_verify($ww, $dbww["Wachtwoord"])) {
-                // $gebruikersinfo = $pdo->prepare("SELECT * FROM lid WHERE lidID = ?");
-                // $gebruikersinfo->execute(array($dbww['lidID']));
+            if (password_verify($ww, $info["wachtwoord"])) {
                 session_start();
-                $_SESSION['lid'] = $dbww['LidID'];
-                // $_SESSION['voornaam'] = $gebruikersinfo->fetch(PDO::FETCH_ASSOC)['voornaam'];
+                $_SESSION['lid'] = $info['lidID'];
+                $_SESSION['voornaam'] = $info['voornaam'];
+                $_SESSION['tussenvoegsel'] = $info['tussenvoegsel'];
+                $_SESSION['achternaam'] = $info['achternaam'];
             } else {
                 print("Wachtwoord klopt niet");
+                // TODO: Foutinformatie op login.php en terugsturen
             }
             $pdo = null;
         } else {
             print("Het emailadres bestaat niet");
+            // TODO: foutinformatie op login.php en terugsturen
         }
     }
 
 
     // Testcode om te kijken of de sessie werkt
-    if (isset($_SESSION['lid'])) {
+    if (isset($_SESSION['voornaam'])) {
         header("Location: index");
     } else {
         print("Je hebt het niet goed ingevuld, ga terug!");
@@ -57,9 +57,17 @@ if (isset($_POST['registreer'])) {
         // Als de errors variabele na alle checks fout is, wordt de gebruiker teruggestuurd naar de registratiepagina.
         $errors = false;
 
+        // Input aanpassen zodat we het lekker kunnen gebruiken
+        $voornaam = strtolower($_POST['voornaam']);
+        $achternaam = strtolower($_POST['achternaam']);
+        $tussenvoegsel = !empty($_POST['tussenvoegsel']) ? $_POST['tussenvoegsel'] : null;
+        $medicatie = !empty($_POST['medicatie']) ? $_POST['medicatie'] : null;
+        $dieetwensen = !empty($_POST['dieetwensen']) ? $_POST['dieetwensen'] : null;
+        $opmerking = !empty($_POST['opmerking']) ? $_POST['opmerking'] : null;
+
         // Een lid krijgt een zhtc-emailadres, dat is 'voornaam'.'achternaam'@zhtc.nl
         // Dit wordt samen met het eigen emailadres opgeslagen, dus een lid heeft 2 emailadressen
-        $ZHTCemailadres = $_POST['voornaam'] . "." . $_POST['achternaam'] . "@zhtc.nl";
+        $ZHTCemailadres = $voornaam . "." . $achternaam . "@zhtc.nl";
 
         // Als het geslacht niet in de array voorkomt, dan is er met het formulier geknoeid en accepteren we het niet.
         if (!in_array($_POST['gender'], array('man', 'vrouw', 'anders'))) {
@@ -69,29 +77,40 @@ if (isset($_POST['registreer'])) {
         if ($_POST['geboortedatum'] > date('Y-m-d', strtotime("-16 year"))) {
             $errors = true;
         }
-
+        // Als er errors zijn gevonden, gaat het (nu nog) terug naar de homepage
+        // TODO: Betere errors
         if ($errors) {
-            header("location:index");
+            header("Location: index");
+            // anders voert het de gegevens in ($insert), en daarna het emailadres ($emailinsert)
         } else {
             $db = "mysql:host=localhost;dbname=zhtc;port=3306";
             $user = "root";
             $pass = "";
-            $link = new PDO($db, $user, $pass);
+            $pdo = new PDO($db, $user, $pass);
             //zet de juiste error reporting zodat fouten kunnen worden opgevangen
-            $link->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $statement = $link->prepare("INSERT INTO lid (Voornaam, Tussenvoegsel, Achternaam, Geboortedatum,
-                                    Adres, Woonplaats, Postcode, Geslacht,
-                                    Emailadres, Rekeningnummer, Noodnummer, shirtmaat,
-                                    Medicatie, Dieetwensen, Opmerking, ZHTCemailadres)
+            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $insert = $pdo->prepare("INSERT INTO lid (voornaam, tussenvoegsel, achternaam, geboortedatum,
+                                    adres, woonplaats, postcode, geslacht,
+                                    emailadres, rekeningnummer, noodnummer, shirtmaat,
+                                    medicatie, dieetwensen, opmerking, aanmaakdatum)
                   VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
             // str_replace haalt alle spaties uit de postcode zodat het altijd 6 tekens is
-            $statement->execute(array($_POST["voornaam"],$_POST["tussenvoegsel"], $_POST["achternaam"], $_POST["geboortedatum"],
+            $insert->execute(array($voornaam, $tussenvoegsel, $achternaam, $_POST["geboortedatum"],
                                $_POST["adres"],$_POST["woonplaats"],str_replace(' ', '', $_POST["postcode"]),$_POST["gender"],
                                $_POST["email"],$_POST["iban"],$_POST["noodnummer"],$_POST["maat"],
-                               $_POST["medicatie"],$_POST["dieetwensen"],$_POST["opmerking"],$ZHTCemailadres));
+                               $medicatie,$dieetwensen,$opmerking, date("Y-m-d")));
 
-            if ($statement->RowCount()) {
+            // PDO::lastInsertID() geeft het laatste id terug die gemaakt is. Dat is dus de id van de bovenstaande query.
+            $insertID = $pdo->lastInsertId();
+
+            // Hier voeren we het emailadres in in de emailadres tabel, met de id.
+            $emailinsert = $pdo->prepare("INSERT INTO emailadres VALUES (?, ?)");
+            $emailinsert->execute(array($ZHTCemailadres, $insertID));
+
+            // TODO: mooie pagina maken met verdere instructies
+            // TODO: betaling
+            if ($insert->RowCount() && $emailinsert->RowCount()) {
                 print("succes!<br>");
             }
         }

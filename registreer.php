@@ -84,7 +84,6 @@
             <td> <textarea id="opmerking" type="text" name="opmerking" placeholder="Wil je nog wat kwijt?"></textarea> </td>
           </tr>
         </table>
-        <!-- NOTE: door op deze knop te drukken wordt al deze info gestopt in de value registreer. *zie verwerk Gr Kai -->
         <input type="submit" value="registreer" name="registreer">
     </form>
 

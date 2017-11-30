@@ -1,13 +1,12 @@
 <?php session_start(); ?>
 <!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
 <html>
     <head>
-        <title>Home</title>
+        <title>ZHTC - Home</title>
+
         <?php include 'includes/header.php' ?>
+
+        <h1>Hoi, wat leuk dat je hier bent.</h1>
+        <p>Beeje leeg hier</p>
     </body>
 </html>

@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>ZHTC - Profiel (Naam)</title>
+        <title>ZHTC - <?php isset($_SESSION['voornaam']) ? print($_SESSION['voornaam'] . " " . $_SESSION['tussenvoegsel'] . " " . $_SESSION['achternaam']): 0; ?></title>
         <?php include 'includes/header.php'; ?>
 
 
