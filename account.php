@@ -1,9 +1,19 @@
-<?php session_start();
+<?php
+
+include "includes/beveiliging.php";
+beveilig_nietlid();
+
 include 'includes/dbconnect.php';
-$stmt = $pdo->prepare("SELECT voornaam, tussenvoegsel, achternaam, geboortedatum, gender, adres, woonplaats, postcode, emailadres, noodnummer, aanmaakdatum FROM lid WHERE lidID = ?");
-$stmt->execute(array($_SESSION['lid']));
-$info = $stmt->fetch(PDO::FETCH_ASSOC);
-$vollenaam = $info['voornaam'] . " " . $info['tussenvoegsel'] . " " . $info['achternaam'];
+
+    $stmt = $pdo->prepare("SELECT voornaam, tussenvoegsel, achternaam, geboortedatum, geslacht, adres, woonplaats, postcode, emailadres, noodnummer, aanmaakdatum FROM lid WHERE lidID = ?");
+    $stmt->execute(array($_SESSION['lid']));
+
+    $info = $stmt->fetch(PDO::FETCH_ASSOC);
+    if ($stmt->rowCount()) {
+        $vollenaam = $info['voornaam'] . " " . $info['tussenvoegsel'] . " " . $info['achternaam'];
+    } else {
+        print("Werkt niet");
+    }
 ?>
 <!DOCTYPE html>
 <html>
@@ -11,8 +21,6 @@ $vollenaam = $info['voornaam'] . " " . $info['tussenvoegsel'] . " " . $info['ach
         <title>ZHTC - <?php print($vollenaam); ?></title>
         <?php include 'includes/header.php'; ?>
 
-
-    <body>
       <div class="container-fluid">
         <div class="row name_banner">
           <div class="col">
@@ -34,19 +42,19 @@ $vollenaam = $info['voornaam'] . " " . $info['tussenvoegsel'] . " " . $info['ach
               <h3>
                 Persoonlijke Gegevens
               </h3>
-              <form>
+              <form action="verwerk.php" method="post">
                 <div class="form-group row">
                     <label for="voornaam" class="col-sm-3 col-form-label">Naam:</label>
                     <div class="col-sm-9">
                       <div class="row">
                         <div class="col-5 px-1">
-                          <input type="text" id="voornaam" class="form-control" value='<?php print(ucfirst($info['voornaam'])); ?>'  readonly>
+                          <input type="text" id="voornaam" class="form-control" value='<?php print(ucfirst($info['voornaam'])); ?>'name="voornaam" placeholder="Voornaam">
                         </div>
                         <div class="col-2 px-1">
-                          <input type="text" class="form-control" value='<?php print($info['tussenvoegsel']); ?>' readonly>
+                          <input type="text" class="form-control" value='<?php print($info['tussenvoegsel']); ?>' name="tussenvoegsel" placeholder="Tussenvoegsel">
                         </div>
                         <div class="col-5 px-1">
-                          <input type="text" class="form-control" value='<?php print($info['achternaam']); ?>' readonly>
+                          <input type="text" class="form-control" value='<?php print($info['achternaam']); ?>' name="achternaam" placeholder="Achternaam">
                         </div>
                       </div>
                     </div>
@@ -54,15 +62,22 @@ $vollenaam = $info['voornaam'] . " " . $info['tussenvoegsel'] . " " . $info['ach
                 <div class="form-group row">
                     <label for="geboortedatum" class="col-sm-3 col-form-label">Geboortedatum:</label>
                     <div class="col-sm-9 px-0">
-                      <input id="geboortedatum" type="date" class="form-control" value='' readonly>
+                      <input id="geboortedatum" type="date" class="form-control" name="geboortedatum" value='<?php print(date("d-m-Y", strtotime($info['geboortedatum']))); ?>'>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="geslacht" class="col-sm-3 col-form-label">Geslacht:</label>
                     <div class="col-sm-9 px-0">
-                      <select id="geslacht" class="form-control" readonly>
-                        <option selected>Man</option>
-                        <option>...</option>
+                      <select id="geslacht" class="form-control" name="geslacht">
+                        <option value="man" <?php if ($info['geslacht'] == 'man') {
+    print("selected");
+} ?>>Man</option>
+                        <option value="vrouw" <?php if ($info['geslacht'] == 'vrouw') {
+    print("selected");
+} ?>>Vrouw</option>
+                        <option value="anders" <?php if ($info['geslacht'] == 'anders') {
+    print("selected");
+} ?>>Geen van bovenstaande</option>
                       </select>
                     </div>
                 </div>
@@ -72,7 +87,7 @@ $vollenaam = $info['voornaam'] . " " . $info['tussenvoegsel'] . " " . $info['ach
                   <div class="col-sm-9">
                     <div class="row">
                       <div class="col-12 px-0">
-                        <input id="adres" type="text" class="form-control" value="Testlaan 12" placeholder="Adres" readonly>
+                        <input id="adres" type="text" class="form-control" value='<?php print($info['adres']); ?>' name="adres" placeholder="Adres">
                       </div>
                     </div>
                   </div>
@@ -80,10 +95,10 @@ $vollenaam = $info['voornaam'] . " " . $info['tussenvoegsel'] . " " . $info['ach
                   <div class="col-sm-9">
                     <div class="row">
                       <div class="col-8 px-0">
-                        <input id="woonplaats" type="text" class="form-control" value="Zwolle" placeholder="Woonplaats" readonly>
+                        <input id="woonplaats" type="text" class="form-control" value='<?php print($info['woonplaats']); ?>' name="woonplaats" placeholder="Woonplaats">
                       </div>
                       <div class="col-4 px-0">
-                        <input type="text" class="form-control" value="1337GG" placeholder="Postcode" readonly>
+                        <input type="text" class="form-control" value='<?php print($info['postcode']); ?>' name="postcode" placeholder="Postcode">
                       </div>
                     </div>
                   </div>
@@ -92,16 +107,16 @@ $vollenaam = $info['voornaam'] . " " . $info['tussenvoegsel'] . " " . $info['ach
                 <div class="form-group row">
                     <label for="email" class="col-sm-3 col-form-label">Eigen emailadres:</label>
                     <div class="col-sm-9 px-0">
-                      <input type="text" class="form-control" id="email" value="email@gmail.com" placeholder="email@voorbeeld.nl" readonly>
+                      <input type="text" class="form-control" id="email" value='<?php print($info['emailadres']); ?>' name="emailadres" placeholder="email@voorbeeld.nl">
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="noodnummer" class="col-sm-3 col-form-label">Noodnummer:</label>
                     <div class="col-sm-9 px-0">
-                      <input id="noodnummer" type="text" class="form-control" value="0612345678" placeholder="0612345678" readonly>
+                      <input id="noodnummer" type="text" class="form-control" value='<?php print($info['noodnummer']); ?>' name="noodnummer" placeholder="0612345678">
                     </div>
                 </div>
-                <button type="submit" class="btn btn-outline-primary">Aanpassen</button>
+                <button type="submit" class="btn btn-outline-primary" name="infoupdate" value="infoupdate">Aanpassen</button>
               </form>
             </div>
             <div class="col-sm-12 col-xs-12 col-md-5">
