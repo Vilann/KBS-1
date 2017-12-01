@@ -42,12 +42,7 @@ include 'includes/dbconnect.php';
               <h3>
                 Persoonlijke Gegevens
               </h3>
-<<<<<<< HEAD
-              <i class="fa fa-paper-plane" area-hidden="true"></i>
               <form action="verwerk.php" method="post">
-=======
-              <form>
->>>>>>> 3e54d7600c00dc84ba45623f7dbbdfbe489f332c
                 <div class="form-group row">
                     <label for="voornaam" class="col-sm-3 col-form-label">Naam:</label>
                     <div class="col-sm-9">

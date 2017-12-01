@@ -1,5 +1,7 @@
 <?php
 
+
+
 /*
 Het registratieformulier en loginformulier hebben allebei een verstuurknop met een naam, login en registreer.
 De buitenste if-statements kijken welke van de 2 gebruikt is. Bij login wordt het eerste gebruikt, de loginfunctionaliteit.
