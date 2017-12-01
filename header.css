@@ -1,17 +1,5 @@
 .navigation{
-	  list-style: none;
-	  margin: 0;
-
-	  background:#003878;
-
-	  display: -webkit-box;
-	  display: -moz-box;
-	  display: -ms-flexbox;
-	  display: -webkit-flex;
-	  display: flex;
-
-	  -webkit-flex-flow: row wrap;
-	  justify-content:center;
+	  background-color:#003878;
 	}
 
 	.navigation .nav-link {
@@ -49,4 +37,9 @@
 }
 .media {
 	margin:1.6em;
+}
+.icon_hamburger{
+	background-color: #003878;
+	border:1px solid #0353AE;
+	color: white !important;
 }
