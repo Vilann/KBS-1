@@ -32,27 +32,6 @@ beveilig_lid();
         </div>
       <div class="col-sm-12 col-xs-12 col-md-6">
     <form action="verwerk" method="post">
-          <!--<div class="form-group row">
-            <label for="inputPassword" class="col-sm-4 col-form-label">* Naam:</label>
-            <div class="col-sm-8">
-              <div class="row">
-                <div class="col-12 px-0">
-                  <input type="text" class="form-control" placeholder="Voornaam">
-                </div>
-              </div>
-            </div>
-            <label for="inputPassword" class="col-sm-4 col-form-label"></label>
-            <div class="col-sm-8">
-              <div class="row">
-                <div class="col-3 px-0">
-                  <input type="text" class="form-control" placeholder="Tussenvgsl">
-                </div>
-                <div class="col-9 px-0">
-                  <input type="text" class="form-control" placeholder="Achternaam">
-                </div>
-              </div>
-            </div>
-          </div> -->
           <div class="form-group row">
               <label for="voornaam" class="col-sm-4 col-form-label">* Voornaam:</label>
               <div class="col-sm-8 px-0">
@@ -75,6 +54,8 @@ beveilig_lid();
               <label for="geboortedatum" class="col-sm-4 col-form-label">* geboortedatum:</label>
               <div class="col-sm-8 px-0">
                 <input  id="geboortedatum" type="date" class="form-control" name="geboortedatum" placeholder="geboortedatum" max=<?php print('"' . date('Y-m-d', strtotime("-16 year")) . '"'); ?> required>
+                <div id="feedgeboortedatum" class="invalid-feedback" hidden>
+                </div>
               </div>
           </div>
           <div class="form-group row">
@@ -181,9 +162,9 @@ beveilig_lid();
               </div>
           </div>
           <div class="form-group row">
-            <label class="col-sm-4 col-form-label" for="inputPassword1">* Wachtwoord:</label>
+            <label class="col-sm-4 col-form-label" for="wachtwoord">* Wachtwoord:</label>
               <div class="col-sm-8 px-0">
-              <input type="password" id="inputPassword1" class="form-control" name="wachtwoord" aria-describedby="passwordHelpBlock">
+              <input type="password" id="wachtwoord" class="form-control" name="wachtwoord" aria-describedby="passwordHelpBlock">
               <div id="feedwachtwoord" class="invalid-feedback" hidden>
               </div>
               <small id="passwordHelpBlock" class="form-text text-muted">
@@ -192,9 +173,11 @@ beveilig_lid();
             </div>
           </div>
             <div class="form-group row">
-              <label class="col-sm-4 col-form-label" for="inputPassword2">* Herhaal wachtwoord:</label>
+              <label class="col-sm-4 col-form-label" for="herhaalwachtwoord">* Herhaal wachtwoord:</label>
                 <div class="col-sm-8 px-0">
-                <input type="password" id="inputPassword2" class="form-control" name="herhaalwachtwoord">
+                <input type="password" id="herhaalwachtwoord" class="form-control" name="herhaalwachtwoord">
+                <div id="feedherhaalwachtwoord" class="invalid-feedback" hidden>
+                </div>
               </div>
           </div>
           <div class="form-group row">
@@ -208,4 +191,7 @@ beveilig_lid();
   </div>
   </div>
   </body>
+  <script>
+  <?php include 'includes/script.js'; ?>
+  </script>
 </html>
