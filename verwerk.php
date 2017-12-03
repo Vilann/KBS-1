@@ -137,6 +137,7 @@ if (isset($_POST['registreer'])) {
             // TODO: betaling
             if ($insert->RowCount()/* && $emailinsert->RowCount() */) {
                 print("succes!<br>");
+                header("Location: index");
             }
         }
     }

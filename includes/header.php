@@ -61,8 +61,8 @@
 													<div class='dropdown-divider'></div>
 								          <p class='dropdown-item'>LidNiveau:	<span class='text-secondary'>Nieuwlid</span></p>
 								          <a href='./account' class='dropdown-item'>Account</a>
-													<a href='#' class='dropdown-item'>Disputen</a>
-													<a href='#' class='dropdown-item'>Commissies</a>
+													<a href='./account#dispuut' class='dropdown-item'>Disputen</a>
+													<a href='./account#commissies' class='dropdown-item'>Commissies</a>
 													<div class='dropdown-divider'></div>
 													<a class='btn btn-outline-danger mx-auto' href="loguit"><i class="icon ion-log-out"></i> <b>Afmelden</b></a>
 												</div>
