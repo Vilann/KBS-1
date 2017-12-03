@@ -1,4 +1,10 @@
 <?php
+<<<<<<< HEAD
+=======
+
+
+
+>>>>>>> 94d99fdc0eedf5a648cfb962ca6bef55fe4fb50a
 /*
 Het registratieformulier en loginformulier hebben allebei een verstuurknop met een naam, login en registreer.
 De buitenste if-statements kijken welke van de 2 gebruikt is. Bij login wordt het eerste gebruikt, de loginfunctionaliteit.
@@ -23,8 +29,6 @@ if (isset($_POST['login'])) {
                 session_start();
                 $_SESSION['lid'] = $info['lidID'];
                 $_SESSION['voornaam'] = $info['voornaam'];
-                $_SESSION['tussenvoegsel'] = $info['tussenvoegsel'];
-                $_SESSION['achternaam'] = $info['achternaam'];
             } else {
                 print("Wachtwoord klopt niet");
                 // TODO: Foutinformatie op login.php en terugsturen
@@ -66,7 +70,8 @@ if (isset($_POST['registreer'])) {
 
         // Een lid krijgt een zhtc-emailadres, dat is 'voornaam'.'achternaam'@zhtc.nl
         // Dit wordt samen met het eigen emailadres opgeslagen, dus een lid heeft 2 emailadressen
-        $ZHTCemailadres = $voornaam . "." . $achternaam . "@zhtc.nl";
+        // NOTE: door zhtc aangegeven dat het niet meer hoeft
+        // $ZHTCemailadres = $voornaam . "." . $achternaam . "@zhtc.nl";
 
         // Als het geslacht niet in de array voorkomt, dan is er met het formulier geknoeid en accepteren we het niet.
         if (!in_array($_POST['gender'], array('man', 'vrouw', 'anders'))) {
@@ -110,17 +115,20 @@ if (isset($_POST['registreer'])) {
                                $medicatie,$dieetwensen,$opmerking, date("Y-m-d")));
 
             // PDO::lastInsertID() geeft het laatste id terug die gemaakt is. Dat is dus de id van de bovenstaande query.
-            $insertID = $pdo->lastInsertId();
+            // $insertID = $pdo->lastInsertId();
 
             // Hier voeren we het emailadres in in de emailadres tabel, met de id.
-            $emailinsert = $pdo->prepare("INSERT INTO emailadres VALUES (?, ?)");
-            $emailinsert->execute(array($ZHTCemailadres, $insertID));
+            // NOTE: niet nodig
+            // $emailinsert = $pdo->prepare("INSERT INTO emailadres VALUES (?, ?)");
+            // $emailinsert->execute(array($ZHTCemailadres, $insertID));
 
             // TODO: mooie pagina maken met verdere instructies
             // TODO: betaling
-            if ($insert->RowCount() && $emailinsert->RowCount()) {
+            if ($insert->RowCount()/* && $emailinsert->RowCount() */) {
                 print("succes!<br>");
             }
         }
     }
+}
+if (isset($_POST['infoupdate'])) {
 }

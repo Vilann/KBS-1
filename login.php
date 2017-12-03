@@ -1,5 +1,6 @@
 <?php
-include('includes/beveiligd.php');
+include('includes/beveiliging.php');
+beveilig_lid();
 if (isset($_SESSION['lid'])) {
     header("Location: index");
 } else {

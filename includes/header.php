@@ -26,7 +26,7 @@
 		        <a class="nav-link" href="#">De vereniging</a>
 		      </li>
 		      <li class="nav-item">
-		        <a class="nav-link" href="commissie">Commissies</a>
+		        <a class="nav-link" href="commissies">Commissies</a>
 		      </li>
 		      <li class="nav-item">
 		        <a class="nav-link" href="disputen">Disputen</a>
@@ -42,7 +42,7 @@
 		      </li>
 				<?php
                 if (!isset($_SESSION['lid'])) {
-										?>
+                    ?>
 										<li class="nav-item">
 							        <a class="nav-link" href="login">Log in/registreer</a>
 							      </li>

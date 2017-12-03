@@ -1,4 +1,7 @@
-<?php include('includes/beveiligd.php'); ?>
+<?php
+include('includes/beveiliging.php');
+beveilig_lid();
+?>
 <!DOCTYPE html>
 <html>
   <head>
