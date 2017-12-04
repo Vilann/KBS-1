@@ -10,13 +10,27 @@ if (isset($_SESSION['lid'])) {
   <head>
     <title>ZHTC - Login</title>
 
-    <?php include 'includes/header.php' ?>
+    <?php include 'includes/header.php';
+    error_reporting(E_ERROR | E_WARNING | E_PARSE);
+    if(isset($_SESSION["error"])){
+      $error = explode(",", $_SESSION["error"]);
+      switch ($error[0]){
+        case "email":
+          $errormess = $error[1];
+        break;
+        case "noodnummer":
+        //
+        break;
+      }
+      unset($_SESSION["error"]);
+    }
+     ?>
     <div class="container-fluid">
       <div class="row">
         <div class="col-sm-12 col-xs-12 col-md-5">
-      <h1>Log in</h1>
+      <h1 id="getError" class="<?php print($error[0]); ?>">Log in</h1>
       <p class="text-muted">Welkom bij ZHTC vul je gegevens in om in te loggen</p>
-      <form action="verwerk" method="post">
+      <form id="getErrormess" class="<?php print($error[1]); ?>" action="verwerk" method="post">
             <div class="form-group row">
                 <label for="email" class="col-sm-3 col-form-label">Email:</label>
                 <div class="col-sm-9 px-0">
@@ -24,9 +38,11 @@ if (isset($_SESSION['lid'])) {
                 </div>
             </div>
             <div class="form-group row">
-                <label for="Wachtwoord" class="col-sm-3 col-form-label">Wachtwoord:</label>
+                <label for="wachtwoord" class="col-sm-3 col-form-label">Wachtwoord:</label>
                 <div class="col-sm-9 px-0">
-                  <input  id="Wachtwoord" type="password" class="form-control" name="wachtwoord" value="" required>
+                  <input  id="wachtwoord" type="password" class="form-control" name="wachtwoord" value="" required>
+                  <div id="feedwachtwoord" class="invalid-feedback" hidden>
+                  </div>
                 </div>
             </div>
             <div class="form-group row">
