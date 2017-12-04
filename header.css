@@ -43,3 +43,12 @@
 	border:1px solid #0353AE;
 	color: white !important;
 }
+
+.zhtc-button {
+	border-color: #003878;
+	color: #003878;
+}
+.zhtc-button:hover {
+	border-color: #003878;
+	background-color: #003878;
+}
