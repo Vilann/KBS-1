@@ -142,5 +142,27 @@ if (isset($_POST['registreer'])) {
         }
     }
 }
+if (isset($_POST['edit'])) {
+  // kijken of elke not-null waarde is ingevuld in het formulier
+  if (isset($_POST['voornaam']) && isset($_POST['achternaam']) && isset($_POST['geboortedatum']) && isset($_POST['adres']) && isset($_POST['postcode'])
+  && isset($_POST['woonplaats']) && isset($_POST['gender']) && isset($_POST['email']) && isset($_POST['iban']) && isset($_POST['noodnummer']) && isset($_POST['maat'])) {
+      // Als de errors variabele na alle checks fout is, wordt de gebruiker teruggestuurd naar de registratiepagina.
+      // TODO: validate emailadres, validate rekeningnummer, validate noodnummer, validate wachtwoord
+      $errors = false;
+
+      // Input aanpassen zodat we het lekker kunnen gebruiken
+      $voornaam = strtolower($_POST['voornaam']);
+      $achternaam = strtolower($_POST['achternaam']);
+      $tussenvoegsel = !empty($_POST['tussenvoegsel']) ? $_POST['tussenvoegsel'] : null;
+      $medicatie = !empty($_POST['medicatie']) ? $_POST['medicatie'] : null;
+      $dieetwensen = !empty($_POST['dieetwensen']) ? $_POST['dieetwensen'] : null;
+      $opmerking = !empty($_POST['opmerking']) ? $_POST['opmerking'] : null;
+
+      // Een lid krijgt een zhtc-emailadres, dat is 'voornaam'.'achternaam'@zhtc.nl
+      // Dit wordt samen met het eigen emailadres opgeslagen, dus een lid heeft 2 emailadressen
+      // NOTE: door zhtc aangegeven dat het niet meer hoeft
+      // $ZHTCemailadres = $voornaam . "." . $achternaam . "@zhtc.nl";
+}
+}
 if (isset($_POST['infoupdate'])) {
 }

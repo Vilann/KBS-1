@@ -32,7 +32,7 @@
 		        <a class="nav-link" href="disputen">Disputen</a>
 		      </li>
 					<li class="nav-item">
-		        <a class="nav-link" href="#">Activiteiten</a>
+		        <a class="nav-link" href="activiteiten">Activiteiten</a>
 		      </li>
 					<li class="nav-item">
 		        <a id="lustrum" class="nav-link" href="#">Lustrum</a>
