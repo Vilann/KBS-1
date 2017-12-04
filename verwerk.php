@@ -163,5 +163,6 @@ if (isset($_POST['edit'])) {
       // NOTE: door zhtc aangegeven dat het niet meer hoeft
       // $ZHTCemailadres = $voornaam . "." . $achternaam . "@zhtc.nl";
 }
+}
 if (isset($_POST['infoupdate'])) {
 }
