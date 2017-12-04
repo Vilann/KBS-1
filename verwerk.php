@@ -1,6 +1,25 @@
 <?php
 
+// Deze functie kjkt of de gegevens goed zijn,
+function valideer_gebruikersinfo()
+{
+    $voornaam = strtolower($_POST['voornaam']);
+    $achternaam = strtolower($_POST['achternaam']);
+    $tussenvoegsel = !empty($_POST['tussenvoegsel']) ? $_POST['tussenvoegsel'] : null;
+    $medicatie = !empty($_POST['medicatie']) ? $_POST['medicatie'] : null;
+    $dieetwensen = !empty($_POST['dieetwensen']) ? $_POST['dieetwensen'] : null;
+    $opmerking = !empty($_POST['opmerking']) ? $_POST['opmerking'] : null;
 
+    $postcode = str_replace(' ', '', $_POST["postcode"]);
+
+    if (!in_array($_POST['gender'], array('man', 'vrouw', 'anders'))) {
+        $errors = true;
+    }
+
+    if ($_POST['geboortedatum'] > date('Y-m-d', strtotime("-16 year"))) {
+        $errors = true;
+    }
+}
 
 /*
 Het registratieformulier en loginformulier hebben allebei een verstuurknop met een naam, login en registreer.
