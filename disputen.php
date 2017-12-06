@@ -2,28 +2,51 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<link rel="stylesheet" type="text/css" href="disputen.css">
-		<title>ZHTC - Disputen</title>
-
-		<?php include 'includes/header.php'; ?>
-
-
-		<div class="dispuutfoto">
-			<img src="afentikabanner.jpg" width="140px" alt="Afentiká">
-		</div>
-		<div class="dispuutfoto">
-			<img src="afentikabanner.jpg" width="140px" alt="Lorem Populi">
-		</div>
-		<div class="dispuutfoto">
-			<img src="afentikabanner.jpg" width="140px" alt="Mannaz Thurisaz">
-		</div>
-		<div class="dispuutfoto">
-			<img src="afentikabanner.jpg" width="140px" alt="Nooit Nuchter">
-		</div>
-		<div class="dispuutfoto">
-			<img src="afentikabanner.jpg" width="140px" alt="Waltertje">
-		</div>
-
-
-	</body>
+		<meta charset="utf-8">
+		<title>ZHTC - disputen</title>
+		<link rel="stylesheet" href="commissies.css">
+		<?php include 'includes/header.php';
+    include 'includes/dbconnect.php';
+    error_reporting(E_ERROR | E_WARNING | E_PARSE);
+    ?>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12">
+          <h1 class="text-center mt-4">Commissies</h1>
+          <!-- <p class="text-muted"><i class="icon ion-chevron-left"></i> oude commissies</p> -->
+        </div>
+      </div>
+			<hr>
+			<?php try {
+						$db = "mysql:host=localhost;dbname=zhtc_banaan;port=3307";
+						$user = "root";
+						$pass = "usbw";
+						$pdo = new PDO($db, $user, $pass);
+					}
+					catch (PDOException $e) {
+					echo $e->getTraceAsString();
+					}
+					$stmt = $pdo->prepare('SELECT dispuutnaam, dispuutzin, dispuuttekst
+					FROM dispuut');
+					$stmt->execute();
+					$data = $stmt->fetchAll();
+					foreach($data as $row) {
+					?>
+      <div class="row">
+        <div class="col-12">
+          <div class="card mb4">
+            <div class="card-body"> <?php // NOTE: alles in deze div staat in de kaart ?>
+              <h4 class="card-title"><?php print($row['dispuutnaam'])?></h4>
+              <p class="card-text">
+              <a href="#" class="btn btn-outline-primary float-right zhtc-button">Meer <i class="icon ion-arrow-right-c"></i></a>
+							<img class="card-img-left" src="afentikabanner.jpg" alt="" width="180px"><?php print($row['dispuutzin']);?></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+  <script>
+  <?php } include 'includes/script.js'; ?>
+  </script>
 </html>
