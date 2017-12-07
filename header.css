@@ -44,16 +44,16 @@
 	color: white !important;
 }
 
-.zhtc-button {
+.zhtc-brd, .zhtc-button, .zhtc-button:active, .zhtc-button:hover {
 	border-color: #003878;
-	color: #003878;
-}
-.zhtc-button:hover {
-	border-color: #003878;
-	background-color: #003878;
 }
 
-.zhtc-button:active {
-	border-color: #003878;
+.zhtc-bg, .zhtc-button:active, .zhtc-button:hover {
 	background-color: #003878;
+}
+.zhtc-c, .zhtc-button {
+	color: #003878;
+}
+.card-noborder {
+	border: 1px solid rgba(0,0,0,0);
 }
