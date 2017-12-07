@@ -17,7 +17,9 @@
         </div>
       </div>
 			<hr>
-			<?php try {
+			<?php
+						header('Content-Type: text/html; charset=ISO-8859-1');
+						try {
 						$db = "mysql:host=localhost;dbname=zhtc_banaan;port=3307";
 						$user = "root";
 						$pass = "usbw";

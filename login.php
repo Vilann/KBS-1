@@ -27,7 +27,7 @@ if (isset($_SESSION['lid'])) {
      ?>
     <div class="container-fluid">
       <div class="row">
-        <div class="col-sm-12 col-xs-12 col-md-5">
+        <div class="col-md-12 col-lg-5 mr-md-5">
       <h1 id="getError" class="<?php print($error[0]); ?>">Log in</h1>
       <p class="text-muted">Welkom bij ZHTC vul je gegevens in om in te loggen</p>
       <form id="getErrormess" class="<?php print($error[1]); ?>" action="verwerk" method="post">
