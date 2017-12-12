@@ -41,8 +41,9 @@
               <h4 class="card-title"><?php print($row['dispuutnaam'])?></h4>
               <p class="card-text">
               <a href="<?php print($row['dispuutnaam'])?>" class="btn btn-outline-primary float-right zhtc-button">Meer <i class="icon ion-arrow-right-c"></i></a>
-							<img class="card-img-left" src="afentikabanner.jpg" alt="" width="180px"><?php print($row['dispuutzin']);?></p>
+							<img class="card-img-left" src="afentikabanner.jpg" alt="" width="180px"></p>
             </div>
+						<div class="card-footer text-muted"><?php print($row['dispuutzin']);?></div>
           </div>
         </div>
       </div>

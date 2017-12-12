@@ -40,9 +40,11 @@
             <div class="card-body"> <?php // NOTE: alles in deze div staat in de kaart ?>
               <h4 class="card-title"><?php print($row['comm_naam'])?></h4> <?php // NOTE: de naam van de commissie ?>
               <p class="card-text">
-							<img class="card-img-top" src="afentikabanner.jpg" alt="" style="width: 20rem;"><br><?php print($row['comm_zin']);?><?php // NOTE: de commissiezin ?>
-							<a href="<?php print($row['comm_naam'])?>" class="btn btn-outline-primary float-right zhtc-button">Meer <i class="icon ion-arrow-right-c"></i></a></p>
+							<img class="card-img-top" src="afentikabanner.jpg" alt="" style="width: 20rem;"><br><?php// print($row['comm_zin']);?><?php // NOTE: de commissiezin ?>
             </div>
+						<div class="card-footer text-muted"><?php print($row['comm_zin']);?>
+							<a href="<?php print($row['comm_naam'])?>" class="btn btn-outline-primary float-right zhtc-button">Meer<i class="icon ion-arrow-right-c"></i></a></p>
+						</div>
           </div>
         </div>
       </div>
