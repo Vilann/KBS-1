@@ -117,6 +117,7 @@ include('includes/beveiliging.php');
         ORDER by datumvan ASC");
         $stmt->execute();
         $data = $stmt->fetchAll();
+        error_reporting(0);
         foreach($data as $row) {
       ?>
       <div class="row">
