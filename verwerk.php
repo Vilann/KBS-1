@@ -14,13 +14,30 @@ if (isset($_POST['login'])) {
     if (($email = filter_input(INPUT_POST, 'email')) && ($ww = filter_input(INPUT_POST, 'wachtwoord'))) {
         include 'includes/dbconnect.php';
         // We halen het wachtwoord op van het lid met het lidID dat bij het emailadres staat.
-        $stmt = $pdo->prepare("SELECT * FROM lid WHERE emailadres = ?");
+        $stmt = $pdo->prepare("SELECT DISTINCT l.lidID, l.voornaam, l.wachtwoord, c.commissievoorzitter, d.dispuutvoorzitter, b.bestuurslidID,
+          CASE WHEN c.commissievoorzitter = l.lidID THEN 'yes'
+          	 WHEN d.dispuutvoorzitter = l.lidID THEN 'yes'
+               WHEN b.bestuurslidID = l.lidID THEN 'yes'
+               ELSE null
+               END AS toegangAdmin
+          FROM lid l
+          LEFT JOIN commissielid cl ON l.lidID = cl.lidID
+          LEFT JOIN commissie c ON cl.commissieID = c.commissieID
+          LEFT JOIN dispuutlid dl ON l.lidID = dl.lidID
+          LEFT JOIN dispuut d ON dl.dispuutID = d.dispuutid
+          LEFT JOIN bestuur b ON l.lidID = b.bestuurslidID
+          WHERE emailadres = ?
+          GROUP BY l.lidID");
         $stmt->execute(array($email));
         if ($stmt->rowCount() == 1) {
             $info = $stmt->fetch(PDO::FETCH_ASSOC);
             // password_verify is een functie om een gehasht wachtwoord dat gemaakt is met password_hash()
             if (password_verify($ww, $info["wachtwoord"])) {
                 session_start();
+                if($info['toegangAdmin'] == "yes"){
+                  $adminRechten = array("Beheer"=>$info['bestuurslidID'], "Dispuut"=>$info['toegangAdmin'], "Commissie"=>$info['toegangAdmin']);
+                  $_SESSION['admin'] = $adminRechten;
+                }
                 $_SESSION['lid'] = $info['lidID'];
                 $_SESSION['voornaam'] = $info['voornaam'];
             } else {

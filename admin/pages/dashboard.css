@@ -155,7 +155,7 @@ body, html, #sidebar {
   color:white;
   text-decoration: none;
 }
-.thead-zhtc a:hover, a:focus {
+.thead-zhtc .thead-zhtc:hover, .thead-zhtc:focus {
     color:white;
     text-decoration: none;
 }
