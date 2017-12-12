@@ -20,9 +20,17 @@ function beveilig_lid()
     }
 }
 
+
 function beveilig_nietlid()
 {
     if (!isset($_SESSION['lid'])) {
         header('Location: index');
+    }
+}
+
+function beveilig_adminpagina()
+{
+    if (!isset($_SESSION['admin'])) {
+        header('Location: ../index');
     }
 }

@@ -64,6 +64,7 @@
 								          <a href='./account' class='dropdown-item'>Account</a>
 													<a href='./account#dispuut' class='dropdown-item'>Disputen</a>
 													<a href='./account#commissies' class='dropdown-item'>Commissies</a>
+													<a href='./admin' class='dropdown-item'>Beheerpagina</a>
 													<div class='dropdown-divider'></div>
 													<a class='btn btn-outline-danger mx-auto' href="loguit"><i class="icon ion-log-out"></i> <b>Afmelden</b></a>
 												</div>
