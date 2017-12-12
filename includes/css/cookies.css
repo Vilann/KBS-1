@@ -1,0 +1,16 @@
+.js_enabled #cookie-message {
+		display: none;
+}
+body {
+		margin: 0;
+		font-family: sans-serif;
+}
+#content {
+		margin: 1em;
+}
+#cookie-message {
+		background-color: #d5e6ed;
+		color: #662d91;
+		margin: 0 auto;
+		padding: 1em;
+}

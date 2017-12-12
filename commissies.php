@@ -20,9 +20,9 @@
 			<?php
 			header('Content-Type: text/html; charset=ISO-8859-1');
 			try {
-						$db = "mysql:host=localhost;dbname=zhtc;port=3306";
+						$db = "mysql:host=localhost;dbname=zhtc_banaan;port=3307";
 						$user = "root";
-						$pass = "";
+						$pass = "usbw";
 						$pdo = new PDO($db, $user, $pass);
 					}
 					catch (PDOException $e) {
@@ -41,7 +41,7 @@
               <h4 class="card-title"><?php print($row['comm_naam'])?></h4> <?php // NOTE: de naam van de commissie ?>
               <p class="card-text">
 							<img class="card-img-top" src="afentikabanner.jpg" alt="" style="width: 20rem;"><br><?php print($row['comm_zin']);?><?php // NOTE: de commissiezin ?>
-							<a href="#" class="btn btn-outline-primary float-right zhtc-button">Meer <i class="icon ion-arrow-right-c"></i></a></p>
+							<a href="<?php print($row['comm_naam'])?>" class="btn btn-outline-primary float-right zhtc-button">Meer <i class="icon ion-arrow-right-c"></i></a></p>
             </div>
           </div>
         </div>

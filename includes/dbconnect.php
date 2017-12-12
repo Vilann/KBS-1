@@ -2,9 +2,9 @@
 // NOTE: deze functie haalt de commissie informatie op om dat vervolgens
 // in een foreach te stoppen.
 try {
-	$db = "mysql:host=localhost;dbname=zhtc;port=3306";
+	$db = "mysql:host=localhost;dbname=zhtc_banaan;port=3307";
 	$user = "root";
-	$pass = "";
+	$pass = "usbw";
 	$pdo = new PDO($db, $user, $pass);
 }
 catch (PDOException $e) {
@@ -12,9 +12,9 @@ echo $e->getTraceAsString();
 }
 function GetCommissieData(){
 		try {
-			$db = "mysql:host=localhost;dbname=zhtc;port=3306";
+			$db = "mysql:host=localhost;dbname=zhtc_banaan;port=3307";
 			$user = "root";
-			$pass = "";
+			$pass = "usbw";
 			$pdo = new PDO($db, $user, $pass);
 		}
 		catch (PDOException $e) {
@@ -34,9 +34,9 @@ function GetCommissieData(){
 function GetdispuutData($pdo)
 {
 	try {
-		$db = "mysql:host=localhost;dbname=zhtc;port=3306";
+		$db = "mysql:host=localhost;dbname=zhtc_banaan;port=3307";
 		$user = "root";
-		$pass = "";
+		$pass = "usbw";
 		$pdo = new PDO($db, $user, $pass);
 	}
 	catch (PDOException $e) {
@@ -53,9 +53,9 @@ function GetdispuutData($pdo)
 function GetFormatData($pdo)
 {
 	try {
-		$db = "mysql:host=localhost;dbname=zhtc;port=3306";
+		$db = "mysql:host=localhost;dbname=zhtc_banaan;port=3307";
 		$user = "root";
-		$pass = "";
+		$pass = "usbw";
 		$pdo = new PDO($db, $user, $pass);
 	}
 	catch (PDOException $e) {
