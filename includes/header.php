@@ -34,9 +34,9 @@
 					<li class="nav-item">
 		        <a class="nav-link" href="activiteiten">Activiteiten</a>
 		      </li>
-					<li class="nav-item">
+					<!-- <li class="nav-item">
 		        <a id="lustrum" class="nav-link" href="#">Lustrum</a>
-		      </li>
+		      </li> -->
 					<li class="nav-item">
 		        <a class="nav-link" href="contact">Contact</a>
 		      </li>
