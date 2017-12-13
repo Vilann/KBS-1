@@ -77,3 +77,25 @@ function GetFormatData($pdo)
 		?>over <?php print($tijdTotdatum);?> dagen <?php
 	}
 };
+
+// class ClassName
+// {
+// 	var $pdo;
+// 	function __construct($new_pdo)
+// 	{
+// 		try {
+// 			$db = "mysql:host=localhost;dbname=zhtc_banaan;port=3307";
+// 			$user = "root";
+// 			$pass = "usbw";
+// 			$pdo = new PDO($db, $user, $pass);
+// 		}
+// 		catch (PDOException $e) {
+// 		echo $e->getTraceAsString();
+// 		}
+// 	}
+// 	public function ReturnPdo()
+// 	{
+// 		return
+// 		$this->$pdo;
+// 	}
+// }
