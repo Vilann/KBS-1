@@ -23,4 +23,42 @@ $(document).ready(function(){
 
     var pageName = $( "#pageLoc" ).attr("class");
     $( "#"+pageName ).addClass( "selected" );
+
+    switch (pageName) {
+    	case 'leden':
+    		var tools = "beheer";
+        setSidebar(tools);
+    		break;
+    	case 'poll':
+    		var tools = "beheer";
+        setSidebar(tools);
+    		break;
+    	case 'comm&disp':
+    		var tools = "beheer";
+        setSidebar(tools);
+    		break;
+      case 'commissieleden':
+      	var tools = "commissie";
+        setSidebar(tools);
+      	break;
+      case 'commissiepagina':
+      	var tools = "commissie";
+        setSidebar(tools);
+    		break;
+      case 'dispuutleden':
+        var tools = "dispuut";
+        setSidebar(tools);
+        break;
+      case 'dispuutepagina':
+        var tools = "dispuut";
+        setSidebar(tools);
+        break;
+    	default:
+    		//
+    }
+    function setSidebar(tools) {
+        $( "#"+tools ).addClass( "show" );
+        $( "#"+tools ).attr("aria-expanded","true");
+        $( "#"+tools+"link" ).toggleClass( "collapsed" );
+    }
 });
