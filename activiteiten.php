@@ -103,15 +103,15 @@ include('includes/beveiliging.php');
       </div>
       <hr>
       <?php	try {
-      		$db = "mysql:host=localhost;dbname=zhtc_banaan;port=3307";
-      		$user = "root";
-      		$pass = "usbw";
+          $db = "mysql:host=localhost;dbname=zhtc;port=3306";
+          $user = "root";
+          $pass = "";
       		$pdo = new PDO($db, $user, $pass);
       	}
       	catch (PDOException $e) {
       	echo $e->getTraceAsString();
       	}
-        $stmt = $pdo->prepare("SELECT DATE_FORMAT(datumvan, '%d %M %Y') as datumvanaf, DATE_FORMAT(datumvan, '%k:%i') as tijdvanaf, DATE_FORMAT(datumtot, '%d %M %Y') as datumtot, DATE_FORMAT(datumtot, '%k:%i') as tijdtot, activiteitnaam, activiteitlocatie
+        $stmt = $pdo->prepare("SELECT activiteitid, DATE_FORMAT(datumvan, '%d %M %Y') as datumvanaf, DATE_FORMAT(datumvan, '%k:%i') as tijdvanaf, DATE_FORMAT(datumtot, '%d %M %Y') as datumtot, DATE_FORMAT(datumtot, '%k:%i') as tijdtot, activiteitnaam, activiteitlocatie
         FROM activiteit
         WHERE datumvan $activiteiten CURDATE()
         ORDER by datumvan ASC");
@@ -127,7 +127,7 @@ include('includes/beveiliging.php');
               <h4 class="card-title"><?php print($row['activiteitnaam']);?></h4>
               <p class="card-text"><i class="icon ion-calendar"></i> <?php print($row['datumvanaf']);?> <span class="badge badge-primary zhtc-bg"><i class="icon ion-clock"></i><?php print($row['tijdvanaf']); ?></span></p>
               <p class="card-text"><i class="icon ion-location"></i> <?php print($row['activiteitlocatie']);?>
-              <a href="?ac=<?php print($row['activiteitid']); ?>" class="btn btn-outline-primary float-right zhtc-button">Meer <i class="icon ion-arrow-right-c"></i></a></p>
+              <a href=<?php print("?ac=".$row['activiteitid']) ?> class="btn btn-outline-primary float-right zhtc-button">Meer <i class="icon ion-arrow-right-c"></i></a></p>
             </div>
             <div class="card-footer text-muted">
               <?php
