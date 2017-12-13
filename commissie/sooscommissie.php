@@ -3,7 +3,8 @@
 	<head>
 		<meta charset="utf-8">
 		<title>ZHTC - sooscommissie</title>
-        <?php include 'includes/header.php';
+        <?php include '../includes/header.php';
+				error_reporting(E_ERROR | E_WARNING | E_PARSE);
 				header('Content-Type: text/html; charset=ISO-8859-1');
 				try {
 							$db = "mysql:host=localhost;dbname=zhtc_banaan;port=3307";
@@ -24,8 +25,8 @@
 					<article class="bd-callout bd-callout-info">
 						<?php print($row['comm_tekst']);?>
 					</article>
-					<iframe src="https://drive.google.com/embeddedfolderview?id=0B5oAJX1eoiAhOVNhYUo2M1JfdFk#list" style="width:100%; height:600px; border:0;"></iframe>
+					<iframe src="https://drive.google.com/embeddedfolderview?id=0B5oAJX1eoiAhOVNhYUo2M1JfdFk#list" style="width:100%; height:10em; border:0;"></iframe>
 				</div>
-			<?php } include 'includes/script.js'; ?>
+			<?php } include '../includes/script.js'; ?>
 	</body>
 </html>

@@ -17,6 +17,7 @@
         </div>
       </div>
 			<hr>
+			<div class="row">
 			<?php
 						header('Content-Type: text/html; charset=ISO-8859-1');
 						try {
@@ -34,7 +35,6 @@
 					$data = $stmt->fetchAll();
 					foreach($data as $row) {
 					?>
-      <div class="row">
         <div class="col-12">
           <div class="card mb4">
             <div class="card-body"> <?php // NOTE: alles in deze div staat in de kaart ?>
@@ -46,10 +46,11 @@
 						<div class="card-footer text-muted"><?php print($row['dispuutzin']);?></div>
           </div>
         </div>
-      </div>
-    </div>
-  </body>
-  <script>
-  <?php } include 'includes/script.js'; ?>
-  </script>
+			<?php } ?>
+		</div>
+	    </div>
+			<script>
+			<?php include 'includes/script.js'; ?>
+		  </script>
+	  </body>
 </html>
