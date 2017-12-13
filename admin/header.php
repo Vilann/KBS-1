@@ -20,6 +20,7 @@ integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfs
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script src="../../includes/script.js"></script>
 <header>
   <nav class="navbar navbar-inverse bg-inverse navbar-expand-lg navbar-toggleable-sm navigation">
@@ -48,29 +49,29 @@ integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfs
           <?php
           if(isset($_SESSION['admin']['Beheer'])){
           ?>
-          <a href="#menu1" class="list-group-item collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"> <span class="hidden-sm-down">ZHTC-beheer tools </span><i class="icon ion-android-arrow-dropdown-circle"></i></a>
-          <div class="collapse" id="menu1">
-              <a id="leden" href="/KBS-1/admin/pages/leden" class="list-group-item" data-parent="#menu1"><i class="icon ion-person-stalker"></i> Ledenbestand </a>
-              <a id="poll" href="/KBS-1/admin/pages/poll" class="list-group-item" data-parent="#menu1"><i class="icon ion-document-text"></i> Polls </a>
-              <a href="#" class="list-group-item" data-parent="#menu1"><i class="icon ion-chatbubbles"></i> Commissies & Disputen</a>
+          <a id="beheerlink" href="#beheer" class="list-group-item collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"> <span class="hidden-sm-down">ZHTC-beheer tools </span><i class="icon ion-android-arrow-dropdown-circle"></i></a>
+          <div class="collapse" id="beheer">
+              <a id="leden" href="/KBS-1/admin/pages/leden" class="list-group-item" data-parent="#beheer"><i class="icon ion-person-stalker"></i> Ledenbestand </a>
+              <a id="poll" href="/KBS-1/admin/pages/poll" class="list-group-item" data-parent="#beheer"><i class="icon ion-document-text"></i> Polls </a>
+              <a href="#" class="list-group-item" data-parent="#beheer"><i class="icon ion-chatbubbles"></i> Commissies & Disputen</a>
           </div>
           <!-- Commissie tools -->
           <?php
           }if(isset($_SESSION['admin']['Commissie'])){
           ?>
-          <a href="#menu2" class="list-group-item" data-toggle="collapse" data-parent="#sidebar" aria-expanded="true"> <span class="hidden-sm-down">ZHTC-commissie tools </span><i class="icon ion-android-arrow-dropdown-circle"></i></a>
-          <div class="collapse show" id="menu2">
-              <a id="commissieleden" href="/KBS-1/admin/pages/commissieleden" class="list-group-item show" data-parent="#menu2"><i class="icon ion-person-stalker"></i> Commissie leden </a>
-              <a href="#" class="list-group-item" data-parent="#menu2"><i class="icon ion-edit"></i> Commissie Pagina </a>
+          <a id="commissielink" href="#commissie" class="list-group-item collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"> <span class="hidden-sm-down">ZHTC-commissie tools </span><i class="icon ion-android-arrow-dropdown-circle"></i></a>
+          <div class="collapse" id="commissie">
+              <a id="commissieleden" href="/KBS-1/admin/pages/commissieleden" class="list-group-item" data-parent="#commissie"><i class="icon ion-person-stalker"></i> Commissie leden </a>
+              <a href="#" class="list-group-item" data-parent="#commissie"><i class="icon ion-edit"></i> Commissie Pagina </a>
           </div>
           <!-- Dispuut tools -->
           <?php
           }if(isset($_SESSION['admin']['Dispuut'])){
           ?>
-          <a href="#menu3" class="list-group-item collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"><span class="hidden-sm-down">ZHTC-dispuut tools </span><i class="icon ion-android-arrow-dropdown-circle"></i></a>
-          <div class="collapse" id="menu3">
-            <a id="dispuutleden" href="/KBS-1/admin/pages/dispuutleden" class="list-group-item" data-parent="#menu3"><i class="icon ion-person-stalker"></i> Disputen leden </a>
-            <a href="#" class="list-group-item" data-parent="#menu3"><i class="icon ion-edit"></i> Disputen Pagina </a>
+          <a id="dispuutlink" href="#dispuut" class="list-group-item collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"><span class="hidden-sm-down">ZHTC-dispuut tools </span><i class="icon ion-android-arrow-dropdown-circle"></i></a>
+          <div class="collapse" id="dispuut">
+            <a id="dispuutleden" href="/KBS-1/admin/pages/dispuutleden" class="list-group-item" data-parent="#dispuut"><i class="icon ion-person-stalker"></i> Disputen leden </a>
+            <a href="#" class="list-group-item" data-parent="#dispuut"><i class="icon ion-edit"></i> Disputen Pagina </a>
           </div>
           <?php
           }
