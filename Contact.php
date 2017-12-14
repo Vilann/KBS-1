@@ -24,26 +24,43 @@
           <div class="col">
             <form Method="POST" Action='contactverwerk'>
               <?php
-                        require_once('includes/captcha/recaptchalib.php');
-                        $publickey = "6Ld7nTsUAAAAADXHtsQJLwU-Zt1wcQ_ysEB9B0Dz"; // you got this from the signup page
-                        echo recaptcha_get_html($publickey);
+                                        error_reporting(E_ERROR | E_WARNING | E_PARSE);
+                        if (!isset($_SESSION['lid'])) {
+                            require_once('includes/captcha/recaptchalib.php');
+                            $publickey = "6Ld7nTsUAAAAADXHtsQJLwU-Zt1wcQ_ysEB9B0Dz"; // you got this from the signup page
+                            echo recaptcha_get_html($publickey);
+                        }
   ?>
               <table>
                 <tr>
-                  <td><label for="contactmail">Emailadres:</label></td>
-                  <td><input id="contactmail" type="mail" name="contactmail" placeholder="Uwmailadres@voorbeeld.com" required></td>
+                  <td><label class="col-sm-4 col-form-label" for="contactmail">Emailadres:</label></td>
+                  <td><input class="form-control" id="contactmail" type="mail" name="contactmail" placeholder="Uwmailadres@voorbeeld.com" required></td>
                 </tr>
                 <tr>
-                  <td><label for="contactnaam">Naam:</label></td>
-                  <td><input id="contactnaam" type="text" name="contactnaam" placeholder="Uw naam" required></td>
+                  <td><label class="col-sm-4 col-form-label" for="contactnaam">Naam:</label></td>
+                  <td><input class="form-control" id="contactnaam" type="text" name="contactnaam" placeholder="Uw naam" required></td>
                 </tr>
-                <tr>
-                  <td><label for="contactbericht">Bericht:</label></td>
-                  <td><textarea id="contactbericht" name="contactbericht" placeholder="Uw vragen, opmerkingen of tips" required></textarea></td>
+                <tr class="col-sm-4 px-0">
+                  <td><label class="col-sm-4 col-form-label" for="contactbericht">Bericht:</label></td>
+                  <td><textarea class="form-control" id="contactbericht" name="contactbericht" placeholder="Uw vragen, opmerkingen of tips" required></textarea></td>
                 </tr>
               </table>
-                <input type="submit" name="verzend" value="Verzend">
-          <php? print ("<div class="g-recaptcha" data-sitekey="6Ld7nTsUAAAAADXHtsQJLwU-Zt1wcQ_ysEB9B0Dz"></div>");
+              <div class="form-group row">
+                <div class="col-sm-9 offset-sm-3 px-0">
+                <input class="btn btn-outline-primary" type="submit" name="verzend" value="Verzend">
+              </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-sm-9 offset-sm-3 px-0">
+          <php? 	<?php
+                                    error_reporting(E_ERROR | E_WARNING | E_PARSE);
+                    if (!isset($_SESSION['lid'])) {
+                        ?> <div class="g-recaptcha" data-sitekey="6Ld7nTsUAAAAADXHtsQJLwU-Zt1wcQ_ysEB9B0Dz"></div>
+                <?php
+                    }
+                ?>
+          </div>
+          </div>
           ?>
 
             </form>
