@@ -1,6 +1,36 @@
 <html lang="en">
       <?php include '../header.php';?>
-        <main class="col-md-10 col-xs-11 pl-3 pt-3">
+      <script src="http://code.highcharts.com/highcharts.js"></script>
+      <script src="http://code.highcharts.com/modules/exporting.js"></script>
+      <?php
+      //Hier staat de functie om nieuwe polls toe te voegen.
+      //Kijk of er niks leeg is gepost
+        if(isset($_POST['add']) && !(empty($_POST['add']))){
+          //sla de datum van vandaag op in $date
+          $date = date("Y-m-d");
+          //Prepare en execute de sql query om een nieuwe poll toe te voegen
+          $stmt = $pdo->prepare("INSERT INTO poll(vraag, datum)
+            VALUES(?, ?)");
+          $stmt->execute(array($_POST['vraag'], $date));
+          //Selecteer het id van de poll die zojuist is toegevoegd en sla die op als $maxId
+          $stmt = $pdo->prepare("SELECT MAX(pollID) AS max_id FROM poll");
+          $stmt -> execute();
+          $maxId = $stmt -> fetch(PDO::FETCH_ASSOC);
+          $maxId = $maxId['max_id'];
+          //Een loop op elke keuzemogelijkheid in de tabel pollkeuzemogelijkheid te inserten
+          for($i = 1; $i <= $_POST['keuzeaantal']; $i++){
+            $stmt = $pdo->prepare("INSERT INTO pollkeuzemogelijkheid(pollID,pollkeuzemogelijkheid)
+              VALUES(?, ?)");
+            $stmt->execute(array($maxId, $_POST['keuze'.$i]));
+          }
+          //Unset de post waarde add zodat hij niet perongeluk nog een keer de zelfde query uitvoerd
+          unset($_POST['add']);
+        }else{
+          //Niks
+        }
+
+       ?>
+        <div class="col-md-10 col-xs-11 pl-3 pt-3">
             <a class="zhtc-c" id="sidebar_toggler" href="#sidebar" data-toggle="collapse"><i class="icon ion-navicon-round"></i></a>
             <hr>
             <div class="page-header">
@@ -8,249 +38,392 @@
             </div>
             <div class="row">
               <div class="col-md-11">
-                <p class="text-muted">
+                <p class="text-muted mb-1">
                   Hieronder vind je de resultaten van de afgelopen 3 polls
                 </p>
+                  <button type="button" class="btn btn-outline-primary zhtc-button" data-toggle="modal" data-target="#addPoll">Nieuwe poll toevoegen</button>
               </div>
             </div>
             <br>
-            <div class="row justify-content-center">
-                <div class="col-md-4 border border-primary rounded zhtc-brd-2">
-                  <div id="pollResultaten" ></div>
-                  <button type="button" class="btn btn-outline-primary mb-3 zhtc-button float-right">Meer info</button>
+            <div class="row justify-content-left pl-3">
+              <?php
+              //Eerste 3 resultaten ophalen en de eerste met col-5 + border
+              $stmt = $pdo->prepare("SELECT p.pollID, p.vraag, COUNT(lidID) AS aantal_resultaten FROM poll p
+              LEFT JOIN pollresultaat pr ON p.pollID = pr.pollID
+              GROUP BY p.pollID
+              ORDER BY p.pollID DESC
+              LIMIT 3");
+              $stmt->execute();
+              $data = $stmt->fetchAll();
+              $first = false;
+              foreach($data as $row) {
+                if($first == false){
+                  $class = "col-md-4 border border-primary rounded zhtc-brd-2";
+                  $first = true;
+                }else{
+                  $class = "col-md-3";
+                }
+              ?>
+                <div class="<?php print($class); ?>">
+                  <div id=<?php print("pollResultaten".$row['pollID']);?>></div>
+                  <div class="row">
+                    <div class="col-6">
+                      <p class="zhtc-c"><?php print($row['aantal_resultaten']." Resultaten");?></p>
+                    </div>
+                    <div class="col-6">
+                      <button type="button" class="btn btn-outline-primary mb-3 zhtc-button float-right" data-toggle="modal" data-target='<?php print("#pollResultaten".$row['pollID']."modal"); ?>'>Meer info</button>
+                    </div>
+                  </div>
+                  <script type="text/javascript">
+                    $(function () {
+                      Highcharts.setOptions({
+                       colors: ['#b3d6ff', '#3392ff', '#005fcc', '#004799', '#003878', '#003066', '#001833', '#000c1a']
+                      });
+                      Highcharts.chart(<?php print("pollResultaten".$row['pollID']);?>, {
+                        chart: {
+                            plotBackgroundColor: null,
+                            plotBorderWidth: null,
+                            plotShadow: false,
+                            type: 'pie'
+                        },
+                        title: {
+                            text: '<?php print($row['vraag']);?>'
+                        },
+                        credits: {
+                            enabled: false
+                        },
+                        tooltip: {
+                            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                        },
+                        plotOptions: {
+                            pie: {
+                                allowPointSelect: true,
+                                cursor: 'pointer',
+                                dataLabels: {
+                                    enabled: false,
+                                }
+                            }
+                        },
+                        exporting: { enabled: false },
+                        series: [{
+                            name: 'Leden',
+                            colorByPoint: true,
+                            data: [
+                            <?php
+                            $stmt2 = $pdo->prepare("SELECT pk.pollID,pk.pollkeuzemogelijkheid, COUNT(pr.pollkeuze) AS res_perlid FROM pollresultaat pr
+                            RIGHT JOIN pollkeuzemogelijkheid pk ON pr.pollkeuze = pk.pollkeuzemogelijkheid
+                            WHERE pr.pollID = ?
+                            GROUP BY pr.pollkeuze");
+                            $stmt2->execute(array($row['pollID']));
+                            $data2 = $stmt2->fetchAll();
+                            foreach($data2 as $row2) {
+                             ?>
+                            {
+                                name: '<?php print($row2['pollkeuzemogelijkheid']); ?>',
+                                y: <?php print($row2['res_perlid']); ?>
+                            },
+                            <?php } ?>
+                          ]
+                        }]
+                    });
+                    Highcharts.chart(<?php print("modalresult".$row['pollID']);?>, {
+                      chart: {
+                          plotBackgroundColor: null,
+                          plotBorderWidth: null,
+                          plotShadow: false,
+                          type: 'pie'
+                      },
+                      title: {
+                          text: '<?php print($row['vraag']);?>'
+                      },
+                      credits: {
+                          enabled: false
+                      },
+                      tooltip: {
+                          pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                      },
+                      plotOptions: {
+                          pie: {
+                              allowPointSelect: true,
+                              cursor: 'pointer',
+                              dataLabels: {
+                                  enabled: true,
+                                  format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                                  style: {
+                                      color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                                  }
+                              },
+                              showInLegend: true
+                          }
+                      },
+                      exporting: { enabled: false },
+                      series: [{
+                          name: 'Leden',
+                          colorByPoint: true,
+                          data: [
+                          <?php
+                          $stmt2 = $pdo->prepare("SELECT pk.pollID,pk.pollkeuzemogelijkheid, COUNT(pr.pollkeuze) AS res_perlid FROM pollresultaat pr
+                          RIGHT JOIN pollkeuzemogelijkheid pk ON pr.pollkeuze = pk.pollkeuzemogelijkheid
+                          WHERE pk.pollID = ?
+                          GROUP BY pr.pollkeuze");
+                          $stmt2->execute(array($row['pollID']));
+                          $data2 = $stmt2->fetchAll();
+                          foreach($data2 as $row2) {
+                           ?>
+                          {
+                              name: '<?php print($row2['pollkeuzemogelijkheid']); ?>',
+                              y: <?php print($row2['res_perlid']); ?>
+                          },
+                          <?php } ?>
+                        ]
+                      }]
+                  });
+                  });
+                  </script>
+                  <!-- Modal om overige poll gegevens in te laden -->
+                  <div class="modal fade" id="<?php print("pollResultaten".$row['pollID']."modal"); ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalLabel"><?php print($row['vraag']);?></h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          <div id=<?php print("modalresult".$row['pollID']);?>></div>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Sluiten</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div class="col-md-3">
-                  <div id="pollResultaten2" ></div>
-                </div>
-                <div class="col-md-3">
-                  <div id="pollResultaten3" ></div>
-                </div>
+              <?php
+              }
+              ?>
             </div>
+            <!-- EINDE VAN EERSTE 3 pollResultaten ### -->
+            <!-- Begin van de tabel met overige pollresultaten ### -->
             <hr>
-        </main>
+            <?php
+            $stmt = $pdo->prepare("SELECT p.pollID, p.vraag, COUNT(lidID) AS aantal_resultaten FROM poll p
+            LEFT JOIN pollresultaat pr ON p.pollID = pr.pollID
+            GROUP BY p.pollID");
+            $stmt->execute();
+            $count = $stmt->rowCount();
+            $resultsPer = 20;
+            $pages = ceil($count/$resultsPer);
+            if(isset($_GET['p']) && !empty($_GET['p'])){
+              $pageNr = $_GET['p'];
+            }else{
+              $pageNr = 1;
+            }
+            if(isset($_GET['ord']) && !empty($_GET['ord'])){
+              $order = $_GET['ord'];
+            }else{
+              $order = "p.pollID";
+            }
+            //check of hij op de laatste of op pagina 1 zit
+            function setPagination($pages, $pageNr){
+              if($pages == 1 && $pages == $pageNr){
+                return(array("disabled","disabled"));
+              }
+              if($pageNr == $pages){
+                return(array("","disabled"));
+              }elseif($pageNr == 1){
+                return(array("disabled",""));
+              }else{
+                return(array("",""));
+              }
+            }
+            $page_status = setPagination($pages, $pageNr);
+            $page_status_left = $page_status[0];
+            $page_status_right = $page_status[1];
+            $startNr = ($resultsPer*$pageNr)-$resultsPer;
+            $stmt = $pdo->prepare("SELECT datum, p.pollID, p.vraag, COUNT(lidID) AS aantal_resultaten FROM poll p
+            LEFT JOIN pollresultaat pr ON p.pollID = pr.pollID
+            GROUP BY p.pollID
+            ORDER by $order ASC
+            LIMIT $startNr, $resultsPer");
+            $stmt->execute();
+            $data = $stmt->fetchAll();
+             ?>
+            <nav aria-label="Page navigation example">
+              <ul class="pagination">
+                <li class="page-item <?php print($page_status_left)?>">
+                  <a class="page-link icon-fix" href="?p=<?php print($pageNr-1); ?>" aria-label="Previous">
+                    <span class="icon ion-chevron-left" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                  </a>
+                </li>
+                <?php
+                for($i = 1; $i <= $pages; $i++){
+                  if($i == $pageNr){
+                    print("<li class='page-item active'><a class='page-link zhtc-bg zhtc-brd' href='?p=$i'> $i </a></li>");
+                  }else{
+                    print("<li class='page-item'><a class='page-link' href='?p=$i'> $i </a></li>");
+                  }
+                }
+                ?>
+                <li class="page-item <?php print($page_status_right)?>">
+                  <a class="page-link icon-fix" href="?p=<?php print($pageNr+1); ?>" aria-label="Next">
+                    <span class="icon ion-chevron-right" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                  </a>
+                </li>
+              </ul>
+            </nav>
+            <table class="table table-hover">
+              <thead class="thead-zhtc">
+                <tr id="orderBy" class="<?php print($order);?>">
+                  <th id="vraag" scope="col"><a href="?p=<?php print($pageNr)?>&ord=vraag">PollVraag</a></th>
+                  <th id="datum" scope="col"><a href="?p=<?php print($pageNr)?>&ord=datum">datum</a></th>
+                  <th id="aantal_resultaten" scope="col"><a href="?p=<?php print($pageNr)?>&ord=aantal_resultaten">Aantal resultaten</a></th>
+                  <th id="Resultaten" scope="col"><a href="#">Resultaten</a></th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php
+                foreach($data as $row) {
+                ?>
+                <tr>
+                  <td><?php print($row['vraag']);?></td>
+                  <td><?php print($row['datum']);?></td>
+                  <td><?php print($row['aantal_resultaten']);?></td>
+                  <td>
+                    <button type="button" class="btn btn-outline-primary zhtc-button" data-toggle="modal" data-target='<?php print("#test_pollResultaten".$row['pollID']."modal"); ?>'>Meer info</button>
+                  </td>
+                <script type="text/javascript">
+                  $(function () {
+                    Highcharts.setOptions({
+                     colors: ['#b3d6ff', '#3392ff', '#005fcc', '#004799', '#003878', '#003066', '#001833', '#000c1a']
+                    });
+                    Highcharts.chart(<?php print("test_modalresult".$row['pollID']);?>, {
+                      chart: {
+                          plotBackgroundColor: null,
+                          plotBorderWidth: null,
+                          plotShadow: false,
+                          type: 'pie'
+                      },
+                      title: {
+                          text: '<?php print($row['vraag']);?>'
+                      },
+                      credits: {
+                          enabled: false
+                      },
+                      tooltip: {
+                          pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                      },
+                      plotOptions: {
+                          pie: {
+                              allowPointSelect: true,
+                              cursor: 'pointer',
+                              dataLabels: {
+                                  enabled: true,
+                                  format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                                  style: {
+                                      color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                                  }
+                              },
+                              showInLegend: true
+                          }
+                      },
+                      exporting: { enabled: false },
+                      series: [{
+                          name: 'Leden',
+                          colorByPoint: true,
+                          data: [
+                          <?php
+                          $stmt2 = $pdo->prepare("SELECT pk.pollID,pk.pollkeuzemogelijkheid, COUNT(pr.pollkeuze) AS res_perlid FROM pollresultaat pr
+                          RIGHT JOIN pollkeuzemogelijkheid pk ON pr.pollkeuze = pk.pollkeuzemogelijkheid
+                          WHERE pk.pollID = ?
+                          GROUP BY pr.pollkeuze");
+                          $stmt2->execute(array($row['pollID']));
+                          $data2 = $stmt2->fetchAll();
+                          foreach($data2 as $row2) {
+                           ?>
+                          {
+                              name: '<?php print($row2['pollkeuzemogelijkheid']); ?>',
+                              y: <?php print($row2['res_perlid']); ?>
+                          },
+                          <?php } ?>
+                        ]
+                      }]
+                  });
+                });
+                </script>
+                <!-- Modal om overige poll gegevens in te laden -->
+                <div class="modal fade" id="<?php print("test_pollResultaten".$row['pollID']."modal"); ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel"><?php print($row['vraag']);?></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <div id=<?php print("test_modalresult".$row['pollID']);?>></div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Sluiten</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                                </tr>
+                <?php
+                }
+                ?>
+              </tbody>
+            </table>
+        </div>
         <!-- Modal om overige poll gegevens in te laden -->
-        <div class="modal" tabindex="-1" role="dialog">
-          <div class="modal-dialog" role="document">
+        <div class="modal fade bd-example-modal-lg" id="addPoll" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title">Modal title</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Poll toevoegen</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
               <div class="modal-body">
-                <p>Modal body text goes here.</p>
+                <form id="getErrormess" action="poll" method="post">
+                      <div class="form-group row">
+                          <label for="vraag" class="col-sm-3 col-form-label">Vraag:</label>
+                          <div class="col-sm-9 px-0 pr-5">
+                            <input  id="vraag" type="text" class="form-control" name="vraag" placeholder="Moet er gratis koffie verstrekt worden?" required>
+                          </div>
+                      </div>
+                      <div class="imput-group row">
+                          <label for="keuze" class="col-sm-3 col-form-label">Aantal keuzen:</label>
+                          <div class="col-sm-9 px-0 pr-5">
+                            <div class="input-group mb-2 mb-sm-0">
+                              <input  id="keuze" type="number" max="8" class="form-control" name="keuzeaantal" value="" required>
+                              <div class="input-group-addon">Maximaal 8</div>
+                            </div>
+                            <div id="feedkeuze" class="invalid-feedback" hidden>
+                            </div>
+                          </div>
+                      </div>
+                      <hr>
+                      <div id="jq_target">
+                      </div>
+                      <div class="form-group row">
+                        <div class="col-sm-9 offset-sm-3 px-0">
+                          <input class="btn btn-outline-primary" type="submit" name="add" value="Toevoegen">
+                        </div>
+                      </div>
+                </form>
               </div>
               <div class="modal-footer">
-                <button type="button" class="btn btn-primary">Save changes</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Sluiten</button>
               </div>
             </div>
           </div>
         </div>
-        <script src="http://code.highcharts.com/highcharts.js"></script>
-        <script src="http://code.highcharts.com/modules/exporting.js"></script>
-
-        <script type="text/javascript">
-        $(function () {
-          Highcharts.setOptions({
-           colors: ['#b3d6ff', '#3392ff', '#005fcc', '#004799', '#003878', '#003066', '#001833', '#000c1a']
-          });
-          // Build the chart
-          Highcharts.chart('container', {
-            chart: {
-                plotBackgroundColor: null,
-                plotBorderWidth: null,
-                plotShadow: false,
-                type: 'pie'
-            },
-            title: {
-                text: 'Browser market shares January, 2015 to May, 2015'
-            },
-            tooltip: {
-                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-            },
-            plotOptions: {
-                pie: {
-                    allowPointSelect: true,
-                    cursor: 'pointer',
-                    dataLabels: {
-                        enabled: false
-                    },
-                    showInLegend: true
-                }
-            },
-            series: [{
-                name: 'Brands',
-                colorByPoint: true,
-                data: [{
-                    name: 'Microsoft Internet Explorer',
-                    y: 56.33
-                }, {
-                    name: 'Chrome',
-                    y: 24.03,
-                    sliced: true,
-                    selected: true
-                }, {
-                    name: 'Firefox',
-                    y: 10.38
-                }, {
-                    name: 'Safari',
-                    y: 4.77
-                }, {
-                    name: 'Opera',
-                    y: 0.91
-                }, {
-                    name: 'Proprietary or Undetectable',
-                    y: 0.2
-                }]
-            }]
-        });
-          Highcharts.chart('pollResultaten', {
-            chart: {
-                plotBackgroundColor: null,
-                plotBorderWidth: null,
-                plotShadow: false,
-                type: 'pie'
-            },
-            title: {
-                text: 'Wie moet de nieuwe voorzitten worden?'
-            },
-            credits: {
-                enabled: false
-            },
-            tooltip: {
-                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-            },
-            plotOptions: {
-                pie: {
-                    allowPointSelect: true,
-                    cursor: 'pointer',
-                    dataLabels: {
-                        enabled: false,
-                    }
-                }
-            },
-            exporting: { enabled: false },
-            series: [{
-                name: 'Leden',
-                colorByPoint: true,
-                data: [{
-                    name: 'Jelmar',
-                    y: 40
-                }, {
-                    name: 'Harrie',
-                    y: 25,
-                }, {
-                    name: 'Henk',
-                    y: 15
-                }, {
-                    name: 'Jacob',
-                    y: 10
-                }, {
-                    name: 'Anders',
-                    y: 10
-                }]
-            }]
-        });
-
-
-        Highcharts.chart('pollResultaten2', {
-          chart: {
-              plotBackgroundColor: null,
-              plotBorderWidth: null,
-              plotShadow: false,
-              type: 'pie'
-          },
-          title: {
-              text: 'Wie moet de oude voorzitten worden?'
-          },
-          tooltip: {
-              pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-          },
-          credits: {
-              enabled: false
-          },
-          plotOptions: {
-              pie: {
-                  allowPointSelect: true,
-                  cursor: 'pointer',
-                  dataLabels: {
-                      enabled: false,
-                  }
-              }
-          },
-          exporting: { enabled: false },
-          series: [{
-              name: 'Leden',
-              colorByPoint: true,
-              data: [{
-                  name: 'Jelmar',
-                  y: 56.33
-              }, {
-                  name: 'Harrie',
-                  y: 24.03,
-              }, {
-                  name: 'Henk',
-                  y: 10.38
-              }, {
-                  name: 'Jacob',
-                  y: 4.77
-              }, {
-                  name: 'Julie',
-                  y: 0.91
-              }, {
-                  name: 'Anders',
-                  y: 0.2
-              }]
-          }]
-      });
-
-      Highcharts.chart('pollResultaten3', {
-        chart: {
-            plotBackgroundColor: null,
-            plotBorderWidth: null,
-            plotShadow: false,
-            type: 'pie'
-        },
-        title: {
-            text: 'Waarom zijn de bananen krom?'
-        },
-        tooltip: {
-            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-        },
-        credits: {
-            enabled: false
-        },
-        plotOptions: {
-            pie: {
-                allowPointSelect: true,
-                cursor: 'pointer',
-                dataLabels: {
-                    enabled: false,
-                }
-            }
-        },
-        exporting: { enabled: false },
-        series: [{
-            name: 'banaan',
-            colorByPoint: true,
-            data: [{
-                name: 'Anders vallen ze om?',
-                y: 40
-            }, {
-                name: 'Zonlicht ofzo ga mij niet vragen..',
-                y: 25,
-            }, {
-                name: 'Misbruik test banaan',
-                y: 20
-            }, {
-                name: 'Geen idee ben te dronken om te antwoorden',
-                y: 15
-            }]
-        }]
-    });
-    });
-        </script>
       </body>
 </html>

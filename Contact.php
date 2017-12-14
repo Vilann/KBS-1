@@ -19,10 +19,15 @@
         <div class="row">
           <div class="col">
           <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2427.997172364323!2d6.100033315984932!3d52.515390244322994!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c7df3c9a5bcfe1%3A0x907105d2484be27f!2sAlgemene+Studentenvereniging+ZHTC!5e0!3m2!1snl!2snl!4v1511780795999" width="600" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
-          <p>Commissies</p>
+          <p></p>
         </div>
           <div class="col">
-            <form Method="POST" Action='contact'>
+            <form Method="POST" Action='contactverwerk'>
+              <?php
+                        require_once('includes/captcha/recaptchalib.php');
+                        $publickey = "6Ld7nTsUAAAAADXHtsQJLwU-Zt1wcQ_ysEB9B0Dz"; // you got this from the signup page
+                        echo recaptcha_get_html($publickey);
+  ?>
               <table>
                 <tr>
                   <td><label for="contactmail">Emailadres:</label></td>
@@ -38,26 +43,13 @@
                 </tr>
               </table>
                 <input type="submit" name="verzend" value="Verzend">
-              <?php if ($poging>=3) {
-    print('<div class="g-recaptcha" data-sitekey="6Ld7nTsUAAAAADXHtsQJLwU-Zt1wcQ_ysEB9B0Dz"></div>');
-}?>
+          <php? print ("<div class="g-recaptcha" data-sitekey="6Ld7nTsUAAAAADXHtsQJLwU-Zt1wcQ_ysEB9B0Dz"></div>");
+          ?>
+
             </form>
-            <?php
 
 
-            if (isset($_POST['verzend']) && isset($_POST['contactmail']) && isset($_POST['contactnaam']) && isset($_POST['contactbericht'])) {
-                $poging++;
-                $naam = $_POST['contactnaam'];
-                $emailadres = $_POST['contactmail'];
-                $bericht = $_POST['contactbericht'];
-                $zhtcmailadres = "Iemands@emailadres.com";
-                $onderwerp = "Een mail van $naam";
-                $mailbericht = "$naam heeft het volgende verstuurd: $bericht het emailadres van $naam is $emailadres";
-                mail($zhtcmailadres, $onderwerp, $mailbericht);
-                print("hoho klopt ... $mailbericht ");
-            };
 
-            ?>
 
         </div>
       </div>
