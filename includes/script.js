@@ -61,4 +61,11 @@ $(document).ready(function(){
         $( "#"+tools ).attr("aria-expanded","true");
         $( "#"+tools+"link" ).toggleClass( "collapsed" );
     }
+    $('#getErrormess').on('change', '#keuze', function() {
+      $("#jq_target").empty();
+      selectedPlaatsen = $(this).val();
+      for(var i = 1; i <= selectedPlaatsen; i++){
+      $("#jq_target").append("<div class='form-group row'><label for='mogelijkheid"+i+"' class='col-sm-3 col-form-label'>Keuze "+i+":</label><div class='col-sm-9 px-0 pr-5'><input  id='keuze"+i+"' type='text' class='form-control' name='keuze"+i+"' value='' required></div></div>");
+      }
+    });
 });
