@@ -30,7 +30,7 @@
         }
 
        ?>
-        <div class="col-md-10 col-xs-11 pl-3 pt-3">
+        <main class="col-md-10 col-xs-11 pl-3 pt-3">
             <a class="zhtc-c" id="sidebar_toggler" href="#sidebar" data-toggle="collapse"><i class="icon ion-navicon-round"></i></a>
             <hr>
             <div class="page-header">
@@ -61,7 +61,7 @@
                   $class = "col-md-4 border border-primary rounded zhtc-brd-2";
                   $first = true;
                 }else{
-                  $class = "col-md-3";
+                  $class = "col-md-3 offset-md-1";
                 }
               ?>
                 <div class="<?php print($class); ?>">
@@ -79,6 +79,7 @@
                       Highcharts.setOptions({
                        colors: ['#b3d6ff', '#3392ff', '#005fcc', '#004799', '#003878', '#003066', '#001833', '#000c1a']
                       });
+                      //De chart voor de pollResultaten inladen en definen
                       Highcharts.chart(<?php print("pollResultaten".$row['pollID']);?>, {
                         chart: {
                             plotBackgroundColor: null,
@@ -126,6 +127,7 @@
                           ]
                         }]
                     });
+                    //Chart die in de modal geladen wordt
                     Highcharts.chart(<?php print("modalresult".$row['pollID']);?>, {
                       chart: {
                           plotBackgroundColor: null,
@@ -164,7 +166,7 @@
                           <?php
                           $stmt2 = $pdo->prepare("SELECT pk.pollID,pk.pollkeuzemogelijkheid, COUNT(pr.pollkeuze) AS res_perlid FROM pollresultaat pr
                           RIGHT JOIN pollkeuzemogelijkheid pk ON pr.pollkeuze = pk.pollkeuzemogelijkheid
-                          WHERE pk.pollID = ?
+                          WHERE pr.pollID = ?
                           GROUP BY pr.pollkeuze");
                           $stmt2->execute(array($row['pollID']));
                           $data2 = $stmt2->fetchAll();
@@ -379,7 +381,7 @@
                 ?>
               </tbody>
             </table>
-        </div>
+        </main>
         <!-- Modal om overige poll gegevens in te laden -->
         <div class="modal fade bd-example-modal-lg" id="addPoll" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div class="modal-dialog modal-lg" role="document">
