@@ -5,24 +5,80 @@
 		<meta charset="utf-8">
 		<title>ZHTC - commissies</title>
 		<?php include 'includes/header.php';
-    include 'includes/dbconnect.php';
-    error_reporting(E_ERROR | E_WARNING | E_PARSE);
-    if(isset($_GET['cm']) && !(empty($_GET['cm']))){
-      $stmt = $pdo->prepare("SELECT activiteitinfo, activiteitnaam, l.voornaam, DATE_FORMAT(datumvan, '%d %M %Y') as datumvanaf, DATE_FORMAT(datumvan, '%Y%m%d') as googledatevanaf, DATE_FORMAT(datumtot, '%Y%m%d') as googledatetot, DATE_FORMAT(datumvan, '%k:%i') as tijdvanaf, DATE_FORMAT(datumtot, '%d %M %Y') as datumtot, DATE_FORMAT(datumtot, '%k:%i') as tijdtot, activiteitlocatie FROM activiteit a
-      JOIN lid l ON a.lidID = l.lidID
-      WHERE activiteitid = ?");
+		include 'includes/dbconnect.php';
+		if(isset($_GET['cm']) && !(empty($_GET['cm']))){
+      $stmt = $pdo->prepare("SELECT commissievoorzitter as cmvoorzit,commissienaam as cmnaam,
+				c.commissieID as cmID,commissiezin as cmzin, commissietekst as cmtekst, l.voornaam as voornaam, cl.lidID as cmlid
+			FROM commissie c
+			JOIN lid l ON c.commissievoorzitter = l.lidID
+			JOIN commissielid cl ON cl.commissieID = c.commissieID
+      WHERE c.commissieID = ?");
       $stmt->execute(array($_GET['cm']));
       $info = $stmt->fetch(PDO::FETCH_ASSOC);
       if ($stmt->rowCount()) {
-        $googlevanaf = $info['googledatevanaf'];
-        $googletot = $info['googledatetot'];
-        $activiteitnaam = $info['activiteitnaam'];
-        $locatie = $info['activiteitlocatie'];
-        $googleLink = "https://calendar.google.com/calendar/r/eventedit?text=$activiteitnaam&dates=$googlevanaf/$googletot&details&location=$locatie&trp=false&sprop=website:https://zhtc.nl&ctz=Europe/Amsterdam&sf=true&output=xml";
+        $commissievoorzitter = $info['cmvoorzit'];
+        $commissienaam = $info['cmnaam'];
+        $commissielid = $info['cmlid'];
+        $commissiezin = $info['cmzin'];
+        $commissieid = $info['cmID'];
+        $commissietekst = $info['cmtekst'];
+        $voornaam = $info['voornaam'];
       } else {
           print("Werkt niet");
-      }}//laatste haakje moet nog weg
+      }
       ?>
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12">
+            <h1 class="text-center mt-4"><u> <?php print($info['comm_naam']); ?></u></h1>
+          </div>
+        </div>
+        <hr>
+        <div class="row">
+          <div class="col-md-12 col-lg-7 order-sm-12 order-lg-1">
+            <div class="card mb-4 card-noborder">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-12">
+                    <h5 class="card-text text-left my-0">
+											<?php header('Content-Type: text/html; charset=ISO-8859-1'); print($info['voornaam']); ?></h5>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-5 offset-7">
+
+                    <p class="card-text text-right my-0">Voorzitter: <span class="text-muted"><?php print ucfirst(($info['voornaam'])); ?></span></p>
+                    <p class="card-text text-right my-0">Leden:
+											<span class="">
+                    <?php foreach ($info as $commissielid) {
+                    	print($info['cmlid']);}?></span> </p>
+                    </div>
+                </div>
+                <h2 class="card-title text-left mt-5">Informatie</h2>
+                <p class="card-text text-justify">
+                  <?php print($info['cmtekst']); ?>
+                </p>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-12 col-lg-5 order-sm-1 order-lg-12">
+            <div class="card mb-4 card-noborder">
+              <div class="card-body">
+                <img src="http://via.placeholder.com/300x300" class="img-fluid mx-auto d-block rounded" alt="Responsive image">
+                <hr>
+                <div class='wrapper text-center'>
+                  <div class="btn-group mx-auto" role="group" aria-label="...">
+                    <a href="#" class="btn btn-outline-primary zhtc-button">Agenda</a>
+                    <a href="<?php print($googleLink);?>" class="btn btn-outline-primary zhtc-button">Notulen</a>
+                  </div>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+      <?php
+    }else{?>
     <div class="container-fluid">
       <div class="row">
         <div class="col-12">
@@ -34,15 +90,7 @@
 			<div class="row">
 			<?php
 			header('Content-Type: text/html; charset=ISO-8859-1');
-			try {
-						$db = "mysql:host=localhost;dbname=zhtc;port=3306";
-						$user = "root";
-						$pass = "";
-						$pdo = new PDO($db, $user, $pass);
-					}
-					catch (PDOException $e) {
-					echo $e->getTraceAsString();
-				} // NOTE: hier boven wordt de db verbinding gemaakt en hieronder de relevante data opgehaald
+			 // NOTE: hier boven wordt de db verbinding gemaakt en hieronder de relevante data opgehaald
 					$stmt = $pdo->prepare('SELECT commissieID, commissienaam as comm_naam, commissiezin as comm_zin, commissietekst as comm_tekst
 					FROM commissie');
 					$stmt->execute();
@@ -57,13 +105,15 @@
 							<img class="card-img-top" src="afentikabanner.jpg" alt="" style="width: 20rem;"><br><?php// print($row['comm_zin']);?><?php // NOTE: de commissiezin ?>
             </div>
 						<div class="card-footer text-muted"><?php print($row['comm_zin']);?>
-							<a href="?cm=<?php print($row['commissieID'])?>" class="btn btn-outline-primary float-right zhtc-button">Meer<i class="icon ion-arrow-right-c"></i></a></p>
+							<a href=<?php print("?cm=".$row['commissieID']) ?> class="btn btn-outline-primary float-right zhtc-button">Meer<i class="icon ion-arrow-right-c"></i></a></p>
 						</div>
           </div>
         </div>
 		<?php } ?>
 	</div>
     </div>
+		<?php
+    } ?>
 		<script>
 		<?php include 'includes/script.js'; ?>
 	  </script>
