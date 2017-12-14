@@ -51,9 +51,10 @@
             $page_status_left = $page_status[0];
             $page_status_right = $page_status[1];
             $startNr = ($resultsPer*$pageNr)-$resultsPer;
-            $stmt = $pdo->prepare("SELECT * FROM commissielid c
-            JOIN lid l ON c.lidID = l.lidID
-            WHERE commissieid = ?
+            $stmt = $pdo->prepare("SELECT * FROM commissielid cl
+            JOIN lid l ON cl.lidID = l.lidID
+            JOIN commissie c ON cl.commissieID = c.commissieID
+            WHERE c.commissieid = ?
             ORDER by $order ASC
             LIMIT $startNr, $resultsPer");
             $stmt->execute(array($info['commissieid']));
@@ -88,6 +89,7 @@
               <thead class="thead-zhtc">
                 <tr id="orderBy" class="<?php print($order);?>">
                   <th scope="col">Acties</th>
+                  <th id="commissienaam" scope="col"><a href="?p=<?php print($pageNr)?>&ord=commissienaam">Commissienaam</a></th>
                   <th id="voornaam" scope="col"><a href="?p=<?php print($pageNr)?>&ord=voornaam">Voornaam</a></th>
                   <th id="tussenvoegsel" scope="col"><a href="?p=<?php print($pageNr)?>&ord=tussenvoegsel">Tussenvoegsel</a></th>
                   <th id="achternaam" scope="col"><a href="?p=<?php print($pageNr)?>&ord=achternaam">Achternaam</a></th>
@@ -109,6 +111,7 @@
                   <td>
                     <button id="deleteUser" class="btn btn-xs" data-toggle="modal" data-target="#verwijderen" href="./assets/scripts/functions.php?CursistID=374&amp;as=delCursist&amp;BedrijfID=348"><i class="icon ion-trash-b"></i></button>
                   </td>
+                  <td><?php print($row['commissienaam']);?></td>
                   <td><?php print($row['voornaam']);?></td>
                   <td><?php print($row['tussenvoegsel']);?></td>
                   <td><?php print($row['achternaam']);?></td>

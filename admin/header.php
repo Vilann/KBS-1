@@ -32,19 +32,36 @@ integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfs
       <ul class="navbar-nav">
     </ul>
     <ul class="navbar-nav ml-auto">
-      <li class="nav-item">
-        <a class="nav-link" href="index">Logout</a>
+      <li class='nav-item dropdown'>
+        <a class='nav-link dropdown-toggle' href='#' id='navbarDropdown' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
+        <img src='http://via.placeholder.com/30x30'> <?php print($_SESSION['voornaam']) ?>
+        </a>
+        <div class='dropdown-menu dropdown-menu-right' aria-labelledby='navbarDropdown'>
+        <div class='container'>
+          <div class='row'>
+            <div class='col'>
+              <p class='small text-secondary'>Persoonlijke pagina's:</p>
+              <div class='dropdown-divider'></div>
+              <p class='dropdown-item'>LidNiveau:	<span class='text-secondary'>Nieuwlid</span></p>
+              <a href='../../account' class='dropdown-item'>Account</a>
+              <a href='../../index' class='dropdown-item'>Homepagina</a>
+              <div class='dropdown-divider'></div>
+              <a class='btn btn-outline-danger mx-auto' href="../../loguit"><i class="icon ion-log-out"></i> <b>Afmelden</b></a>
+            </div>
+          </div>
+        </div>
+        </div>
       </li>
     </ul>
   </div>
 </nav>
 </header>
 
-<div class="container-fluid">
-<div class="row">
+<div class="container-fluid full_length">
+<div class="row full_length">
   <div class="col-md-2 col-xs-1 pl-0 pr-0 collapse show" id="sidebar">
       <div class="list-group panel">
-          <a href="#" class="list-group-item collapsed" data-parent="#sidebar"><i class="icon ion-home"></i> <span class="hidden-sm-down"> Adminpanel</span></a>
+          <a href="../index" class="list-group-item collapsed" data-parent="#sidebar"><i class="icon ion-home"></i> <span class="hidden-sm-down"> Adminpanel</span></a>
           <!-- Beheer tools -->
           <?php
           if(isset($_SESSION['admin']['Beheer'])){
