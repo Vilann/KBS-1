@@ -19,14 +19,7 @@
 			<hr>
 			<?php
                         header('Content-Type: text/html; charset=ISO-8859-1');
-                        try {
-                            $db = "mysql:host=localhost;dbname=zhtc;port=3306";
-                            $user = "root";
-                            $pass = "";
-                            $pdo = new PDO($db, $user, $pass);
-                        } catch (PDOException $e) {
-                        echo $e->getTraceAsString();
-                    }
+                      
                     $stmt = $pdo->prepare('SELECT dispuutnaam, dispuutzin, dispuuttekst
 					FROM dispuut');
                     $stmt->execute();
