@@ -102,15 +102,7 @@ include('includes/beveiliging.php');
         </div>
       </div>
       <hr>
-      <?php	try {
-          $db = "mysql:host=localhost;dbname=zhtc_banaan;port=3307";
-          $user = "root";
-          $pass = "usbw";
-      		$pdo = new PDO($db, $user, $pass);
-      	}
-      	catch (PDOException $e) {
-      	echo $e->getTraceAsString();
-      	}
+      <?php
         $stmt = $pdo->prepare("SELECT activiteitid, DATE_FORMAT(datumvan, '%d %M %Y') as datumvanaf, DATE_FORMAT(datumvan, '%k:%i') as tijdvanaf, DATE_FORMAT(datumtot, '%d %M %Y') as datumtot, DATE_FORMAT(datumtot, '%k:%i') as tijdtot, activiteitnaam, activiteitlocatie
         FROM activiteit
         WHERE datumvan $activiteiten CURDATE()
