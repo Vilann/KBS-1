@@ -55,7 +55,7 @@
           <php? 	<?php
                                     error_reporting(E_ERROR | E_WARNING | E_PARSE);
                     if (!isset($_SESSION['lid'])) {
-                        ?> <div class="g-recaptcha" data-sitekey="6Ld7nTsUAAAAADXHtsQJLwU-Zt1wcQ_ysEB9B0Dz"></div>
+                        ?> <div class="g-recaptcha" data-sitekey="6Ld7nTsUAAAAADXHtsQJLwU-Zt1wcQ_ysEB9B0Dz" required></div>
                 <?php
                     }
                 ?>
@@ -64,6 +64,19 @@
           ?>
 
             </form>
+            <h4>CONTACT INFO
+</h1>
+<h6>
+  ADDRESS
+</h6>
+<p>
+  Postbus 1475, 8001 BL, Zwolle
+</p>
+<h6>
+  EMAIL
+</h6>
+<p>secretariaat@zhtc.nl</p>
+
 
 
 
