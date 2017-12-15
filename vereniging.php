@@ -19,7 +19,7 @@
 			<hr>
 			<?php
                         header('Content-Type: text/html; charset=ISO-8859-1');
-                      
+
                     $stmt = $pdo->prepare('SELECT dispuutnaam, dispuutzin, dispuuttekst
 					FROM dispuut');
                     $stmt->execute();
@@ -39,7 +39,7 @@
         </div>
       </div>
     </div>
-  </body>
+  <?php include 'includes/footer.php'; ?>
   <script>
   <?php
                     } include 'includes/script.js'; ?>

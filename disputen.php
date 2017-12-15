@@ -40,8 +40,8 @@
 			<?php } ?>
 		</div>
 	    </div>
+			<?php include 'includes/footer.php'; ?>
 			<script>
 			<?php include 'includes/script.js'; ?>
 		  </script>
-	  </body>
 </html>

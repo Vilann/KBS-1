@@ -7,6 +7,7 @@ include('includes/beveiliging.php');
     <title>ZHTC - activiteiten</title>
     <?php include 'includes/header.php';
       include 'includes/dbconnect.php';
+      include 'includes/footer.php';
     error_reporting(E_ERROR | E_WARNING | E_PARSE);
     if (isset($_GET['tpe'])) {
         $activiteiten = "<";
@@ -103,11 +104,7 @@ include('includes/beveiliging.php');
         </div>
       </div>
       <hr>
-<<<<<<< HEAD
       <?php
-=======
-      <?php	
->>>>>>> 781eb6158e6f6ba6270823de67a73cddefd63045
         $stmt = $pdo->prepare("SELECT activiteitid, DATE_FORMAT(datumvan, '%d %M %Y') as datumvanaf, DATE_FORMAT(datumvan, '%k:%i') as tijdvanaf, DATE_FORMAT(datumtot, '%d %M %Y') as datumtot, DATE_FORMAT(datumtot, '%k:%i') as tijdtot, activiteitnaam, activiteitlocatie
         FROM activiteit
         WHERE datumvan $activiteiten CURDATE()
@@ -143,7 +140,7 @@ include('includes/beveiliging.php');
     </div>
     <?php
     } ?>
-  </body>
+    <?php include 'includes/footer.php'; ?>
   <script>
   <?php include 'includes/script.js'; ?>
   </script>
