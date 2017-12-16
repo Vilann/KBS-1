@@ -33,7 +33,7 @@ $(document).ready(function(){
     		var tools = "beheer";
         setSidebar(tools);
     		break;
-    	case 'comm&disp':
+    	case 'commissiedisputen':
     		var tools = "beheer";
         setSidebar(tools);
     		break;

@@ -41,6 +41,7 @@
                 <p class="text-muted mb-1">
                   Hieronder vind je de resultaten van de afgelopen 3 polls
                 </p>
+                <!-- Knop die de modal inlaadt voor het toevoegen van een nieuwe poll -->
                   <button type="button" class="btn btn-outline-primary zhtc-button" data-toggle="modal" data-target="#addPoll">Nieuwe poll toevoegen</button>
               </div>
             </div>
@@ -55,12 +56,15 @@
               LIMIT 3");
               $stmt->execute();
               $data = $stmt->fetchAll();
-              $first = false;
+              //Controleer of het de eerste resultaat uit de query is
+              $first = true;
               foreach($data as $row) {
-                if($first == false){
+                if($first == true){
+                  //Zo ja verander de class naar col-4
                   $class = "col-md-4 border border-primary rounded zhtc-brd-2";
-                  $first = true;
+                  $first = false;
                 }else{
+                  //zo nee verander de class naar col-3
                   $class = "col-md-3 offset-md-1";
                 }
               ?>
@@ -76,6 +80,7 @@
                   </div>
                   <script type="text/javascript">
                     $(function () {
+                      //Maak een kleuren palet aan van 8 verschillende blauw tinten
                       Highcharts.setOptions({
                        colors: ['#b3d6ff', '#3392ff', '#005fcc', '#004799', '#003878', '#003066', '#001833', '#000c1a']
                       });
@@ -111,6 +116,7 @@
                             colorByPoint: true,
                             data: [
                             <?php
+                            //Alle data inladen waar de chart uit bestaat
                             $stmt2 = $pdo->prepare("SELECT pk.pollID,pk.pollkeuzemogelijkheid, COUNT(pr.pollkeuze) AS res_perlid FROM pollresultaat pr
                             RIGHT JOIN pollkeuzemogelijkheid pk ON pr.pollkeuze = pk.pollkeuzemogelijkheid
                             WHERE pr.pollID = ?
@@ -142,7 +148,7 @@
                           enabled: false
                       },
                       tooltip: {
-                          pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+                          pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b><br/>' + 'Aantal: <b>{point.y}</b><br/>'
                       },
                       plotOptions: {
                           pie: {
@@ -164,6 +170,7 @@
                           colorByPoint: true,
                           data: [
                           <?php
+                          //Alle data inladen waar de chart uit bestaat
                           $stmt2 = $pdo->prepare("SELECT pk.pollID,pk.pollkeuzemogelijkheid, COUNT(pr.pollkeuze) AS res_perlid FROM pollresultaat pr
                           RIGHT JOIN pollkeuzemogelijkheid pk ON pr.pollkeuze = pk.pollkeuzemogelijkheid
                           WHERE pr.pollID = ?
@@ -207,27 +214,33 @@
               ?>
             </div>
             <!-- EINDE VAN EERSTE 3 pollResultaten ### -->
+            <!-- ################################################ -->
             <!-- Begin van de tabel met overige pollresultaten ### -->
             <hr>
             <?php
+            //Query om het aantal resultaten op te halen
             $stmt = $pdo->prepare("SELECT p.pollID, p.vraag, COUNT(lidID) AS aantal_resultaten FROM poll p
             LEFT JOIN pollresultaat pr ON p.pollID = pr.pollID
             GROUP BY p.pollID");
             $stmt->execute();
             $count = $stmt->rowCount();
+            //Aantal resultaten per pagina en het aantal $pages daaronder
             $resultsPer = 20;
             $pages = ceil($count/$resultsPer);
+            //Check of er een andere pagina dan 1 wordt opgevraagd zo nee dan wordt pagina nummer 1
             if(isset($_GET['p']) && !empty($_GET['p'])){
               $pageNr = $_GET['p'];
             }else{
               $pageNr = 1;
             }
+            //Check of er een voorkeurs order is aangegeven zo nee dan een standaard order
             if(isset($_GET['ord']) && !empty($_GET['ord'])){
               $order = $_GET['ord'];
             }else{
               $order = "p.pollID";
             }
             //check of hij op de laatste of op pagina 1 zit
+            //Bepaal of een van de 2 page knoppen disabled moet worden
             function setPagination($pages, $pageNr){
               if($pages == 1 && $pages == $pageNr){
                 return(array("disabled","disabled"));
@@ -240,10 +253,16 @@
                 return(array("",""));
               }
             }
+            //voer functie uit en sla het resultaat op in $page_status (resultaat is een array)
             $page_status = setPagination($pages, $pageNr);
+            //Zet de page-status(left/right)
             $page_status_left = $page_status[0];
             $page_status_right = $page_status[1];
+            //Bereken startnr (bij welke row hij begint met zoeken in de database)
+            //voorbeeld pagina 3: (20*3)=60-20 = 40
+            //voorbeeld pagina 1: (20*1)=20-20 = 0
             $startNr = ($resultsPer*$pageNr)-$resultsPer;
+            //voer de query uit de tabel gegevens ophaald
             $stmt = $pdo->prepare("SELECT datum, p.pollID, p.vraag, COUNT(lidID) AS aantal_resultaten FROM poll p
             LEFT JOIN pollresultaat pr ON p.pollID = pr.pollID
             GROUP BY p.pollID
@@ -261,7 +280,9 @@
                   </a>
                 </li>
                 <?php
+                //Laad de pagination in
                 for($i = 1; $i <= $pages; $i++){
+                  //Als het de pagina is waar je momenteel op zit wordt de list-item gekleurd
                   if($i == $pageNr){
                     print("<li class='page-item active'><a class='page-link zhtc-bg zhtc-brd' href='?p=$i'> $i </a></li>");
                   }else{
@@ -288,6 +309,7 @@
               </thead>
               <tbody>
                 <?php
+                //laat de tabel gegevens zien
                 foreach($data as $row) {
                 ?>
                 <tr>
