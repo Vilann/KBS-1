@@ -30,7 +30,7 @@
       <div class="container-fluid">
         <div class="row">
           <div class="col-12">
-            <h1 class="text-center mt-4"><u> <?php print($info['comm_naam']); ?></u></h1>
+            <h1 class="text-center mt-4"><u> <?php print($info['cmnaam']); ?></u></h1>
           </div>
         </div>
         <hr>
@@ -48,10 +48,9 @@
                   <div class="col-5 offset-7">
 
                     <p class="card-text text-right my-0">Voorzitter: <span class="text-muted"><?php print ucfirst(($info['voornaam'])); ?></span></p>
-                    <p class="card-text text-right my-0">Leden:
-											<span class="">
+                    <p class="card-text text-right my-0">Leden:<span class="">
                     <?php foreach ($info as $commissielid) {
-                    	print($info['cmlid']);}?></span> </p>
+                    	print($info['cmlid'] . "<br>");}?> </span> </p>
                     </div>
                 </div>
                 <h2 class="card-title text-left mt-5">Informatie</h2>
@@ -102,7 +101,7 @@
             <div class="card-body"> <?php // NOTE: alles in deze div staat in de kaart ?>
               <h4 class="card-title"><?php print($row['comm_naam'])?></h4> <?php // NOTE: de naam van de commissie ?>
               <p class="card-text">
-							<img class="card-img-top" src="afentikabanner.jpg" alt="" style="width: 20rem;"><br><?php// print($row['comm_zin']);?><?php // NOTE: de commissiezin ?>
+							<img class="card-img-top" src="images/dispuutfotos/afentikabanner.jpg" alt="" style="width: 20rem;"><br><?php// print($row['comm_zin']);?><?php // NOTE: de commissiezin ?>
             </div>
 						<div class="card-footer text-muted"><?php print($row['comm_zin']);?>
 							<a href=<?php print("?cm=".$row['commissieID']) ?> class="btn btn-outline-primary float-right zhtc-button">Meer<i class="icon ion-arrow-right-c"></i></a></p>
@@ -114,8 +113,8 @@
     </div>
 		<?php
     } ?>
+		<?php include 'includes/footer.php'; ?>
 		<script>
 		<?php include 'includes/script.js'; ?>
 	  </script>
-  </body>
 </html>

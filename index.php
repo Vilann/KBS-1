@@ -4,7 +4,7 @@
     <head>
         <title>ZHTC - Home</title>
         <?php include 'includes/header.php';
-              include 'includes/sidebar.php';?>        
+              include 'includes/sidebar.php';?>
               <!-- This script triggers the modal without a button -->
               <script type="text/javascript">
               	$(document).ready(function(){
@@ -91,5 +91,5 @@
               <a href="https://zhtc.nl/lustrumshop/">Ga naar de Lustrumshop</a>
 
 
-    </body>
+    <?php include 'includes/footer.php'; ?>
 </html>
