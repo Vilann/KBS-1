@@ -54,16 +54,19 @@
               </div>
               <div class="form-group row">
                 <div class="col-sm-9 offset-sm-3 px-0">
-          <php? 	<?php
-                                    error_reporting(E_ERROR | E_WARNING | E_PARSE);
-                    if (!isset($_SESSION['lid'])) {
-                        ?> <div class="g-recaptcha" data-sitekey="6Ld7nTsUAAAAADXHtsQJLwU-Zt1wcQ_ysEB9B0Dz"></div>
-                <?php
-                    }
+          	<?php
+          error_reporting(E_ERROR | E_WARNING | E_PARSE);
+if (!isset($_SESSION['lid'])) {
+    print('<div class="g-recaptcha" data-sitekey="6Ld7nTsUAAAAADXHtsQJLwU-Zt1wcQ_ysEB9B0Dz"></div>');
+
+    if ($_SESSION['captchaerror']) {
+        print('<p>Captcha is verkeerd ingevuld, probeer alstublieft opnieuw.</p>');
+    }
+}
                 ?>
           </div>
           </div>
-          ?>
+          
 
             </form>
                     </div>

@@ -11,10 +11,17 @@
               		$("#myModal").modal('show');
               	});
               </script>
+              <script>(function(d, s, id) {
+                var js, fjs = d.getElementsByTagName(s)[0];
+                if (d.getElementById(id)) return;
+                js = d.createElement(s); js.id = id;
+                js.src = 'https://connect.facebook.net/nl_NL/sdk.js#xfbml=1&version=v2.11';
+                fjs.parentNode.insertBefore(js, fjs);
+              }(document, 'script', 'facebook-jssdk'));</script>
 
 
               <!-- Modal -->
-              <?php // NOTE: een modal is een popup venster. Gr Kai ?>
+              <?php // NOTE: een modal is een popup venster. Gr Kai?>
               <style media="screen">#myModal{top:38%;right:75%;outline: none;}</style>
               <div id="myModal" class="modal fade" role="dialog">
                 <div class="modal-dialog modal-sm">
@@ -47,7 +54,9 @@
                   <li data-target="#myCarousel" data-slide-to="3"></li>
                   <li data-target="#myCarousel" data-slide-to="4"></li>
                 </ol>
-
+<div id="fb-root"></div>
+                <!--TODO : Netjes neerzetten-->
+<div class="fb-page" data-href="https://www.facebook.com/asvzhtc/" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/asvzhtc/" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/asvzhtc/">ZHTC</a></blockquote></div>
                 <!-- Wrapper for slides -->
                 <div class="carousel-inner">
                   <div class="item active">
