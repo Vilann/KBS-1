@@ -20,66 +20,174 @@ if(isset($_POST['edit']) && !(empty($_POST['edit']))){
             <div class="page-header">
                 <h1 id="pageLoc" class="beheerpagina">ZHTC Aanpassen commissie pagina<span class="lead">Welkom bij de ZHTC adminpanel</span></h1>
             </div>
-            <br>
-            <?php
-              $stmt = $pdo->prepare("SELECT c.commissieID, commissienaam, CONCAT(IFNULL(l2.voornaam,''),' ',IFNULL(l2.tussenvoegsel,''),' ',IFNULL(l2.achternaam,'')) AS naam, commissievoorzitter, commissiezin, commissietekst FROM commissie c
-              JOIN commissielid cl ON c.commissieID = cl.commissieID
-              JOIN lid l ON cl.lidID = l.lidID
-              JOIN lid l2 ON c.commissievoorzitter = l2.lidID
-              WHERE c.commissievoorzitter = ?");
-              $stmt->execute(array($_SESSION['lid']));
-              $data = $stmt->fetchAll();
-              foreach($data as $row) {
-                  //$id = $row['id'];
-                  //$content = $row['content'];
-            ?>
-            <div class="card">
-              <div class="card-header">
-                <h4 class="text-muted">Commissie <span class="badge badge-secondary zhtc-bg"><?php print($row['commissienaam']);?></span></h4>
+            <ul id="tabs" class="nav nav-tabs" role="tablist">
+              <li role="presentation" class="nav-item">
+                <a class="nav-link active" href="#tab1" aria-controls="tab1" role="tab" data-toggle="tab">Home</a>
+              </li>
+              <li role="presentation" class="nav-item">
+                <a class="nav-link" href="#tab2" aria-controls="tab2" role="tab" data-toggle="tab">De vereniging</a>
+              </li>
+              <li role="presentation" class="nav-item">
+                <a class="nav-link" href="#tab3" aria-controls="tab3" role="tab" data-toggle="tab">Contact</a>
+              </li>
+              <li role="presentation" class="nav-item">
+                <a class="nav-link" href="#tab4" aria-controls="tab4" role="tab" data-toggle="tab">footer</a>
+              </li>
+            </ul>
+            <div class="tab-content">
+              <div role="tabpanel" class="tab-pane active" id="tab1"><br>
+                <div class="card">
+                  <div class="card-header">
+                    <h4 class="text-muted">Bewerken <span class="badge badge-secondary zhtc-bg">Home</span></h4>
+                  </div>
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-12">
+                        <form id="getErrormess" action="commissiepagina" method="post">
+                            <div class="form-group row">
+                                <label for="vraag" class="col-sm-2 col-form-label">Titel:</label>
+                                <div class="col-sm-10 px-0 pr-5">
+                                  <input type="text" class="form-control" name="naam" value="Home">
+                                </div>
+                            </div>
+                              <div class="imput-group row">
+                                  <label for="commissieText" class="col-sm-2 col-form-label">Paginatext:</label>
+                                  <div class="col-sm-10 px-0 pr-5">
+                                      <textarea id="commissieText" name="commissieTekst" style="width: 100%; min-height:150px" required>
+                                      </textarea>
+                                      <small class="form-text text-muted">Met de texteditor hierboven kun je de pagina stylen zoals je wilt</small>
+                                  <div id="feedkeuze" class="invalid-feedback" hidden>
+                                  </div>
+                                  </div>
+                              </div>
+                              <hr>
+                              <input type="hidden" name="commissieID" value="1">
+                              <div class="form-group row">
+                                <div class="col-sm-12 px-0 pr-5">
+                                  <input class="btn btn-outline-primary float-right" type="submit" name="edit" value="aanpassen">
+                                </div>
+                              </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div class="card-body">
-                <div class="row">
-                  <div class="col-12">
-                    <form id="getErrormess" action="commissiepagina" method="post">
-                        <div class="form-group row">
-                            <label for="vraag" class="col-sm-2 col-form-label">Commissienaam:</label>
-                            <div class="col-sm-10 px-0 pr-5">
-                              <input readonly type="text" class="form-control" name="naam" value="<?php print($row['commissienaam']);?>">
+
+              <div role="tabpanel" class="tab-pane" id="tab2">
+                <br>
+                <div class="card">
+                  <div class="card-header">
+                    <h4 class="text-muted">Bewerken <span class="badge badge-secondary zhtc-bg">De vereniging</span></h4>
+                  </div>
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-12">
+                        <form id="getErrormess5" action="commissiepagina" method="post">
+                            <div class="form-group row">
+                                <label for="vraag" class="col-sm-2 col-form-label">Titel:</label>
+                                <div class="col-sm-10 px-0 pr-5">
+                                  <input type="text" class="form-control" name="naam" value="De vereniging">
+                                </div>
                             </div>
-                        </div>
-                          <div class="form-group row">
-                              <label for="vraag" class="col-sm-2 col-form-label">Commissiezin:</label>
-                              <div class="col-sm-10 px-0 pr-5">
-                                <input  id="vraag" type="text" class="form-control" name="zin" value="<?php print($row['commissiezin']);?>" placeholder="De beste commissie van heel ZHTC" required>
+                              <div class="imput-group row">
+                                  <label for="commissieText" class="col-sm-2 col-form-label">Paginatext:</label>
+                                  <div class="col-sm-10 px-0 pr-5">
+                                      <textarea name="commissieTekst" style="width: 853%; height:150px" required>
+                                      </textarea>
+                                      <small class="form-text text-muted">Met de texteditor hierboven kun je de pagina stylen zoals je wilt</small>
+                                  </div>
                               </div>
-                          </div>
-                          <div class="imput-group row">
-                              <label for="commissieText" class="col-sm-2 col-form-label">Commissietext:</label>
-                              <div class="col-sm-10 px-0 pr-5">
-                                  <textarea id="commissieText" name="commissieTekst" style="width: 100%; min-height:150px" required>
-                                    <?php print($row['commissietekst']);?>
-                                  </textarea>
-                                  <small class="form-text text-muted">Met de texteditor hierboven kun je de pagina stylen zoals je wilt</small>
-                              <div id="feedkeuze" class="invalid-feedback" hidden>
+                              <hr>
+                              <input type="hidden" name="commissieID" value="1">
+                              <div class="form-group row">
+                                <div class="col-sm-12 px-0 pr-5">
+                                  <input class="btn btn-outline-primary float-right" type="submit" name="edit" value="aanpassen">
+                                </div>
                               </div>
-                              </div>
-                          </div>
-                          <hr>
-                          <input type="hidden" name="commissieID" value="<?php print($row['commissieID']);?>">
-                          <div class="form-group row">
-                            <div class="col-sm-12 px-0 pr-5">
-                              <input class="btn btn-outline-primary float-right" type="submit" name="edit" value="aanpassen">
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+              <div role="tabpanel" class="tab-pane" id="tab3">
+                <br>
+                <div class="card">
+                  <div class="card-header">
+                    <h4 class="text-muted">Bewerken <span class="badge badge-secondary zhtc-bg">Contact</span></h4>
+                  </div>
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-12">
+                        <form id="getErrormess3" action="commissiepagina" method="post">
+                            <div class="form-group row">
+                                <label for="vraag" class="col-sm-2 col-form-label">Titel:</label>
+                                <div class="col-sm-10 px-0 pr-5">
+                                  <input type="text" class="form-control" name="naam" value="Contact">
+                                </div>
                             </div>
-                          </div>
-                    </form>
+                              <div class="imput-group row">
+                                  <label for="commissieText" class="col-sm-2 col-form-label">Paginatext:</label>
+                                  <div class="col-sm-10 px-0 pr-5">
+                                      <textarea name="commissieTekst" style="width: 853%; height:150px" required>
+                                      </textarea>
+                                      <small class="form-text text-muted">Met de texteditor hierboven kun je de pagina stylen zoals je wilt</small>
+                                  </div>
+                              </div>
+                              <hr>
+                              <input type="hidden" name="commissieID" value="1">
+                              <div class="form-group row">
+                                <div class="col-sm-12 px-0 pr-5">
+                                  <input class="btn btn-outline-primary float-right" type="submit" name="edit" value="aanpassen">
+                                </div>
+                              </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div role="tabpanel" class="tab-pane" id="tab4">
+                <br>
+                <div class="card">
+                  <div class="card-header">
+                    <h4 class="text-muted">Bewerken <span class="badge badge-secondary zhtc-bg">Footer</span></h4>
+                  </div>
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-12">
+                        <form id="getErrormess2" action="commissiepagina" method="post">
+                            <div class="form-group row">
+                                <label for="vraag" class="col-sm-2 col-form-label">Titel:</label>
+                                <div class="col-sm-10 px-0 pr-5">
+                                  <input type="text" class="form-control" name="naam" value="Footer">
+                                </div>
+                            </div>
+                              <div class="imput-group row">
+                                  <label for="commissieText" class="col-sm-2 col-form-label">Paginatext:</label>
+                                  <div class="col-sm-10 px-0 pr-5">
+                                      <textarea name="commissieTekst" style="width: 853%; height:150px" required>
+                                      </textarea>
+                                      <small class="form-text text-muted">Met de texteditor hierboven kun je de pagina stylen zoals je wilt</small>
+                                  </div>
+                              </div>
+                              <hr>
+                              <input type="hidden" name="commissieID" value="1">
+                              <div class="form-group row">
+                                <div class="col-sm-12 px-0 pr-5">
+                                  <input class="btn btn-outline-primary float-right" type="submit" name="edit" value="aanpassen">
+                                </div>
+                              </div>
+                        </form>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
             <br>
-            <?php
-            }
-            ?>
         </main>
     </div>
 </div>

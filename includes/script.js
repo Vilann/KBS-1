@@ -11,14 +11,11 @@ $(document).ready(function(){
   $(".delModal").on("click", function () {
          var myName = $(this).data('id');
          var myChoice = $(this).attr("class");
-         if(myChoice == "commissie"){
-           var myID = $(this).closest("tr").attr("id");
-         }else{
-           var myID = $(this).closest("tr").attr("id");
-         }
+         var myID = $(this).closest("tr").attr("id");
+         var myCDID = $(this).closest("td").attr("id");
          myChoice = myChoice.substr( myChoice.lastIndexOf(' ') + 1);
          $(".deleteName").text( myName );
-         $("#setthisHref").attr("onclick", "location.href='?delete=yes&id="+myID+"&choice="+myChoice+"'" );
+         $("#setthisHref").attr("onclick", "location.href='?delete=yes&id="+myID+"&choice="+myChoice+"&ots="+myCDID+"'" );
   });
   $('#sidebar_toggler').on('click', function () {
           if($('#sidebar').hasClass("show")){

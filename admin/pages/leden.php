@@ -1,7 +1,22 @@
+<?php
+  include '../../includes/dbconnect.php';
+  if(isset($_GET['delete']) && !(empty($_GET['delete']))){
+    if($_GET['delete'] == "yes"){
+      $id = $_GET['id'];
+      if($_GET['choice'] == "leden"){
+        $stmt = $pdo->prepare("UPDATE lid
+            SET liddelete=1
+            WHERE lidID=?");
+        $stmt->execute(array($id));
+      }else{
+        //
+      }
+    }
+    header('Location: leden');
+  }
+?>
 <html lang="en">
-      <?php include '../header.php';
-      include '../../includes/dbconnect.php';
-      ?>
+      <?php include '../header.php'; ?>
         <main class="col-md-10 col-xs-11 pl-3 pt-3">
             <a class="zhtc-c" id="sidebar_toggler" href="#sidebar" data-toggle="collapse"><i class="icon ion-navicon-round"></i></a>
             <hr>
@@ -11,6 +26,7 @@
             <br>
             <?php
             $stmt = $pdo->prepare("SELECT * FROM lid
+            WHERE liddelete = 0
             ORDER by achternaam ASC");
             $stmt->execute();
             $count = $stmt->rowCount();
@@ -44,6 +60,7 @@
             $page_status_right = $page_status[1];
             $startNr = ($resultsPer*$pageNr)-$resultsPer;
             $stmt = $pdo->prepare("SELECT * FROM lid
+            WHERE liddelete = 0
             ORDER by $order ASC
             LIMIT $startNr, $resultsPer");
             $stmt->execute();
@@ -95,9 +112,9 @@
                 <?php
                 foreach($data as $row) {
                 ?>
-                <tr>
+                <tr class="thisId leden" id='<?php print($row['lidID']);?>'>
                   <td>
-                    <button id="deleteUser" class="btn btn-xs" data-toggle="modal" data-target="#verwijderen" href="./assets/scripts/functions.php?CursistID=374&amp;as=delCursist&amp;BedrijfID=348"><i class="icon ion-trash-b"></i></button>
+                    <button class="btn btn-xs delModal leden" data-id="<?php print($row['voornaam']." ".$row['achternaam']);?>" data-toggle="modal" data-target="#verwijderen"><i class="icon ion-trash-b"></i></button>
                   </td>
                   <td><?php print($row['voornaam']);?></td>
                   <td><?php print($row['tussenvoegsel']);?></td>
@@ -119,22 +136,22 @@
         </main>
     </div>
 </div>
-<!-- Modal -->
+<!-- Modals -->
 <div class="modal fade" id="verwijderen" tabindex="-1" role="dialog" aria-labelledby="verwijderenlabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="verwijderenlabel">Modal title</h5>
+        <h5 class="modal-title" id="verwijderenlabel">Weet u zeker dat u <span class="deleteName"></span> wilt verwijderen</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        ...
+        <small class="text-muted">Houdt er rekening mee dat zodra u <span class="deleteName"></span> verwijderd alle leden die hier in staan uit geschreven worden.</small>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button id="setthisHref" onclick="" class="btn btn-outline-danger" type="button">Verwijderen</button>
+        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Sluiten</button>
       </div>
     </div>
   </div>

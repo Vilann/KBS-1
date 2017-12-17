@@ -24,9 +24,11 @@ EMAIL
 $stmt = $pdo->prepare("SELECT * FROM sponsor");
 $sponsor = $stmt->fetch(PDO::FETCH_ASSOC);
 if ($sponsor->rowCount()) {
-foreach ($variable as $key => $value) {
-?>
-	<img src=<?php print("$sponsor['sponsorplaatje']"); ?>
+	foreach ($sponsor as $key => $value) {
+	?>
+		<!--<img src=<?php //print("$value['sponsorplaatje']"); ?> /> -->
+		<?php
+	}
 }
 ?>
 

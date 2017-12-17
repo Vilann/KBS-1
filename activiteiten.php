@@ -7,7 +7,6 @@ include('includes/beveiliging.php');
     <title>ZHTC - activiteiten</title>
     <?php include 'includes/header.php';
       include 'includes/dbconnect.php';
-      include 'includes/footer.php';
     error_reporting(E_ERROR | E_WARNING | E_PARSE);
     if (isset($_GET['tpe'])) {
         $activiteiten = "<";
