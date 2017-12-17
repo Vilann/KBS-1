@@ -1,5 +1,7 @@
 <html lang="en">
-      <?php include '../header.php';?>
+      <?php include '../header.php';
+      include '../../includes/dbconnect.php';
+      ?>
       <script src="http://code.highcharts.com/highcharts.js"></script>
       <script src="http://code.highcharts.com/modules/exporting.js"></script>
       <?php

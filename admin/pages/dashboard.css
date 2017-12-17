@@ -181,3 +181,7 @@ body > * {
 .full_length {
   min-height: 100vh;
 }
+#setthisHref a {
+  ccolor:white;
+  text-decoration: none;
+}

@@ -1,5 +1,7 @@
 <html lang="en">
-      <?php include '../header.php';?>
+      <?php include '../header.php';
+      include '../../includes/dbconnect.php';
+      ?>
         <main class="col-md-10 col-xs-11 pl-3 pt-3">
             <a class="zhtc-c" id="sidebar_toggler" href="#sidebar" data-toggle="collapse"><i class="icon ion-navicon-round"></i></a>
             <hr>
