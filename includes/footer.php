@@ -1,5 +1,4 @@
 	<footer class="card-footer text-muted">
-
 	<h4>CONTACT INFO
 </h1>
 <h6>
@@ -24,11 +23,11 @@ EMAIL
 $stmt = $pdo->prepare("SELECT * FROM sponsor");
 $sponsor = $stmt->fetch(PDO::FETCH_ASSOC);
 if ($sponsor->rowCount()) {
-	foreach ($sponsor as $key => $value) {
-	?>
-		<!--<img src=<?php //print("$value['sponsorplaatje']"); ?> /> -->
-		<?php
-	}
+    foreach ($variable as $key => $value) {
+        ?>
+	<img src=<?php print $sponsor["sponsorplaatje"]; ?>>
+	<?php
+    }
 }
 ?>
 

@@ -12,9 +12,9 @@ if (isset($_SESSION['lid'])) {
 
     <?php include 'includes/header.php';
     error_reporting(E_ERROR | E_WARNING | E_PARSE);
-    if(isset($_SESSION["error"])){
-      $error = explode(",", $_SESSION["error"]);
-      switch ($error[0]){
+    if (isset($_SESSION["error"])) {
+        $error = explode(",", $_SESSION["error"]);
+        switch ($error[0]) {
         case "email":
           $errormess = $error[1];
         break;
@@ -22,9 +22,8 @@ if (isset($_SESSION['lid'])) {
         //
         break;
       }
-      unset($_SESSION["error"]);
-    }
-     ?>
+        unset($_SESSION["error"]);
+    } ?>
     <div class="container-fluid">
       <div class="row">
         <div class="col-md-12 col-lg-5 mr-md-5">
@@ -50,6 +49,10 @@ if (isset($_SESSION['lid'])) {
                 <input class="btn btn-outline-primary" type="submit" name="login" value="Inloggen">
               </div>
             </div>
+            <?php if ($_SESSION['failed']) {
+        print "banaan kan niet inloggen";
+    } ?>
+
             <hr>
         <p>
           <b>Nog geen lid?</b> <br>
