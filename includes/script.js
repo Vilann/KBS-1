@@ -17,6 +17,18 @@ $(document).ready(function(){
          $(".deleteName").text( myName );
          $("#setthisHref").attr("onclick", "location.href='?delete=yes&id="+myID+"&choice="+myChoice+"&ots="+myCDID+"'" );
   });
+  $(".editModal").on("click", function () {
+         var myName = $(this).data('id');
+         var myChoice = $(this).attr("class");
+         var myID = $(this).closest("tr").attr("id");
+         var myCDID = $(this).closest("td").attr("id");
+         myChoice = myChoice.substr( myChoice.lastIndexOf(' ') + 1);
+         //alert(myName+" "+myChoice+" "+myID+" "+myCDID);
+         $(".deleteName").text( myName );
+         $("#commNaam").val( myName );
+         $("#voorzitterNaam").val( myCDID );
+         $("#setthisHref2").attr("onclick", "location.href='?edit=yes&id="+myID+"&choice="+myChoice+"&ots="+myCDID+"'" );
+  });
   $('#sidebar_toggler').on('click', function () {
           if($('#sidebar').hasClass("show")){
             $('main').toggleClass("col-md-10");

@@ -56,7 +56,7 @@ if(isset($_POST['edit']) && !(empty($_POST['edit']))){
                           <div class="imput-group row">
                               <label for="commissieText" class="col-sm-2 col-form-label">Commissietext:</label>
                               <div class="col-sm-10 px-0 pr-5">
-                                  <textarea id="commissieText" name="commissieTekst" style="width: 100%; min-height:150px" required>
+                                  <textarea class="nice-edit" name="commissieTekst" style="width: 100%; min-height:150px" required>
                                     <?php print($row['commissietekst']);?>
                                   </textarea>
                                   <small class="form-text text-muted">Met de texteditor hierboven kun je de pagina stylen zoals je wilt</small>

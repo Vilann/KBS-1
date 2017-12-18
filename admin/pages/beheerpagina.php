@@ -53,7 +53,7 @@ if(isset($_POST['edit']) && !(empty($_POST['edit']))){
                               <div class="imput-group row">
                                   <label for="commissieText" class="col-sm-2 col-form-label">Paginatext:</label>
                                   <div class="col-sm-10 px-0 pr-5">
-                                      <textarea id="commissieText" name="commissieTekst" style="width: 100%; min-height:150px" required>
+                                      <textarea class="nice-edit" name="commissieTekst" style="width: 100%; min-height:150px" required>
                                       </textarea>
                                       <small class="form-text text-muted">Met de texteditor hierboven kun je de pagina stylen zoals je wilt</small>
                                   <div id="feedkeuze" class="invalid-feedback" hidden>
@@ -93,7 +93,7 @@ if(isset($_POST['edit']) && !(empty($_POST['edit']))){
                               <div class="imput-group row">
                                   <label for="commissieText" class="col-sm-2 col-form-label">Paginatext:</label>
                                   <div class="col-sm-10 px-0 pr-5">
-                                      <textarea name="commissieTekst" style="width: 853%; height:150px" required>
+                                      <textarea class="nice-edit" name="commissieTekst" style="width: 853%; height:150px" required>
                                       </textarea>
                                       <small class="form-text text-muted">Met de texteditor hierboven kun je de pagina stylen zoals je wilt</small>
                                   </div>
@@ -131,7 +131,7 @@ if(isset($_POST['edit']) && !(empty($_POST['edit']))){
                               <div class="imput-group row">
                                   <label for="commissieText" class="col-sm-2 col-form-label">Paginatext:</label>
                                   <div class="col-sm-10 px-0 pr-5">
-                                      <textarea name="commissieTekst" style="width: 853%; height:150px" required>
+                                      <textarea class="nice-edit" name="commissieTekst" style="width: 853%; height:150px" required>
                                       </textarea>
                                       <small class="form-text text-muted">Met de texteditor hierboven kun je de pagina stylen zoals je wilt</small>
                                   </div>
@@ -168,7 +168,7 @@ if(isset($_POST['edit']) && !(empty($_POST['edit']))){
                               <div class="imput-group row">
                                   <label for="commissieText" class="col-sm-2 col-form-label">Paginatext:</label>
                                   <div class="col-sm-10 px-0 pr-5">
-                                      <textarea name="commissieTekst" style="width: 853%; height:150px" required>
+                                      <textarea class="nice-edit" name="commissieTekst" style="width: 853%; height:150px" required>
                                       </textarea>
                                       <small class="form-text text-muted">Met de texteditor hierboven kun je de pagina stylen zoals je wilt</small>
                                   </div>

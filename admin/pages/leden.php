@@ -14,6 +14,23 @@
     }
     header('Location: leden');
   }
+  if(isset($_POST['edit'])){
+    $id = $_POST['id'];
+    if (isset($_POST['voornaam']) && isset($_POST['achternaam']) && isset($_POST['geboortedatum']) && isset($_POST['adres']) && isset($_POST['postcode'])
+    && isset($_POST['woonplaats']) && isset($_POST['gender'])) {
+      $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+      $stmt = $pdo->prepare("UPDATE lid
+          SET voornaam=?,tussenvoegsel=?,achternaam=?,geboortedatum=?,adres=?,postcode=?,woonplaats=?,geslacht=?
+          WHERE lidID=?");
+      $stmt->execute(array($_POST['voornaam'],$_POST['tussenvoegsel'],$_POST['achternaam'],$_POST['geboortedatum'],$_POST['adres'],$_POST['postcode'],$_POST['woonplaats'],$_POST['gender'],$id));
+      if (!$stmt) {
+        echo "\nPDO::errorInfo():\n";
+        print_r($dbh->errorInfo());
+      }
+    }
+    unset($_POST);
+    header('Location: leden');
+  }
 ?>
 <html lang="en">
       <?php include '../header.php'; ?>
@@ -114,7 +131,8 @@
                 ?>
                 <tr class="thisId leden" id='<?php print($row['lidID']);?>'>
                   <td>
-                    <button class="btn btn-xs delModal leden" data-id="<?php print($row['voornaam']." ".$row['achternaam']);?>" data-toggle="modal" data-target="#verwijderen"><i class="icon ion-trash-b"></i></button>
+                    <button class="mb-2 btn btn-xs delModal leden" data-id="<?php print($row['voornaam']." ".$row['achternaam']);?>" data-toggle="modal" data-target="#verwijderen"><i class="icon ion-trash-b"></i></button>
+                    <button class="btn btn-warning btn-xs editmodal leden" data-id="<?php print($row['voornaam']." ".$row['achternaam']);?>" data-toggle="modal" data-target="#edit"><i class="icon ion-edit"></i></button>
                   </td>
                   <td><?php print($row['voornaam']);?></td>
                   <td><?php print($row['tussenvoegsel']);?></td>
@@ -128,6 +146,119 @@
                   <td><?php print($row['rekeningnummer']);?></td>
                   <td><?php print($row['noodnummer']);?></td>
                 </tr>
+                <div class="modal fade bd-example-modal-lg" id="edit" tabindex="-1" role="dialog" aria-labelledby="editlabel" aria-hidden="true">
+                  <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="editlabel">Aanpassen <span class="deleteName"></span></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body mr-5">
+                        <form action="leden" method="post">
+                              <div class="form-group row">
+                                  <label for="voornaam" class="col-sm-4 col-form-label">* Voornaam:</label>
+                                  <div class="col-sm-8 px-0">
+                                    <input type="text" class="form-control" name="voornaam" placeholder="Voornaam" value="<?php print($row['voornaam']);?>" required>
+                                  </div>
+                              </div>
+                              <div class="form-group row">
+                                  <label for="tussenvoegsel" class="col-sm-4 col-form-label">Tussenvoegsel:</label>
+                                  <div class="col-sm-3 px-0">
+                                    <input type="text" class="form-control" name="tussenvoegsel" placeholder="Tussenvoegsel" value="<?php print($row['tussenvoegsel']);?>">
+                                  </div>
+                              </div>
+                              <div class="form-group row">
+                                  <label for="achternaam" class="col-sm-4 col-form-label">* achternaam:</label>
+                                  <div class="col-sm-8 px-0">
+                                    <input type="text" class="form-control" name="achternaam" placeholder="Achternaam" value="<?php print($row['achternaam']);?>" required>
+                                  </div>
+                              </div>
+                              <div class="form-group row">
+                                  <label for="geboortedatum" class="col-sm-4 col-form-label">* geboortedatum:</label>
+                                  <div class="col-sm-8 px-0">
+                                    <input type="date" class="form-control" name="geboortedatum" placeholder="geboortedatum" value="<?php print($row['geboortedatum']);?>" max=<?php print('"' . date('Y-m-d', strtotime("-16 year")) . '"'); ?> required>
+                                  </div>
+                              </div>
+                              <div class="form-group row">
+                                <label for="inputPassword" class="col-sm-4 col-form-label">* Locatie:</label>
+                                <div class="col-sm-8">
+                                  <div class="row">
+                                    <div class="col-12 px-0">
+                                      <input type="text" class="form-control" name="adres" placeholder="Adres" value="<?php print($row['adres']);?>">
+                                    </div>
+                                  </div>
+                                </div>
+                                <label for="inputPassword" class="col-sm-4 col-form-label"></label>
+                                <div class="col-sm-8">
+                                  <div class="row">
+                                    <div class="col-8 px-0">
+                                      <input type="text" class="form-control" name="woonplaats" placeholder="Woonplaats" value="<?php print($row['woonplaats']);?>">
+                                    </div>
+                                    <div class="col-4 px-0">
+                                      <input type="text" class="form-control" name="postcode" placeholder="Postcode" value="<?php print($row['postcode']);?>">
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <fieldset class="form-group">
+                                <div class="row">
+                                  <legend class="col-form-legend col-sm-4">* Geslacht</legend>
+                                  <?php
+                                    $man = "";
+                                    $vrouw = "";
+                                    $notset = "";
+                                    if($row['geslacht'] == "man"){
+                                      $man = "checked";
+                                    }elseif ($row['geslacht'] == "vrouw") {
+                                      $vrouw = "checked";
+                                    }else{
+                                      $notset = "checked";
+                                    }
+                                   ?>
+                                  <div class="col-sm-8">
+                                    <div class="form-check">
+                                      <label class="form-check-label">
+                                        <input class="form-check-input" type="radio" name="gender" value="man" <?php print($man); ?>>
+                                        Man
+                                      </label>
+                                    </div>
+                                    <div class="form-check">
+                                      <label class="form-check-label">
+                                        <input class="form-check-input" type="radio" name="gender" value="vrouw"  <?php print($vrouw); ?>>
+                                        Vrouw
+                                      </label>
+                                    </div>
+                                    <div class="form-check">
+                                      <label class="form-check-label">
+                                        <input class="form-check-input" type="radio" name="gender" value="anders" <?php print($notset); ?>>
+                                        Geen van bovenstaande
+                                      </label>
+                                    </div>
+                                  </div>
+                                </div>
+                              </fieldset>
+                              <div class="form-group row">
+                                  <label for="rekening" class="col-sm-4 col-form-label">* Rekeningnummer:</label>
+                                  <div class="col-sm-8 px-0">
+                                    <input  id="rekening" type="text" class="form-control" name="iban" placeholder="NL12RABO0123456789" required value="<?php print($row['rekeningnummer']);?>">
+                                    <div id="feediban" class="invalid-feedback" hidden>
+                                    </div>
+                                  </div>
+                                  <!-- NOTE: http://formvalidation.io/validators/iban/ ff checken #javascirpt Gr Kai -->
+                              </div>
+                              <!-- NOTE: door op deze knop te drukken wordt al deze info gestopt in de value registreer. *zie verwerk Gr Kai -->
+                      </div>
+                      <input type="hidden" name="id" value="<?php print($row['lidID']);?>">
+                      <div class="modal-footer">
+                        <button id="setthisHref2" type="submit" onclick="" name="edit" class="btn btn-outline-warning">Aanpassen</button>
+                        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Sluiten</button>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
                 <?php
                 }
                 ?>
