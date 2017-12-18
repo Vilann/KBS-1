@@ -1,5 +1,22 @@
 <?php
 include '../../includes/dbconnect.php';
+if(isset($_POST['edit'])){
+  $id = $_POST['id'];
+  if (isset($_POST['voornaam']) && isset($_POST['achternaam']) && isset($_POST['geboortedatum']) && isset($_POST['adres']) && isset($_POST['postcode'])
+  && isset($_POST['woonplaats']) && isset($_POST['gender'])) {
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $stmt = $pdo->prepare("UPDATE lid
+        SET voornaam=?,tussenvoegsel=?,achternaam=?,geboortedatum=?,adres=?,postcode=?,woonplaats=?,geslacht=?
+        WHERE lidID=?");
+    $stmt->execute(array($_POST['voornaam'],$_POST['tussenvoegsel'],$_POST['achternaam'],$_POST['geboortedatum'],$_POST['adres'],$_POST['postcode'],$_POST['woonplaats'],$_POST['gender'],$id));
+    if (!$stmt) {
+      echo "\nPDO::errorInfo():\n";
+      print_r($dbh->errorInfo());
+    }
+  }
+  unset($_POST);
+  header('Location: leden');
+}
 if(isset($_GET['delete']) && !(empty($_GET['delete']))){
   if($_GET['delete'] == "yes"){
     $id = $_GET['id'];
@@ -194,13 +211,53 @@ if(isset($_GET['as']) && !(empty($_GET['as']))){
                 foreach($data as $row) {
                 ?>
                 <tr class="thisId commissie" id='<?php print($row['commissieID']);?>'>
-                  <td>
+                  <td id='<?php print($row['voorzitter']);?>'>
                     <button class="btn btn-xs delModal commissie" data-id="<?php print($row['commissienaam']);?>" data-toggle="modal" data-target="#verwijderen"><i class="icon ion-trash-b"></i></button>
+                    <button class="btn btn-xs editModal btn-warning commissie" data-id="<?php print($row['commissienaam']);?>" data-toggle="modal" data-target="#edit"><i class="icon ion-edit"></i></button>
                   </td>
                   <td><?php print($row['commissienaam']);?></td>
                   <td><?php print($row['voorzitter']);?></td>
                   <td><?php print($row['aantal_leden']);?></td>
                 </tr>
+                <!-- Modals -->
+                <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="editlabel" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="editlabel">Aanpassen <span class="deleteName"></span> wilt verwijderen</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <small class="text-muted">Houdt er rekening mee dat zodra u <span class="deleteName"></span> verwijderd alle leden die hier in staan uit geschreven worden.</small>
+                        <form class="mt-3" id="getErrormess" action="commissiedisputen" method="post">
+                              <div class="form-group row">
+                                  <label for="newName" class="col-sm-3 col-form-label">Naam:</label>
+                                  <div class="col-sm-9 px-0 pr-5">
+                                    <input  id="commNaam" type="text" class="form-control" name="newName" placeholder="" required>
+                                  </div>
+                              </div>
+                              <div class="imput-group row">
+                                  <label for="voorzitterInput" class="col-sm-3 col-form-label">Voorzitter:</label>
+                                  <div class="col-sm-9 px-0 pr-5">
+                                    <div class="input-group mb-2 mb-sm-0">
+                                      <input  id="voorzitterNaam" type="text" class="form-control" name="voorzitter" value="" required>
+                                    </div>
+                                    <small id="voorzitterHelp" class="form-text text-muted">Vul de voornaam en de achternaam van de persoon in gescheiden met een spatie</small>
+                                    <div id="feedkeuze" class="invalid-feedback" hidden>
+                                    </div>
+                                  </div>
+                              </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button id="setthisHref2" onclick="" class="btn btn-outline-warning" type="button">aanpassen</button>
+                        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Sluiten</button>
+                      </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
                 <?php
                 }
                 ?>
@@ -343,14 +400,14 @@ if(isset($_GET['as']) && !(empty($_GET['as']))){
               <div class="form-group row">
                   <label for="newName" class="col-sm-3 col-form-label">Naam:</label>
                   <div class="col-sm-9 px-0 pr-5">
-                    <input  id="newName" type="text" class="form-control" name="newName" placeholder="" required>
+                    <input  id="newName" type="text" class="form-control" name="newCName" placeholder="" required>
                   </div>
               </div>
               <div class="imput-group row">
                   <label for="keuze" class="col-sm-3 col-form-label">Voorzitter:</label>
                   <div class="col-sm-9 px-0 pr-5">
                     <div class="input-group mb-2 mb-sm-0">
-                      <input  id="voorzitterInput" type="text" max="8" class="form-control" name="voorzitter" value="" required>
+                      <input  id="voorzitterInput" type="text" max="8" class="form-control" name="newVoorzitter" value="" required>
                     </div>
                     <small id="voorzitterHelp" class="form-text text-muted">Vul de voornaam en de achternaam van de persoon in gescheiden met een spatie</small>
                     <div id="feedkeuze" class="invalid-feedback" hidden>
