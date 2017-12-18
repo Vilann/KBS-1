@@ -43,3 +43,17 @@
 	border:1px solid #0353AE;
 	color: white !important;
 }
+
+.zhtc-brd, .zhtc-button, .zhtc-button:active, .zhtc-button:hover {
+	border-color: #003878;
+}
+
+.zhtc-bg, .zhtc-button:active, .zhtc-button:hover {
+	background-color: #003878;
+}
+.zhtc-c, .zhtc-button {
+	color: #003878;
+}
+.card-noborder {
+	border: 1px solid rgba(0,0,0,0);
+}

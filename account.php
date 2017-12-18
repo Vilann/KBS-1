@@ -63,7 +63,7 @@ include 'includes/dbconnect.php';
                 <div class="form-group row">
                     <label for="geboortedatum" class="col-sm-3 col-form-label">Geboortedatum:</label>
                     <div class="col-sm-9 px-0">
-                      <input id="geboortedatum" type="date" class="form-control" name="geboortedatum" value='<?php print(date("d-m-Y", strtotime($info['geboortedatum']))); ?>'>
+                      <input id="geboortedatum" type="date" class="form-control" name="geboortedatum" value='<?php print(date("Y-m-d", strtotime($info['geboortedatum']))); ?>'>
                     </div>
                 </div>
                 <div class="form-group row">
@@ -117,7 +117,7 @@ include 'includes/dbconnect.php';
                       <input id="noodnummer" type="text" class="form-control" value='<?php print($info['noodnummer']); ?>' name="noodnummer" placeholder="0612345678">
                     </div>
                 </div>
-                <button type="submit" class="btn btn-outline-primary" name="infoupdate" value="infoupdate">Aanpassen</button>
+                <button type="submit" class="btn btn-outline-primary zhtc-button" name="infoupdate" value="infoupdate">Aanpassen</button>
               </form>
             </div>
             <div class="col-sm-12 col-xs-12 col-md-5">
@@ -143,11 +143,11 @@ include 'includes/dbconnect.php';
                   <p class="card-text text-justify"><?php $pos=strpos($info['dispuuttekst'], ' ', 250);
                   print(substr($info['dispuuttekst'],0,$pos )."..."); ?></p>
                   <p class="card-text">Voorzitter: <span class="text-muted"><?php print(ucwords($info['naam']));?></span></p>
-                  <a href="#" class="btn btn-outline-primary">Naar info pagina</a>
+                  <a href="#" class="btn btn-outline-primary zhtc-button">Naar info pagina</a>
                   <?php
                   if($info['dispuutvoorzitter'] == $_SESSION['lid']){
                   ?>
-                    <a href="#" class="btn btn-outline-primary">Bewerken</a>
+                    <a href="#" class="btn btn-outline-primary zhtc-button">Bewerken</a>
                   <?php
                   }
                   ?>
@@ -193,11 +193,11 @@ include 'includes/dbconnect.php';
                     <p class="card-text text-justify"><?php $pos=strpos($row['commissietekst'], ' ', 250);
                     print(substr($row['commissietekst'],0,$pos )."..."); ?></p>
                     <p class="card-text">Voorzitter: <span class="text-muted"><?php print(ucwords($row['naam']));?></span></p>
-                    <a href="#" class="btn btn-outline-primary">commissie pagina</a>
+                    <a href="#" class="btn btn-outline-primary zhtc-button">commissie pagina</a>
                     <?php
                     if($row['commissievoorzitter'] == $_SESSION['lid']){
                     ?>
-                      <a href="#" class="btn btn-outline-primary">Bewerken</a>
+                      <a href="#" class="btn btn-outline-primary zhtc-button">Bewerken</a>
                     <?php
                     }
                     ?>
