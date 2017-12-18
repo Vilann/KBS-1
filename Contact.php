@@ -4,7 +4,9 @@
     <head>
         <title>ZHTC - Contact</title>
         <script src='https://www.google.com/recaptcha/api.js'></script>
-        <?php include 'includes/header.php'; ?>
+        <?php include 'includes/header.php';
+            include 'includes/dbconnect.php';
+           ?>
 
 
     <body>
@@ -24,12 +26,12 @@
           <div class="col">
             <form Method="POST" Action='contactverwerk'>
               <?php
-                                        error_reporting(E_ERROR | E_WARNING | E_PARSE);
-                        if (!isset($_SESSION['lid'])) {
-                            require_once('includes/captcha/recaptchalib.php');
-                            $publickey = "6Ld7nTsUAAAAADXHtsQJLwU-Zt1wcQ_ysEB9B0Dz"; // you got this from the signup page
-                            echo recaptcha_get_html($publickey);
-                        }
+                        //                 error_reporting(E_ERROR | E_WARNING | E_PARSE);
+                        // if (!isset($_SESSION['lid'])) {
+                        //     require_once('includes/captcha/recaptchalib.php');
+                        //     $publickey = "6Ld7nTsUAAAAADXHtsQJLwU-Zt1wcQ_ysEB9B0Dz"; // you got this from the signup page
+                        //     echo recaptcha_get_html($publickey);
+                        // }
   ?>
               <table>
                 <tr>
@@ -52,18 +54,24 @@
               </div>
               <div class="form-group row">
                 <div class="col-sm-9 offset-sm-3 px-0">
-          <php? 	<?php
-                                    error_reporting(E_ERROR | E_WARNING | E_PARSE);
-                    if (!isset($_SESSION['lid'])) {
-                        ?> <div class="g-recaptcha" data-sitekey="6Ld7nTsUAAAAADXHtsQJLwU-Zt1wcQ_ysEB9B0Dz" required></div>
-                <?php
-                    }
+          	<?php
+          error_reporting(E_ERROR | E_WARNING | E_PARSE);
+if (!isset($_SESSION['lid'])) {
+    print('<div class="g-recaptcha" data-sitekey="6Ld7nTsUAAAAADXHtsQJLwU-Zt1wcQ_ysEB9B0Dz"></div>');
+
+    if ($_SESSION['captchaerror']) {
+        print('<p>Captcha is verkeerd ingevuld, probeer alstublieft opnieuw.</p>');
+    }
+}
                 ?>
           </div>
           </div>
-          ?>
+          
 
             </form>
+                    </div>
+                  </div>
+                  </div>
             <h4>CONTACT INFO
 </h1>
 <h6>
@@ -81,8 +89,5 @@
 
 
 
-        </div>
-      </div>
-      </div>
     </body>
 </html>

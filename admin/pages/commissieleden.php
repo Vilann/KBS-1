@@ -1,5 +1,25 @@
+<?php
+  include '../../includes/dbconnect.php';
+  if(isset($_GET['delete']) && !(empty($_GET['delete']))){
+    if($_GET['delete'] == "yes"){
+      $id = $_GET['id'];
+      $Sid = $_GET['ots'];
+      if($_GET['choice'] == "commissie"){
+        $stmt2 = $pdo->prepare("DELETE FROM commissielid
+          WHERE lidID=?
+          AND commissieID = ?
+          ");
+        $stmt2->execute(array($id,$Sid));
+      }else{
+        //
+      }
+    }
+    header('Location: commissieleden');
+  }
+?>
 <html lang="en">
-      <?php include '../header.php';?>
+      <?php include '../header.php';
+      ?>
         <main class="col-md-10 col-xs-11 pl-3 pt-3">
             <a class="zhtc-c" id="sidebar_toggler" href="#sidebar" data-toggle="collapse"><i class="icon ion-navicon-round"></i></a>
             <hr>
@@ -107,9 +127,9 @@
                 <?php
                 foreach($data as $row) {
                 ?>
-                <tr>
-                  <td>
-                    <button id="deleteUser" class="btn btn-xs" data-toggle="modal" data-target="#verwijderen" href="./assets/scripts/functions.php?CursistID=374&amp;as=delCursist&amp;BedrijfID=348"><i class="icon ion-trash-b"></i></button>
+                <tr class="thisId commissie" id='<?php print($row['lidID']);?>'>
+                  <td class="ChosenC" id='<?php print($row['commissieID']);?>'>
+                    <button class="btn btn-xs delModal commissie" data-id="<?php print($row['voornaam']." ".$row['achternaam']);?>" data-toggle="modal" data-target="#verwijderen"><i class="icon ion-trash-b"></i></button>
                   </td>
                   <td><?php print($row['commissienaam']);?></td>
                   <td><?php print($row['voornaam']);?></td>
@@ -132,22 +152,22 @@
         </main>
     </div>
 </div>
-<!-- Modal -->
+<!-- Modals -->
 <div class="modal fade" id="verwijderen" tabindex="-1" role="dialog" aria-labelledby="verwijderenlabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="verwijderenlabel">Modal title</h5>
+        <h5 class="modal-title" id="verwijderenlabel">Weet u zeker dat u <span class="deleteName"></span> wilt verwijderen</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        ...
+        <small class="text-muted">Houdt er rekening mee dat zodra u <span class="deleteName"></span> verwijderd alle leden die hier in staan uit geschreven worden.</small>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button id="setthisHref" onclick="" class="btn btn-outline-danger" type="button">Verwijderen</button>
+        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Sluiten</button>
       </div>
     </div>
   </div>

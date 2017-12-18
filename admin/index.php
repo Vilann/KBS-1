@@ -1,5 +1,15 @@
 <?php include '../includes/beveiliging.php';
 beveilig_adminpagina();
+/*edit leden () (1 uur)
+edit commissies (als ik nog tijd heb) (2 uur)
+tijdlimiet polls () | 20min
+toevoegen leden aan commissies en disputen( 2uur)
+aanpassen algemene pagina's (tussen 30min en 2.5 uur)//
+toevoegen activiteiten + aanpassen 2 uur
+
+functie die je rechten geeft I quess idk
+
+wachtwoord vergeten*/
 ?>
 <html lang="en">
   <head>

@@ -4,6 +4,7 @@ Het registratieformulier en loginformulier hebben allebei een verstuurknop met e
 De buitenste if-statements kijken welke van de 2 gebruikt is. Bij login wordt het eerste gebruikt, de loginfunctionaliteit.
 Bij registreren wordt het tweede blok gebruikt.
  */
+
 if (isset($_POST['login'])) {
     // allereerst wordt er gekeken of de email en het wachtwoord overeen komen.
     // Filter_input is een functie die kijkt of de informatie bestaat.
@@ -34,9 +35,9 @@ if (isset($_POST['login'])) {
             // password_verify is een functie om een gehasht wachtwoord dat gemaakt is met password_hash()
             if (password_verify($ww, $info["wachtwoord"])) {
                 session_start();
-                if($info['toegangAdmin'] == "yes"){
-                  $adminRechten = array("Beheer"=>$info['bestuurslidID'], "Dispuut"=>$info['toegangAdmin'], "Commissie"=>$info['toegangAdmin']);
-                  $_SESSION['admin'] = $adminRechten;
+                if ($info['toegangAdmin'] == "yes") {
+                    $adminRechten = array("Beheer"=>$info['bestuurslidID'], "Dispuut"=>$info['toegangAdmin'], "Commissie"=>$info['toegangAdmin']);
+                    $_SESSION['admin'] = $adminRechten;
                 }
                 $_SESSION['lid'] = $info['lidID'];
                 $_SESSION['voornaam'] = $info['voornaam'];
@@ -44,12 +45,52 @@ if (isset($_POST['login'])) {
                 print("Wachtwoord klopt niet");
                 // TODO: Foutinformatie op login.php en terugsturen
                 $errors = true;
+
+                // Foute inlogpoging registreren
+                if ($email = filter_input(INPUT_POST, 'email')) {
+                    $stmt=$pdo->prepare("Insert into loginpoging(lidID) VALUES (?)");
+                    $stmt->execute(array($info['lidID']));
+                    // drie foute pogingen zet session failed op true
+                    $stmt=$pdo->prepare("SELECT Count(*) as failed
+                      FROM   loginpoging
+                      WHERE  tijd > Date_sub(Now(), INTERVAL 15 minute) and  lidID=?");
+                    $stmt->execute(array($info['lidID']));
+                    $pogingen = $stmt->fetch(PDO::FETCH_ASSOC);
+                    // die($pogingen['testbanaan']);
+                    if ($pogingen['failed']>=3) {
+                        session_start();
+                        $_SESSION['failed']=true;
+                    } else {
+                        $_SESSION['failed']=false;
+                        session_destroy();
+                    }
+                }
             }
             $pdo = null;
         } else {
             print("Het emailadres bestaat niet");
             // TODO: foutinformatie op login.php en terugsturen
             $errors = true;
+            //fout inlogpoging registreren
+            if ($email = filter_input(INPUT_POST, 'email')) {
+                $stmt=$pdo->prepare("Insert into loginpoging(lidID) VALUES (?)");
+                $stmt->execute(array($info['lidID']));
+
+                // drie foute pogingen zet session failed op true
+                $stmt=$pdo->prepare("SELECT Count(*) as failed
+                                      FROM   loginpoging
+                                      WHERE  tijd > Date_sub(Now(), INTERVAL 15 minute) and  lidID=?");
+                $stmt->execute(array($info['lidID']));
+                $pogingen = $stmt->fetch(PDO::FETCH_ASSOC);
+                // die($pogingen['testbanaan']);
+                if ($pogingen['failed']>=3) {
+                    session_start();
+                    $_SESSION['failed']=true;
+                } else {
+                    $_SESSION['failed']=false;
+                    session_destroy();
+                }
+            }
         }
         if ($errors) {
             session_start();
@@ -102,22 +143,22 @@ if (isset($_POST['registreer'])) {
         }
         // kijk om het ingevulde emailadres geldig is
         if (filter_var($_POST["email"], FILTER_VALIDATE_EMAIL) && strpos($_POST["email"], '.')) {
-          //
+            //
         } else {
-          $errors = true;
-          $errormess = "email,Het ingevulde emailadres is niet geldig.";
-        }
-        if($_POST["wachtwoord"] == $_POST["herhaalwachtwoord"]){
-          if (preg_match('/[A-Za-z].*[0-9]|[0-9].*[A-Za-z]/', $_POST["wachtwoord"]) && !(strlen($_POST["wachtwoord"]) < 8)){
-              //
-              $encryptedww = password_hash($_POST["wachtwoord"], PASSWORD_BCRYPT);
-          }else{
             $errors = true;
-            $errormess = "wachtwoord,Het wachtwoord is niet veilig genoeg.";
-          }
-        }else{
-          $errors = true;
-          $errormess = "herhaalwachtwoord,De ingevoerde wachtwoorden komen niet overeen.";
+            $errormess = "email,Het ingevulde emailadres is niet geldig.";
+        }
+        if ($_POST["wachtwoord"] == $_POST["herhaalwachtwoord"]) {
+            if (preg_match('/[A-Za-z].*[0-9]|[0-9].*[A-Za-z]/', $_POST["wachtwoord"]) && !(strlen($_POST["wachtwoord"]) < 8)) {
+                //
+                $encryptedww = password_hash($_POST["wachtwoord"], PASSWORD_BCRYPT);
+            } else {
+                $errors = true;
+                $errormess = "wachtwoord,Het wachtwoord is niet veilig genoeg.";
+            }
+        } else {
+            $errors = true;
+            $errormess = "herhaalwachtwoord,De ingevoerde wachtwoorden komen niet overeen.";
         }
         // Als er errors zijn gevonden, gaat het (nu nog) terug naar de homepage
         // TODO: Betere errors
@@ -160,26 +201,26 @@ if (isset($_POST['registreer'])) {
     }
 }
 if (isset($_POST['edit'])) {
-  // kijken of elke not-null waarde is ingevuld in het formulier
-  if (isset($_POST['voornaam']) && isset($_POST['achternaam']) && isset($_POST['geboortedatum']) && isset($_POST['adres']) && isset($_POST['postcode'])
+    // kijken of elke not-null waarde is ingevuld in het formulier
+    if (isset($_POST['voornaam']) && isset($_POST['achternaam']) && isset($_POST['geboortedatum']) && isset($_POST['adres']) && isset($_POST['postcode'])
   && isset($_POST['woonplaats']) && isset($_POST['gender']) && isset($_POST['email']) && isset($_POST['iban']) && isset($_POST['noodnummer']) && isset($_POST['maat'])) {
-      // Als de errors variabele na alle checks fout is, wordt de gebruiker teruggestuurd naar de registratiepagina.
-      // TODO: validate emailadres, validate rekeningnummer, validate noodnummer, validate wachtwoord
-      $errors = false;
+        // Als de errors variabele na alle checks fout is, wordt de gebruiker teruggestuurd naar de registratiepagina.
+        // TODO: validate emailadres, validate rekeningnummer, validate noodnummer, validate wachtwoord
+        $errors = false;
 
-      // Input aanpassen zodat we het lekker kunnen gebruiken
-      $voornaam = strtolower($_POST['voornaam']);
-      $achternaam = strtolower($_POST['achternaam']);
-      $tussenvoegsel = !empty($_POST['tussenvoegsel']) ? $_POST['tussenvoegsel'] : null;
-      $medicatie = !empty($_POST['medicatie']) ? $_POST['medicatie'] : null;
-      $dieetwensen = !empty($_POST['dieetwensen']) ? $_POST['dieetwensen'] : null;
-      $opmerking = !empty($_POST['opmerking']) ? $_POST['opmerking'] : null;
+        // Input aanpassen zodat we het lekker kunnen gebruiken
+        $voornaam = strtolower($_POST['voornaam']);
+        $achternaam = strtolower($_POST['achternaam']);
+        $tussenvoegsel = !empty($_POST['tussenvoegsel']) ? $_POST['tussenvoegsel'] : null;
+        $medicatie = !empty($_POST['medicatie']) ? $_POST['medicatie'] : null;
+        $dieetwensen = !empty($_POST['dieetwensen']) ? $_POST['dieetwensen'] : null;
+        $opmerking = !empty($_POST['opmerking']) ? $_POST['opmerking'] : null;
 
-      // Een lid krijgt een zhtc-emailadres, dat is 'voornaam'.'achternaam'@zhtc.nl
+        // Een lid krijgt een zhtc-emailadres, dat is 'voornaam'.'achternaam'@zhtc.nl
       // Dit wordt samen met het eigen emailadres opgeslagen, dus een lid heeft 2 emailadressen
       // NOTE: door zhtc aangegeven dat het niet meer hoeft
       // $ZHTCemailadres = $voornaam . "." . $achternaam . "@zhtc.nl";
-}
+    }
 }
 if (isset($_POST['infoupdate'])) {
 }

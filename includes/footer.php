@@ -27,7 +27,7 @@ if ($sponsor->rowCount()) {
 foreach ($variable as $key => $value) {
 ?>
 	<img src=<?php print($sponsor['sponsorplaatje']); ?>
-};
+}}
 ?>
 
 </div>
