@@ -41,6 +41,10 @@ if (isset($_POST['login'])) {
                 }
                 $_SESSION['lid'] = $info['lidID'];
                 $_SESSION['voornaam'] = $info['voornaam'];
+                if ($email = filter_input(INPUT_POST, 'email')) {
+                    $stmt=$pdo->prepare("DELETE FROM loginpoging WHERE lidID=?");
+                    $stmt->execute(array($info['lidID']));
+                }
             } else {
                 print("Wachtwoord klopt niet");
                 // TODO: Foutinformatie op login.php en terugsturen
@@ -60,9 +64,6 @@ if (isset($_POST['login'])) {
                     if ($pogingen['failed']>=3) {
                         session_start();
                         $_SESSION['failed']=true;
-                    } else {
-                        $_SESSION['failed']=false;
-                        session_destroy();
                     }
                 }
             }
@@ -86,9 +87,7 @@ if (isset($_POST['login'])) {
                 if ($pogingen['failed']>=3) {
                     session_start();
                     $_SESSION['failed']=true;
-                } else {
-                    $_SESSION['failed']=false;
-                    session_destroy();
+                    header("Location: login");
                 }
             }
         }
