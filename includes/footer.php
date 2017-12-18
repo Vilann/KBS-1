@@ -26,8 +26,8 @@ $sponsor = $stmt->fetch(PDO::FETCH_ASSOC);
 if ($sponsor->rowCount()) {
 foreach ($variable as $key => $value) {
 ?>
-	<img src=<?php print("$sponsor['sponsorplaatje']"); ?>
-}
+	<img src=<?php print($sponsor['sponsorplaatje']); ?>
+};
 ?>
 
 </div>
