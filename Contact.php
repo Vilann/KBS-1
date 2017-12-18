@@ -61,12 +61,13 @@ if (!isset($_SESSION['lid'])) {
 
     if ($_SESSION['captchaerror']) {
         print('<p>Captcha is verkeerd ingevuld, probeer alstublieft opnieuw.</p>');
+        unset($_SESSION["captchaerror"]);
     }
 }
                 ?>
           </div>
           </div>
-          
+
 
             </form>
                     </div>
