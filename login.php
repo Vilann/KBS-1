@@ -51,6 +51,7 @@ if (isset($_SESSION['lid'])) {
             </div>
             <?php if ($_SESSION['failed']) {
         print "banaan kan niet inloggen";
+        unset($_SESSION["failed"]);
     } ?>
 
             <hr>
