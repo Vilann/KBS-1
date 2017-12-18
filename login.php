@@ -45,6 +45,12 @@ if (isset($_SESSION['lid'])) {
                 </div>
             </div>
             <div class="form-group row">
+              <label for="ingelogdblijven" class="col-sm-3 col-form-label">Ingelogd blijven:</label>
+              <div class="my-auto px-0">
+               <input type="checkbox" id="ingelogdblijven" class="form-control" name="ingelogdblijven" value="Ja">
+              </div>
+            </div>
+            <div class="form-group row">
               <div class="col-sm-9 offset-sm-3 px-0">
                 <input class="btn btn-outline-primary" type="submit" name="login" value="Inloggen">
               </div>
