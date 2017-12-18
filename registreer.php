@@ -8,9 +8,9 @@ beveilig_lid();
     <title>ZHTC - Registreren</title>
     <?php include 'includes/header.php';
     error_reporting(E_ERROR | E_WARNING | E_PARSE);
-    if(isset($_SESSION["error"])){
-      $error = explode(",", $_SESSION["error"]);
-      switch ($error[0]){
+    if (isset($_SESSION["error"])) {
+        $error = explode(",", $_SESSION["error"]);
+        switch ($error[0]) {
         case "email":
           $errormess = $error[1];
         break;
@@ -18,7 +18,7 @@ beveilig_lid();
         //
         break;
       }
-      unset($_SESSION["error"]);
+        unset($_SESSION["error"]);
     }
     ?>
     <div class="container-fluid">
@@ -85,19 +85,19 @@ beveilig_lid();
               <div class="col-sm-8">
                 <div class="form-check">
                   <label class="form-check-label">
-                    <input class="form-check-input" type="radio" name="gender" value="man" checked>
+                    <input class="form-check-input" type="radio" name="geslacht" value="man" checked>
                     Man
                   </label>
                 </div>
                 <div class="form-check">
                   <label class="form-check-label">
-                    <input class="form-check-input" type="radio" name="gender" value="vrouw">
+                    <input class="form-check-input" type="radio" name="geslacht" value="vrouw">
                     Vrouw
                   </label>
                 </div>
                 <div class="form-check">
                   <label class="form-check-label">
-                    <input class="form-check-input" type="radio" name="gender" value="anders">
+                    <input class="form-check-input" type="radio" name="geslacht" value="anders">
                     Geen van bovenstaande
                   </label>
                 </div>
