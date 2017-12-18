@@ -42,54 +42,56 @@ if (isset($_POST['login'])) {
                 $_SESSION['lid'] = $info['lidID'];
                 $_SESSION['voornaam'] = $info['voornaam'];
                 if ($email = filter_input(INPUT_POST, 'email')) {
-                    $stmt=$pdo->prepare("DELETE FROM loginpoging WHERE lidID=?");
-                    $stmt->execute(array($info['lidID']));
+                    $ip= $_SERVER['REMOTE_ADDR'];
+                    $stmt=$pdo->prepare("DELETE FROM loginpoging WHERE ip=?");
+                    $stmt->execute(array($ip));
                 }
             } else {
                 print("Wachtwoord klopt niet");
                 // TODO: Foutinformatie op login.php en terugsturen
                 $errors = true;
-
-                // Foute inlogpoging registreren
-                if ($email = filter_input(INPUT_POST, 'email')) {
-                    $stmt=$pdo->prepare("Insert into loginpoging(lidID) VALUES (?)");
-                    $stmt->execute(array($info['lidID']));
-                    // drie foute pogingen zet session failed op true
-                    $stmt=$pdo->prepare("SELECT Count(*) as failed
-                      FROM   loginpoging
-                      WHERE  tijd > Date_sub(Now(), INTERVAL 15 minute) and  lidID=?");
-                    $stmt->execute(array($info['lidID']));
-                    $pogingen = $stmt->fetch(PDO::FETCH_ASSOC);
-                    // die($pogingen['testbanaan']);
-                    if ($pogingen['failed']>=3) {
-                        session_start();
-                        $_SESSION['failed']=true;
-                    }
-                }
             }
             $pdo = null;
         } else {
-            print("Het emailadres bestaat niet");
-            // TODO: foutinformatie op login.php en terugsturen
-            $errors = true;
-            //fout inlogpoging registreren
-            if ($email = filter_input(INPUT_POST, 'email')) {
-                $stmt=$pdo->prepare("Insert into loginpoging(lidID) VALUES (?)");
-                $stmt->execute(array($info['lidID']));
+            // Foute inlogpoging registreren
+            $ip= $_SERVER['REMOTE_ADDR'];
+            print $ip;
 
-                // drie foute pogingen zet session failed op true
-                $stmt=$pdo->prepare("SELECT Count(*) as failed
-                                      FROM   loginpoging
-                                      WHERE  tijd > Date_sub(Now(), INTERVAL 15 minute) and  lidID=?");
-                $stmt->execute(array($info['lidID']));
-                $pogingen = $stmt->fetch(PDO::FETCH_ASSOC);
-                // die($pogingen['testbanaan']);
-                if ($pogingen['failed']>=3) {
-                    session_start();
-                    $_SESSION['failed']=true;
-                    header("Location: login");
-                }
+
+            $stmt=$pdo->prepare("Insert into loginpoging(ip) VALUES (?)");
+            $stmt->execute(array($ip));
+            // drie foute pogingen zet session failed op true
+            $stmt=$pdo->prepare("SELECT Count(*) as failed
+                FROM   loginpoging
+                WHERE  tijd > Date_sub(Now(), INTERVAL 15 minute) and  ip=?");
+            $stmt->execute(array($ip));
+            $pogingen = $stmt->fetch(PDO::FETCH_ASSOC);
+            // die($pogingen['testbanaan']);
+            if ($pogingen['failed']>=3) {
+                session_start();
+                $_SESSION['failed']=true;
             }
+            // print("Het emailadres bestaat niet");
+            // // TODO: foutinformatie op login.php en terugsturen
+            $errors = true;
+            // //fout inlogpoging registreren
+            // if ($email = filter_input(INPUT_POST, 'email')) {
+            //     $stmt=$pdo->prepare("Insert into loginpoging(lidID) VALUES (?)");
+            //     $stmt->execute(array($info['lidID']));
+            //
+            //     // drie foute pogingen zet session failed op true
+            //     $stmt=$pdo->prepare("SELECT Count(*) as failed
+            //                           FROM   loginpoging
+            //                           WHERE  tijd > Date_sub(Now(), INTERVAL 15 minute) and  lidID=?");
+            //     $stmt->execute(array($info['lidID']));
+            //     $pogingen = $stmt->fetch(PDO::FETCH_ASSOC);
+            //     // die($pogingen['testbanaan']);
+            //     if ($pogingen['failed']>=3) {
+            //         session_start();
+            //         $_SESSION['failed']=true;
+            //         header("Location: login");
+            //     }
+            // }
         }
         if ($errors) {
             session_start();
