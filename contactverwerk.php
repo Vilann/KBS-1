@@ -39,7 +39,8 @@
       mail($zhtcmailadres, $onderwerp, $mailbericht, $header);
   } else {
       $recaptchaAntwoord = $_POST['g-recaptcha-response'];
-      $opvraag = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=".$privatekey."&response=".$recaptchaAntwoord);
+      $opvraag = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=".$privatekey."&response=".$recaptchaAntwoord."&remoteip=".$_SERVER['REMOTE_ADDR']);
+      
       $obj = json_decode($opvraag);
       if ($obj->success == true) {
           if (isset($_POST['verzend']) && isset($_POST['contactmail']) && isset($_POST['contactnaam']) && isset($_POST['contactbericht'])) {
@@ -52,7 +53,9 @@
               mail($zhtcmailadres, $onderwerp, $mailbericht, $header);
           }
       } else {
+          session_start();
           $_SESSION['captchaerror']=true;
+          header("Location: contact");
       }
   }
 
