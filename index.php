@@ -44,7 +44,7 @@
                 </div>
               </div>
 
-              	<div class="container">
+            <div class="container">
               <div id="myCarousel" class="carousel slide" data-ride="carousel">
                 <!-- Indicators -->
                 <ol class="carousel-indicators">
@@ -54,12 +54,14 @@
                   <li data-target="#myCarousel" data-slide-to="3"></li>
                   <li data-target="#myCarousel" data-slide-to="4"></li>
                 </ol>
-<div id="fb-root"></div>
-                <!--TODO : Netjes neerzetten-->
-<div class="fb-page" data-href="https://www.facebook.com/asvzhtc/" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true" data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/asvzhtc/" class="fb-xfbml-parse-ignore"><a href="https://www.facebook.com/asvzhtc/">ZHTC</a></blockquote></div>
+                <!--TODO : Netjes neerzetten <div id="fb-root"></div>-->
+                <div class="fb-page" data-href="https://www.facebook.com/asvzhtc/" data-tabs="timeline" data-small-header="false" data-adapt-container-width="true"
+                data-hide-cover="false" data-show-facepile="true"><blockquote cite="https://www.facebook.com/asvzhtc/" class="fb-xfbml-parse-ignore">
+                  <a href="https://www.facebook.com/asvzhtc/">ZHTC</a></blockquote></div>
+
                 <!-- Wrapper for slides -->
                 <div class="carousel-inner">
-                  <div class="item active">
+                  <div class="carousel-item active" role="listbox">
                     <img src="images/slider/Batavierenrace.jpg" alt="De Batavierenrace">
                     <div class="carousel-caption">
                       <h3>De Batavierenrace</h3>
@@ -67,35 +69,32 @@
                     </div>
                   </div>
 
-                  <div class="item">
-                    <img src="images/slider/Bierweek.jpg" alt="De Bierweek">
+                  <div class="carousel-item">
+                    <img class="d-block img-fluid" src="images/slider/Bierweek.jpg" alt="De Bierweek">
                   </div>
-
-                  <div class="item">
-                    <img src="images/slider/Highlandgames.jpg" alt="De Highlandgames">
+                  <div class="carousel-item">
+                    <img class="d-block img-fluid" src="images/slider/Highlandgames.jpg" alt="De Highlandgames">
                   </div>
-
-                  <div class="item">
-                    <img src="images/slider/Introweek.jpg" alt="De Introweek">
+                  <div class="carousel-item">
+                    <img class="d-block img-fluid" src="images/slider/Introweek.jpg" alt="De Introweek">
                   </div>
-
-                  <div class="item">
-                    <img src="images/slider/Netwerkbijeenkomst.jpg" alt="De Netwerkbijeenkomst">
+                  <div class="carousel-item">
+                    <img class="d-block img-fluid" src="images/slider/Netwerkbijeenkomst.jpg" alt="De Netwerkbijeenkomst">
                   </div>
 
                 </div>
 
                 <!-- Left and right controls -->
-                <a class="left carousel-control" href="#myCarousel" data-slide="prev">
-                  <span class="glyphicon glyphicon-chevron-left"></span>
+                <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                   <span class="sr-only">Previous</span>
                 </a>
-                <a class="right carousel-control" href="#myCarousel" data-slide="next">
-                  <span class="glyphicon glyphicon-chevron-right"></span>
+                <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
                   <span class="sr-only">Next</span>
                 </a>
               </div>
-              </div>
+            </div> <?php // NOTE:  ?>
 
               <a href="https://zhtc.nl/lustrumshop/">Ga naar de Lustrumshop</a>
 
