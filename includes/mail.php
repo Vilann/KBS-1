@@ -30,4 +30,3 @@ P.S. Dit is een noreply email-adres, hier kan niet op gereageerd worden.
         }
     }
 }
-mail_contact("jelle.santema@gmail.com", "Jelle Santema", "Hoi klootzak");

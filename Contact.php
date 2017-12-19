@@ -23,9 +23,7 @@
               <div class="form-group row">
                   <label for="wachtwoord" class="col-sm-3 col-form-label">Naam:</label>
                   <div class="col-sm-9 px-0">
-                    <input  id="wachtwoord" type="text" class="form-control" name="naam" value="" placeholder="Uw naam" required>
-                    <div id="feedwachtwoord" class="invalid-feedback" hidden>
-                    </div>
+                    <input  id="naam" type="text" class="form-control" name="naam" value="" placeholder="Uw naam" required>
                   </div>
               </div>
               <div class="form-group row">
@@ -39,13 +37,10 @@
               </div>
               <?php
               error_reporting(E_ERROR | E_WARNING | E_PARSE);
-              if (!isset($_SESSION['lid'])) {
-                  print('<div class="g-recaptcha col-sm-9 offset-sm-3 px-0" data-sitekey="6Ld7nTsUAAAAADXHtsQJLwU-Zt1wcQ_ysEB9B0Dz"></div>');
 
-                  if ($_SESSION['captchaerror']) {
-                      print('<p>Captcha is verkeerd ingevuld, probeer alstublieft opnieuw.</p>');
-                      unset($_SESSION["captchaerror"]);
-                  }
+              if (isset($_SESSION['captchamelding'])) {
+                  print('<p>' . $_SESSION['captchamelding'] . '</p>');
+                  unset($_SESSION["captchamelding"]);
               }
               ?>
               <div class="form-group row">

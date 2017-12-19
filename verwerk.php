@@ -217,21 +217,36 @@ if (isset($_POST['edit'])) {
 }
 $privatekey = "6Ld7nTsUAAAAALPpQKrdXPI3nJnSF11aSBmvx6HF";
 if ((isset($_POST['contact']))) {
-    $recaptchaAntwoord = $_POST['g-recaptcha-response'];
-    $opvraag = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=".$privatekey."&response=".$recaptchaAntwoord."&remoteip=".$_SERVER['REMOTE_ADDR']);
+    error_reporting(E_ALL);
 
-    $obj = json_decode($opvraag);
-    if ($obj->success == true && isset($_POST['contactmail']) && isset($_POST['contactnaam']) && isset($_POST['contactbericht'])) {
-        include("includes/mail.php");
-        $naam = $_POST['contactnaam'];
-        $emailadres = $_POST['contactmail'];
-        $bericht = $_POST['contactbericht'];
-        mail_contact($emailadres, $naam, $bericht);
+    // Het gedeelte voor de 'if' regelt de captcha.
+    // Eerst halen we de response van de knop op contact.php
+    $captcha = $_POST['g-recaptcha-response'];
+    // Dan maken we met curl, want file_get_contents werkt op de een of andere manier niet, een request volgens de recaptcha api van google.
+    $ch = curl_init("https://www.google.com/recaptcha/api/siteverify?secret=".$privatekey."&response=".$captcha . "&remoteip=" . $_SERVER['REMOTE_ADDR']);
+    curl_setopt($ch, CURLOPT_FRESH_CONNECT, 1);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    // De response, dus of het goed gegaan is of niet, wordt opgeslagen in $response.
+    $response = curl_exec($ch);
+    curl_close($ch);
+
+    // Als laatst moeten we zorgen dat we de gegevens kunnen gebruiken. json_decode zet het json bestand om in een class.
+    $result  = json_decode($response);
+
+    // Nu kunnen we eindelijk kijken of het een geldige response is, dwz het is geen bot.
+    session_start();
+    if ($result->success) {
+        if (($naam = filter_input(INPUT_POST, 'naam')) && ($emailadres = filter_input(INPUT_POST, 'email')) && ($bericht = filter_input(INPUT_POST, 'bericht'))) {
+            include("includes/mail.php");
+            mail_contact($emailadres, $naam, $bericht);
+            $_SESSION['captchamelding'] = "Uw bericht is verstuurd. Binnen enkele momenten zal er een mail verstuurd worden ter bevestiging.";
+        } else {
+            $_SESSION['captchamelding'] = "U hebt iets niet goed ingevuld";
+        }
     } else {
-        session_start();
-        $_SESSION['captchaerror']=true;
-        header("Location: contact");
+        $_SESSION['captchamelding'] = "Er is iets fout gegaan met de verificatie van de captcha, probeer opnieuw!";
     }
+    header("Location: contact");
 }
 if (isset($_POST['infoupdate'])) {
 }
