@@ -60,12 +60,12 @@
                 <div class="carousel-inner">
                   <div class="carousel-item active" role="listbox">
                     <?php
-                    $stmt = $pdo->prepare('SELECT *
-          					FROM slider');
+                    $stmt = $pdo->prepare('SELECT * FROM slider');
           					$stmt->execute();
           					$data = $stmt->fetchAll();
+                    //foreach ($data as $key) {
                     ?>
-                    <img src="images/slider/Batavierenrace.jpg" alt="De Batavierenrace">
+                    <img src="images/slider/"<?php print($data["batavierenrace.jpg"]); ?> alt="De Batavierenrace">
                     <div class="carousel-caption">
                     <h3><?php print($data["fototitel"]); ?></h3>
                       <p><?php print($data["tekst"]);?></p>
@@ -73,18 +73,34 @@
                   </div>
 
                   <div class="carousel-item">
-                    <img class="d-block img-fluid" src="images/slider/"<?php print($data["afbeelding"]); ?> alt="De Bierweek">
+                    <img class="d-block img-fluid" src="images/slider/"<?php print($data["bierweek.jpg"]); ?> alt="De Bierweek">
+                    <div class="carousel-caption">
+                    <h3><?php print($data["fototitel"]); ?></h3>
+                      <p><?php print($data["tekst"]);?></p>
+                    </div>
                   </div>
                   <div class="carousel-item">
-                    <img class="d-block img-fluid" src="images/slider/Highlandgames.jpg" alt="De Highlandgames">
+                    <img class="d-block img-fluid" src="images/slider/<?php print($data["highlandgames.jpg"]); ?>" alt="De Highlandgames">
+                    <div class="carousel-caption">
+                    <h3><?php print($data["fototitel"]); ?></h3>
+                      <p><?php print($data["tekst"]);?></p>
+                    </div>
                   </div>
                   <div class="carousel-item">
-                    <img class="d-block img-fluid" src="images/slider/Introweek.jpg" alt="De Introweek">
+                    <img class="d-block img-fluid" src="images/slider/<?php print($data["introweek.jpg"]); ?>" alt="De Introweek">
+                    <div class="carousel-caption">
+                    <h3><?php print($data["fototitel"]); ?></h3>
+                      <p><?php print($data["tekst"]);?></p>
+                    </div>
                   </div>
                   <div class="carousel-item">
                     <img class="d-block img-fluid" src="images/slider/Netwerkbijeenkomst.jpg" alt="De Netwerkbijeenkomst">
+                    <div class="carousel-caption">
+                    <h3><?php print($data["fototitel"]); ?></h3>
+                      <p><?php print($data["tekst"]);?></p>
+                    </div>
                   </div>
-
+                <?php //}; ?>
                 </div>
 
                 <!-- Left and right controls -->

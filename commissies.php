@@ -48,7 +48,7 @@
                   <div class="col-5 offset-7">
 
                     <p class="card-text text-right my-0">Voorzitter: <span class="text-muted"><?php print ucfirst(($info['voornaam'])); ?></span></p>
-                    <p class="card-text text-right my-0">Leden:<span class="">
+                    <p class="card-text text-right my-0">Leden:<span class="text-muted">
                     <?php foreach ($info as $commissielid) {
                     	print($info['cmlid'] . "<br>");}?> </span> </p>
                     </div>
@@ -110,9 +110,7 @@
         </div>
 		<?php } ?>
 	</div>
-    </div>
-		<?php
-    } ?>
+    </div><?php } ?>
 		<?php include 'includes/footer.php'; ?>
 		<script>
 		<?php include 'includes/script.js'; ?>
