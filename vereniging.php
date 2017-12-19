@@ -3,8 +3,8 @@
 <html>
 	<head>
 		<meta charset="utf-8">
-		<title>ZHTC - disputen</title>
-		<link rel="stylesheet" href="commissies.css">
+		<title>ZHTC - Over de vereniging</title>
+		<link rel="stylesheet" href="vereniging.css">
 		<?php include 'includes/header.php';
     include 'includes/dbconnect.php';
     error_reporting(E_ERROR | E_WARNING | E_PARSE);
@@ -12,7 +12,7 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-12">
-          <h1 class="text-center mt-4">Commissies</h1>
+          <h1 class="text-center mt-4">Vereniging</h1>
           <!-- <p class="text-muted"><i class="icon ion-chevron-left"></i> oude commissies</p> -->
         </div>
       </div>
