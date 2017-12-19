@@ -4,11 +4,7 @@
     <head>
         <title>ZHTC - Home</title>
         <?php include 'includes/header.php';
-<<<<<<< HEAD
-              include 'includes/cookies.php';
-=======
               include 'includes/dbconnect.php';
->>>>>>> 7258da1d1cb8913c9e7029b14a76bd0ee44429e9
               //include 'includes/sidebar.php';?>
 
               <script>(function(d, s, id) {
@@ -36,8 +32,8 @@
                     <?php
                     $stmt = $pdo->prepare('SELECT *
           					FROM slider');
-          					$stmt->execute();
-          					$data = $stmt->fetchAll();
+                              $stmt->execute();
+                              $data = $stmt->fetchAll();
                     ?>
                     <img src="images/slider/Batavierenrace.jpg" alt="De Batavierenrace">
                     <div class="carousel-caption">

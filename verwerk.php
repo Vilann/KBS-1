@@ -95,7 +95,7 @@ if (isset($_POST['login'])) {
         }
         if ($errors) {
             session_start();
-            $_SESSION["error"] = "wachtwoord,Het emailadres of wachtwoord is niet correct ingevult";
+            $_SESSION["error"] = "wachtwoord,Het emailadres of wachtwoord is niet correct ingevuld";
             header("Location: login");
             // anders voert het de gegevens in ($insert), en daarna het emailadres ($emailinsert)
         }
@@ -221,6 +221,24 @@ if (isset($_POST['edit'])) {
       // Dit wordt samen met het eigen emailadres opgeslagen, dus een lid heeft 2 emailadressen
       // NOTE: door zhtc aangegeven dat het niet meer hoeft
       // $ZHTCemailadres = $voornaam . "." . $achternaam . "@zhtc.nl";
+    }
+}
+$privatekey = "6Ld7nTsUAAAAALPpQKrdXPI3nJnSF11aSBmvx6HF";
+if ((isset($_POST['contact']))) {
+    $recaptchaAntwoord = $_POST['g-recaptcha-response'];
+    $opvraag = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=".$privatekey."&response=".$recaptchaAntwoord."&remoteip=".$_SERVER['REMOTE_ADDR']);
+
+    $obj = json_decode($opvraag);
+    if ($obj->success == true && isset($_POST['contactmail']) && isset($_POST['contactnaam']) && isset($_POST['contactbericht'])) {
+        include("includes/mail.php");
+        $naam = $_POST['contactnaam'];
+        $emailadres = $_POST['contactmail'];
+        $bericht = $_POST['contactbericht'];
+        mail_contact($emailadres, $naam, $bericht);
+    } else {
+        session_start();
+        $_SESSION['captchaerror']=true;
+        header("Location: contact");
     }
 }
 if (isset($_POST['infoupdate'])) {
