@@ -30,7 +30,7 @@
 				$dispuuttekst = $info['dptekst'];
 				$voornaam = $info['voornaam'];
 			} else {
-					print("Werkt niet");
+					print("Werkt niet, of... of het database tabel waar je naar zoekt is leeg");
 			}
 			?>
 			<div class="container-fluid">
