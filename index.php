@@ -6,12 +6,7 @@
         <?php include 'includes/header.php';
               include 'includes/dbconnect.php';
               //include 'includes/sidebar.php';?>
-              <!-- This script triggers the modal without a button -->
-              <script type="text/javascript">
-              	$(document).ready(function(){
-              		$("#myModal").modal('show');
-              	});
-              </script>
+
               <script>(function(d, s, id) {
                 var js, fjs = d.getElementsByTagName(s)[0];
                 if (d.getElementById(id)) return;
@@ -19,31 +14,6 @@
                 js.src = 'https://connect.facebook.net/nl_NL/sdk.js#xfbml=1&version=v2.11';
                 fjs.parentNode.insertBefore(js, fjs);
               }(document, 'script', 'facebook-jssdk'));</script>
-
-
-              <!-- Modal -->
-              <?php // NOTE: een modal is een popup venster. Gr Kai?>
-              <style media="screen">#myModal{top:38%;right:75%;outline: none;}</style>
-              <div id="myModal" class="modal fade" role="dialog">
-                <div class="modal-dialog modal-sm">
-
-                  <!-- Modal content-->
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <button type="button" class="close" data-dismiss="modal">&times;</button>
-                      <h4 class="modal-title">Deze website maakt gebruik van cookies</h4>
-                    </div>
-                    <div class="modal-body">
-                      <p>Deze website gebruikt cookies voor een verbeterde gebruikservaring. Door gebruik te maken van onze website of door op "Ik ga akkoord" te klikken ga je akkoord met al onze cookies die benoemd zijn in ons cookie beleid.</p>
-                    </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-success" data-dismiss="modal">Ik ga akkoord</button>
-                      <a type="button" href="cookiebeleid.pdf" class="btn btn-info" role="button">Lees meer</a>
-                    </div>
-                  </div>
-
-                </div>
-              </div>
 
             <div class="container">
               <div id="myCarousel" class="carousel slide" data-ride="carousel">
@@ -57,51 +27,57 @@
                 </ol>
 
                 <!-- Wrapper for slides -->
+                <?php
+                $stmt = $pdo->prepare('SELECT * FROM slider');
+                $stmt->execute();
+                $data = $stmt->fetchall();
+                foreach ($data as $data) {
+                    ?>
                 <div class="carousel-inner">
                   <div class="carousel-item active" role="listbox">
                     <?php
-                    $stmt = $pdo->prepare('SELECT * FROM slider');
-          					$stmt->execute();
-          					$data = $stmt->fetchAll();
-                    //foreach ($data as $key) {
-                    ?>
-                    <img src="images/slider/"<?php print($data["batavierenrace.jpg"]); ?> alt="De Batavierenrace">
+                    $stmt = $pdo->prepare('SELECT *
+          					FROM slider');
+                    $stmt->execute();
+                    $data = $stmt->fetchAll(); ?>
+                    <img src="images/slider/Batavierenrace.jpg" alt="De Batavierenrace">
                     <div class="carousel-caption">
-                    <h3><?php print($data["fototitel"]); ?></h3>
-                      <p><?php print($data["tekst"]);?></p>
+                    <h3><?php strtoupper(print($data["fototitel"])); ?></h3>
+                      <p><?php print($data["tekst"]); ?></p>
                     </div>
                   </div>
-
+                  <?php
+                } ?>
+<!--
                   <div class="carousel-item">
-                    <img class="d-block img-fluid" src="images/slider/"<?php print($data["bierweek.jpg"]); ?> alt="De Bierweek">
-                    <div class="carousel-caption">
-                    <h3><?php print($data["fototitel"]); ?></h3>
-                      <p><?php print($data["tekst"]);?></p>
-                    </div>
-                  </div>
-                  <div class="carousel-item">
-                    <img class="d-block img-fluid" src="images/slider/<?php print($data["highlandgames.jpg"]); ?>" alt="De Highlandgames">
+                    <img class="d-block img-fluid" src="images/slider/<?php print($data["afbeelding"]); ?>" alt="De Bierweek">
                     <div class="carousel-caption">
                     <h3><?php print($data["fototitel"]); ?></h3>
                       <p><?php print($data["tekst"]);?></p>
                     </div>
                   </div>
                   <div class="carousel-item">
-                    <img class="d-block img-fluid" src="images/slider/<?php print($data["introweek.jpg"]); ?>" alt="De Introweek">
+                    <img class="d-block img-fluid" src="images/slider/<?php print($data["afbeelding"]); ?>" alt="De Highlandgames">
                     <div class="carousel-caption">
                     <h3><?php print($data["fototitel"]); ?></h3>
                       <p><?php print($data["tekst"]);?></p>
                     </div>
                   </div>
                   <div class="carousel-item">
-                    <img class="d-block img-fluid" src="images/slider/Netwerkbijeenkomst.jpg" alt="De Netwerkbijeenkomst">
+                    <img class="d-block img-fluid" src="images/slider/<?php print($data["afbeelding"]); ?>" alt="De Introweek">
                     <div class="carousel-caption">
                     <h3><?php print($data["fototitel"]); ?></h3>
                       <p><?php print($data["tekst"]);?></p>
                     </div>
                   </div>
-                <?php //}; ?>
-                </div>
+                  <div class="carousel-item">
+                    <img class="d-block img-fluid" src="images/slider/<?php print($data["afbeelding"]); ?>" alt="De Netwerkbijeenkomst">
+                    <div class="carousel-caption">
+                    <h3><?php print($data["fototitel"]); ?></h3>
+                      <p><?php print($data["tekst"]);?></p>
+                    </div>
+                  </div>
+                </div> -->
 
                 <!-- Left and right controls -->
                 <!-- <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
@@ -113,7 +89,7 @@
                   <span class="sr-only">Next</span>
                 </a> -->
               </div>
-            </div> <?php // NOTE:  ?>
+            </div> <?php // NOTE:?>
 
             <div class="container"><br>
               <!--TODO : Netjes neerzetten <div id="fb-root"></div>-->
@@ -122,6 +98,7 @@
                 <a href="https://www.facebook.com/asvzhtc/">ZHTC</a></blockquote></div>
 
             </div>
+
 
               <a href="https://zhtc.nl/lustrumshop/">Ga naar de Lustrumshop</a>
 
