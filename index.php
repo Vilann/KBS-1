@@ -57,51 +57,52 @@
                 </ol>
 
                 <!-- Wrapper for slides -->
+                <?php
+                $stmt = $pdo->prepare('SELECT * FROM slider');
+                $stmt->execute();
+                $data = $stmt->fetchall();
+                foreach ($data as $data) {
+                ?>
                 <div class="carousel-inner">
-                  <div class="carousel-item active" role="listbox">
-                    <?php
-                    $stmt = $pdo->prepare('SELECT * FROM slider');
-          					$stmt->execute();
-          					$data = $stmt->fetchAll();
-                    //foreach ($data as $key) {
-                    ?>
-                    <img src="images/slider/"<?php print($data["batavierenrace.jpg"]); ?> alt="De Batavierenrace">
-                    <div class="carousel-caption">
-                    <h3><?php print($data["fototitel"]); ?></h3>
-                      <p><?php print($data["tekst"]);?></p>
-                    </div>
-                  </div>
 
+                  <div class="carousel-item active" role="listbox" >
+                    <img class="d-block img-fluid" src="images/slider/<?php print($data["afbeelding"]); ?>" alt="<?php strtolower(print($data["fototitel"])); ?>">
+                    <div class="carousel-caption">
+                    <h3><?php strtoupper(print($data["fototitel"])); ?></h3>
+                      <p><?php print($data["tekst"]);?></p>
+                    </div>
+                  </div>
+                  <?php } ?>
+<!--
                   <div class="carousel-item">
-                    <img class="d-block img-fluid" src="images/slider/"<?php print($data["bierweek.jpg"]); ?> alt="De Bierweek">
+                    <img class="d-block img-fluid" src="images/slider/<?php print($data["afbeelding"]); ?>" alt="De Bierweek">
                     <div class="carousel-caption">
                     <h3><?php print($data["fototitel"]); ?></h3>
                       <p><?php print($data["tekst"]);?></p>
                     </div>
                   </div>
                   <div class="carousel-item">
-                    <img class="d-block img-fluid" src="images/slider/<?php print($data["highlandgames.jpg"]); ?>" alt="De Highlandgames">
+                    <img class="d-block img-fluid" src="images/slider/<?php print($data["afbeelding"]); ?>" alt="De Highlandgames">
                     <div class="carousel-caption">
                     <h3><?php print($data["fototitel"]); ?></h3>
                       <p><?php print($data["tekst"]);?></p>
                     </div>
                   </div>
                   <div class="carousel-item">
-                    <img class="d-block img-fluid" src="images/slider/<?php print($data["introweek.jpg"]); ?>" alt="De Introweek">
+                    <img class="d-block img-fluid" src="images/slider/<?php print($data["afbeelding"]); ?>" alt="De Introweek">
                     <div class="carousel-caption">
                     <h3><?php print($data["fototitel"]); ?></h3>
                       <p><?php print($data["tekst"]);?></p>
                     </div>
                   </div>
                   <div class="carousel-item">
-                    <img class="d-block img-fluid" src="images/slider/Netwerkbijeenkomst.jpg" alt="De Netwerkbijeenkomst">
+                    <img class="d-block img-fluid" src="images/slider/<?php print($data["afbeelding"]); ?>" alt="De Netwerkbijeenkomst">
                     <div class="carousel-caption">
                     <h3><?php print($data["fototitel"]); ?></h3>
                       <p><?php print($data["tekst"]);?></p>
                     </div>
                   </div>
-                <?php //}; ?>
-                </div>
+                </div> -->
 
                 <!-- Left and right controls -->
                 <!-- <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
@@ -122,6 +123,7 @@
                 <a href="https://www.facebook.com/asvzhtc/">ZHTC</a></blockquote></div>
 
             </div>
+
 
               <a href="https://zhtc.nl/lustrumshop/">Ga naar de Lustrumshop</a>
 
