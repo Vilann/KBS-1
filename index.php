@@ -4,6 +4,7 @@
     <head>
         <title>ZHTC - Home</title>
         <?php include 'includes/header.php';
+              include 'includes/dbconnect.php';
               //include 'includes/sidebar.php';?>
               <!-- This script triggers the modal without a button -->
               <script type="text/javascript">
@@ -58,15 +59,21 @@
                 <!-- Wrapper for slides -->
                 <div class="carousel-inner">
                   <div class="carousel-item active" role="listbox">
+                    <?php
+                    $stmt = $pdo->prepare('SELECT *
+          					FROM slider');
+          					$stmt->execute();
+          					$data = $stmt->fetchAll();
+                    ?>
                     <img src="images/slider/Batavierenrace.jpg" alt="De Batavierenrace">
                     <div class="carousel-caption">
-                      <h3>De Batavierenrace</h3>
-                      <p>Niet alles wat we doen regelenen we zelf en niet alles wat we doen gebeurt in Zwolle. Elk jaar doet een deel van ZHTC mee aan de Batavierenrace, Het grootste studentenestafete-evenement van de wereld. We lopen van Nijmegen naar Enschede waar een groot feest op ons wacht. De a.s.v.ZHTC -mentaliteit bij de Batavierenrace is zuipen tot je omvalt, tien kilometer hardrennen alsof den duvel je op de hielen zit, om vervolgens direct na de finish een biertje te pakken en te gaan feesten totdat je er bij neervalt of langer!</p>
+                    <h3><?php print($data["fototitel"]); ?></h3>
+                      <p><?php print($data["tekst"]);?></p>
                     </div>
                   </div>
 
                   <div class="carousel-item">
-                    <img class="d-block img-fluid" src="images/slider/Bierweek.jpg" alt="De Bierweek">
+                    <img class="d-block img-fluid" src="images/slider/"<?php print($data["afbeelding"]); ?> alt="De Bierweek">
                   </div>
                   <div class="carousel-item">
                     <img class="d-block img-fluid" src="images/slider/Highlandgames.jpg" alt="De Highlandgames">

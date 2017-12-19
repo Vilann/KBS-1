@@ -14,8 +14,28 @@ $(document).ready(function(){
          var myID = $(this).closest("tr").attr("id");
          var myCDID = $(this).closest("td").attr("id");
          myChoice = myChoice.substr( myChoice.lastIndexOf(' ') + 1);
+         //alert(myName+" "+myChoice+" "+myID+" "+myCDID);
          $(".deleteName").text( myName );
          $("#setthisHref").attr("onclick", "location.href='?delete=yes&id="+myID+"&choice="+myChoice+"&ots="+myCDID+"'" );
+  });
+  $(".editModal").on("click", function () {
+         var myName = $(this).data('id');
+         var myChoice = $(this).attr("class");
+         var myID = $(this).closest("tr").attr("id");
+         var myCDID = $(this).closest("td").attr("id");
+         myChoice = myChoice.substr( myChoice.lastIndexOf(' ') + 1);
+         //alert(myName+" "+myChoice+" "+myID+" "+myCDID);
+         //alert(myName+" "+myChoice+" "+myID+" "+myCDID);
+         $(".deleteName").text( myName );
+         if(myChoice == "commissie"){
+           $("#commNaam").val( myName );
+           $("#voorzitterNaam").val( myCDID );
+           $("#setthisHref2").attr("onclick", "location.href='?edit=yes&id="+myID+"&choice="+myChoice+"&ots="+myCDID+"'" );
+         }else{
+           $("#dispNaam").val( myName );
+           $("#dvoorzitterNaam").val( myCDID );
+           $("#setthisHref3").attr("onclick", "location.href='?edit=yes&id="+myID+"&choice="+myChoice+"&ots="+myCDID+"'" );
+         }
   });
   $('#sidebar_toggler').on('click', function () {
           if($('#sidebar').hasClass("show")){
@@ -30,6 +50,10 @@ $(document).ready(function(){
     $( "#"+orderName ).addClass( "orderBy" );
 
     var pageName = $( "#pageLoc" ).attr("class");
+    if(pageName == "activiteiten"){
+      $( "#"+pageName ).addClass( "selected" );
+      $( "#2"+pageName ).addClass( "selected" );
+    }
     $( "#"+pageName ).addClass( "selected" );
 
     var voorzitterName = $( "#getVoorzitter" ).attr("class");
@@ -52,10 +76,16 @@ $(document).ready(function(){
     		var tools = "beheer";
         setSidebar(tools);
     		break;
-        case 'beheerpagina':
+      case 'beheerpagina':
       		var tools = "beheer";
           setSidebar(tools);
       		break;
+      case 'activiteiten':
+          var tools = "beheer";
+          setSidebar(tools);
+          var tools = "commissie";
+          setSidebar(tools);
+          break;
       case 'commissieleden':
       	var tools = "commissie";
         setSidebar(tools);
@@ -83,11 +113,39 @@ $(document).ready(function(){
     $('#getErrormess').on('change', '#keuze', function() {
       $("#jq_target").empty();
       selectedPlaatsen = $(this).val();
+      if(selectedPlaatsen == 1){
+        selectedPlaatsen = 2;
+      }
       for(var i = 1; i <= selectedPlaatsen; i++){
       $("#jq_target").append("<div class='form-group row'><label for='mogelijkheid"+i+"' class='col-sm-3 col-form-label'>Keuze "+i+":</label><div class='col-sm-9 px-0 pr-5'><input  id='keuze"+i+"' type='text' class='form-control' name='keuze"+i+"' value='' required></div></div>");
       }
     });
 
+    $('.toggleEdit').on('click', function () {
+          $(this).attr("type","hidden");
+          $(".editKnop").attr("type","submit");
+          $(".M_activiteitnaam").attr("readonly", false);
+          $(".M_activiteitdatumvan").attr("readonly", false);
+          $(".M_activiteittijdvan").attr("readonly", false);
+          $(".M_activiteitdatumtot").attr("readonly", false);
+          $(".M_activiteittijdtot").attr("readonly", false);
+          $(".M_activiteitlocatie").attr("readonly", false);
+          $(".M_activiteitinfo").attr("readonly", false);
+          $(".editActiviteitTekst").css("display", "block");
+    });
+
+    $('.editActiviteit').on('hidden.bs.modal', function () {
+      $(".toggleEdit").attr("type","submit");
+      $(".editKnop").attr("type","hidden");
+      $(".M_activiteitnaam").attr("readonly", true);
+      $(".M_activiteitdatumvan").attr("readonly", true);
+      $(".M_activiteittijdvan").attr("readonly", true);
+      $(".M_activiteitdatumtot").attr("readonly", true);
+      $(".M_activiteittijdtot").attr("readonly", true);
+      $(".M_activiteitlocatie").attr("readonly", true);
+      $(".M_activiteitinfo").attr("readonly", true);
+      $(".editActiviteitTekst").css("display", "none");
+    })
     //$('#addcommissie').on('hidden', function () {
       //alert('sluit commissie ');
       //$('#kiesVoorzitter').modal('show');

@@ -11,9 +11,9 @@
           //sla de datum van vandaag op in $date
           $date = date("Y-m-d");
           //Prepare en execute de sql query om een nieuwe poll toe te voegen
-          $stmt = $pdo->prepare("INSERT INTO poll(vraag, datum)
-            VALUES(?, ?)");
-          $stmt->execute(array($_POST['vraag'], $date));
+          $stmt = $pdo->prepare("INSERT INTO poll(vraag, datum, einddatum)
+            VALUES(?, ?,?)");
+          $stmt->execute(array($_POST['vraag'], $date,$_POST['enddate']));
           //Selecteer het id van de poll die zojuist is toegevoegd en sla die op als $maxId
           $stmt = $pdo->prepare("SELECT MAX(pollID) AS max_id FROM poll");
           $stmt -> execute();
@@ -424,11 +424,17 @@
                             <input  id="vraag" type="text" class="form-control" name="vraag" placeholder="Moet er gratis koffie verstrekt worden?" required>
                           </div>
                       </div>
+                      <div class="form-group row">
+                          <label for="vraag" class="col-sm-3 col-form-label">Einddatum:</label>
+                          <div class="col-sm-9 px-0 pr-5">
+                            <input  id="datum" type="date" class="form-control" name="enddate" min=<?php print('"' . date('Y-m-d', strtotime("+2 day")) . '"'); ?> required>
+                          </div>
+                      </div>
                       <div class="imput-group row">
                           <label for="keuze" class="col-sm-3 col-form-label">Aantal keuzen:</label>
                           <div class="col-sm-9 px-0 pr-5">
                             <div class="input-group mb-2 mb-sm-0">
-                              <input  id="keuze" type="number" max="8" class="form-control" name="keuzeaantal" value="" required>
+                              <input  id="keuze" type="number" max="8" min="2" class="form-control" name="keuzeaantal" value="" required>
                               <div class="input-group-addon">Maximaal 8</div>
                             </div>
                             <div id="feedkeuze" class="invalid-feedback" hidden>

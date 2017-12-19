@@ -1,7 +1,7 @@
 <?php include '../includes/beveiliging.php';
 beveilig_adminpagina();
-/*edit leden () (1 uur)
-edit commissies (als ik nog tijd heb) (2 uur)
+/*edit leden () (1 uur) done
+edit commissies & disputen (als ik nog tijd heb) (2 uur)  done
 tijdlimiet polls () | 20min
 toevoegen leden aan commissies en disputen( 2uur)
 aanpassen algemene pagina's (tussen 30min en 2.5 uur)//

@@ -1,5 +1,20 @@
 <?php
 include '../../includes/dbconnect.php';
+/*if(isset($_POST['edit'])){
+  $id = $_POST['id'];
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $stmt = $pdo->prepare("UPDATE lid
+        SET voornaam=?,tussenvoegsel=?,achternaam=?,geboortedatum=?,adres=?,postcode=?,woonplaats=?,geslacht=?
+        WHERE lidID=?");
+    $stmt->execute(array($_POST['voornaam'],$_POST['tussenvoegsel'],$_POST['achternaam'],$_POST['geboortedatum'],$_POST['adres'],$_POST['postcode'],$_POST['woonplaats'],$_POST['gender'],$id));
+    if (!$stmt) {
+      echo "\nPDO::errorInfo():\n";
+      print_r($dbh->errorInfo());
+    }
+    die("test");
+  //unset($_POST);
+  //header('Location: leden');
+}*/
 if(isset($_GET['delete']) && !(empty($_GET['delete']))){
   if($_GET['delete'] == "yes"){
     $id = $_GET['id'];
@@ -23,43 +38,80 @@ if(isset($_GET['delete']) && !(empty($_GET['delete']))){
 }
 if(isset($_GET['as']) && !(empty($_GET['as']))){
   if($_GET['as'] == "commissie"){
-    //Prepare en execute de sql query om een nieuwe poll toe te voegen
-    $stmt = $pdo->prepare("INSERT INTO commissie(commissienaam, commissievoorzitter)
-      VALUES(?, ?)");
-    $stmt->execute(array($_GET['newName'], $_GET['nameid']));
+    if($_GET['edit'] == "true"){
+      $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+      $stmt = $pdo->prepare("UPDATE commissie
+        SET commissienaam=?, commissievoorzitter=?
+        WHERE commissieID=?");
+      $stmt->execute(array($_GET['newName'], $_GET['nameid'], $_GET['cid']));
+      if (!$stmt) {
+        echo "\nPDO::errorInfo():\n";
+        print_r($dbh->errorInfo());
+      }
+    }else{
+      //Prepare en execute de sql query om een nieuwe poll toe te voegen
+      $stmt = $pdo->prepare("INSERT INTO commissie(commissienaam, commissievoorzitter)
+        VALUES(?, ?)");
+      $stmt->execute(array($_GET['newName'], $_GET['nameid']));
 
-    //Selecteer het id van de commissie die zojuist is toegevoegd en sla die op als $maxId
-    $stmt = $pdo->prepare("SELECT MAX(commissieID) AS max_id FROM commissie");
-    $stmt -> execute();
-    $maxId = $stmt -> fetch(PDO::FETCH_ASSOC);
-    $maxId = $maxId['max_id'];
+      //Selecteer het id van de commissie die zojuist is toegevoegd en sla die op als $maxId
+      $stmt = $pdo->prepare("SELECT MAX(commissieID) AS max_id FROM commissie");
+      $stmt -> execute();
+      $maxId = $stmt -> fetch(PDO::FETCH_ASSOC);
+      $maxId = $maxId['max_id'];
 
-    $stmt = $pdo->prepare("INSERT INTO commissielid(commissieID, lidID)
-      VALUES(?, ?)");
-    $stmt->execute(array($maxId, $_GET['nameid']));
+      $stmt = $pdo->prepare("INSERT INTO commissielid(commissieID, lidID)
+        VALUES(?, ?)");
+      $stmt->execute(array($maxId, $_GET['nameid']));
+    }
   }elseif($_GET['as'] == "dispuut"){
-    //Prepare en execute de sql query om een nieuwe poll toe te voegen
-    $stmt = $pdo->prepare("INSERT INTO dispuut(dispuutnaam, dispuutvoorzitter)
-      VALUES(?, ?)");
-    $stmt->execute(array($_GET['newName'], $_GET['nameid']));
-
-    //Selecteer het id van de commissie die zojuist is toegevoegd en sla die op als $maxId
-    $stmt = $pdo->prepare("SELECT MAX(dispuutid) AS max_id FROM dispuut");
-    $stmt -> execute();
-    $maxId = $stmt -> fetch(PDO::FETCH_ASSOC);
-    $maxId = $maxId['max_id'];
-
-    $stmt = $pdo->prepare("INSERT INTO dispuutlid(dispuutID, lidID)
-      VALUES(?, ?)");
-    $stmt->execute(array($maxId, $_GET['nameid']));
+    if($_GET['edit'] == "true"){
+      $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+      $stmt = $pdo->prepare("UPDATE dispuut
+        SET dispuutnaam=?, dispuutvoorzitter=?
+        WHERE dispuutid=?");
+      $stmt->execute(array($_GET['newName'], $_GET['nameid'], $_GET['cid']));
+      if (!$stmt) {
+        echo "\nPDO::errorInfo():\n";
+        print_r($dbh->errorInfo());
+      }
+    }else{
+      //Prepare en execute de sql query om een nieuwe poll toe te voegen
+      $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+      $stmt = $pdo->prepare("INSERT INTO dispuut(dispuutnaam, dispuutvoorzitter)
+        VALUES(?, ?)");
+      $stmt->execute(array($_GET['newName'], $_GET['nameid']));
+      if (!$stmt) {
+        echo "\nPDO::errorInfo():\n";
+        print_r($dbh->errorInfo());
+      }
+      //Selecteer het id van de commissie die zojuist is toegevoegd en sla die op als $maxId
+      $stmt = $pdo->prepare("SELECT MAX(dispuutid) AS max_id FROM dispuut");
+      $stmt -> execute();
+      $maxId = $stmt -> fetch(PDO::FETCH_ASSOC);
+      $maxId = $maxId['max_id'];
+      if (!$stmt) {
+        echo "\nPDO::errorInfo():\n";
+        print_r($dbh->errorInfo());
+      }
+      $stmt = $pdo->prepare("INSERT INTO dispuutlid(dispuutid, lidID)
+        VALUES(?, ?)");
+      $stmt->execute(array($maxId, $_GET['nameid']));
+      if (!$stmt) {
+        echo "\nPDO::errorInfo():\n";
+        print_r($dbh->errorInfo());
+      }
+    }
   }
   header('Location: commissiedisputen');
 }
-//Hier staat de functie om nieuwe polls toe te voegen.
+
 //Kijk of er niks leeg is gepost
-  if(isset($_POST['add']) && !(empty($_POST['add']))){
+  if(isset($_POST['add'])){
     $as = $_POST['as'];
+    $edit = $_POST['edit'];
     $newName = $_POST['newName'];
+    $id = $_POST['id'];
     $voorzitterNaam = explode(" ", $_POST['voorzitter']);
     if(!isset($voorzitterNaam[1])){
       print("naam niet correct");
@@ -73,7 +125,7 @@ if(isset($_GET['as']) && !(empty($_GET['as']))){
         foreach($data3 as $row) {
           $voorzitterID = $row['lidID'];
         }
-        header('Location: commissiedisputen?as='.$as.'&nameid='.$voorzitterID.'&newName='.$newName);
+        header('Location: commissiedisputen?as='.$as.'&nameid='.$voorzitterID.'&newName='.$newName.'&edit='.$edit.'&cid='.$id);
         exit;
       }
       $voorzitterList = "";
@@ -83,6 +135,7 @@ if(isset($_GET['as']) && !(empty($_GET['as']))){
       unset($_POST['addc']);
     }
   }else{
+    $id="";
     $voorzitterList="";
     $newName = "";
     $as="";
@@ -136,7 +189,7 @@ if(isset($_GET['as']) && !(empty($_GET['as']))){
             $page_status_left = $page_status[0];
             $page_status_right = $page_status[1];
             $startNr = ($resultsPer*$pageNr)-$resultsPer;
-            $stmt = $pdo->prepare("SELECT c.commissieID, c.commissienaam, c.commissiezin, CONCAT(IFNULL(l1.voornaam,''),' ',IFNULL(l1.tussenvoegsel,''),' ',IFNULL(l1.achternaam,'')) AS voorzitter, COUNT(*) AS aantal_leden FROM commissielid cl
+            $stmt = $pdo->prepare("SELECT c.commissieID, c.commissienaam, c.commissiezin, CONCAT_WS(' ',l1.voornaam, l1.tussenvoegsel, l1.achternaam) AS voorzitter, COUNT(*) AS aantal_leden FROM commissielid cl
 			      JOIN commissie c ON cl.commissieID = c.commissieID
             JOIN lid l1 ON c.commissievoorzitter = l1.lidID
             JOIN lid l2 ON cl.lidID = l2.lidID
@@ -194,13 +247,56 @@ if(isset($_GET['as']) && !(empty($_GET['as']))){
                 foreach($data as $row) {
                 ?>
                 <tr class="thisId commissie" id='<?php print($row['commissieID']);?>'>
-                  <td>
+                  <td id='<?php print($row['voorzitter']);?>'>
                     <button class="btn btn-xs delModal commissie" data-id="<?php print($row['commissienaam']);?>" data-toggle="modal" data-target="#verwijderen"><i class="icon ion-trash-b"></i></button>
+                    <button class="btn btn-xs editModal btn-warning commissie" data-id="<?php print($row['commissienaam']);?>" data-toggle="modal" data-target="#edit"><i class="icon ion-edit"></i></button>
                   </td>
                   <td><?php print($row['commissienaam']);?></td>
                   <td><?php print($row['voorzitter']);?></td>
                   <td><?php print($row['aantal_leden']);?></td>
                 </tr>
+                <!-- Modals -->
+                <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="editlabel" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="editlabel">Aanpassen <span class="deleteName"></span></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <small class="text-muted">Houdt er rekening mee dat zodra u <span class="deleteName"></span> verwijderd alle leden die hier in staan uit geschreven worden.</small>
+                        <form class="mt-3" id="getErrormess" action="commissiedisputen" method="post">
+                              <div class="form-group row">
+                                  <label for="newName" class="col-sm-3 col-form-label">Naam:</label>
+                                  <div class="col-sm-9 px-0 pr-5">
+                                    <input  id="commNaam" type="text" class="form-control" name="newName" placeholder="" required>
+                                  </div>
+                              </div>
+                              <div class="imput-group row">
+                                  <label for="voorzitterInput" class="col-sm-3 col-form-label">Voorzitter:</label>
+                                  <div class="col-sm-9 px-0 pr-5">
+                                    <div class="input-group mb-2 mb-sm-0">
+                                      <input  id="voorzitterNaam" type="text" class="form-control" name="voorzitter" value="" required>
+                                    </div>
+                                    <small id="voorzitterHelp" class="form-text text-muted">Vul de voornaam en de achternaam van de persoon in gescheiden met een spatie</small>
+                                    <div id="feedkeuze" class="invalid-feedback" hidden>
+                                    </div>
+                                  </div>
+                              </div>
+                      </div>
+                      <input type="hidden" name="id" value="<?php print($row['commissieID']);?>">
+                      <input type="hidden" name="as" value="commissie">
+                      <input type="hidden" name="edit" value="true">
+                      <div class="modal-footer">
+                        <button id="setthisHref2" onclick="" class="btn btn-outline-warning" type="submit" name="add">aanpassen</button>
+                        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Sluiten</button>
+                      </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
                 <?php
                 }
                 ?>
@@ -215,7 +311,7 @@ if(isset($_GET['as']) && !(empty($_GET['as']))){
           </div>
           <div class="card-body">
         <?php
-        $stmt = $pdo->prepare("SELECT d.dispuutnaam, d.dispuutzin, CONCAT(IFNULL(l1.voornaam,''),' ',IFNULL(l1.tussenvoegsel,''),' ',IFNULL(l1.achternaam,'')) AS voorzitter, COUNT(*) AS aantal_leden FROM dispuutlid dl
+        $stmt = $pdo->prepare("SELECT d.dispuutnaam, d.dispuutzin, CONCAT_WS(' ',l1.voornaam, l1.tussenvoegsel, l1.achternaam) AS voorzitter, COUNT(*) AS aantal_leden FROM dispuutlid dl
         JOIN dispuut d ON dl.dispuutID = d.dispuutID
         JOIN lid l1 ON d.dispuutvoorzitter = l1.lidID
         JOIN lid l2 ON dl.lidID = l2.lidID
@@ -233,7 +329,7 @@ if(isset($_GET['as']) && !(empty($_GET['as']))){
         $page_status_left = $page_status[0];
         $page_status_right = $page_status[1];
         $startNr = ($resultsPer*$pageNr)-$resultsPer;
-        $stmt = $pdo->prepare("SELECT d.dispuutid, d.dispuutnaam, d.dispuutzin, CONCAT(IFNULL(l1.voornaam,''),' ',IFNULL(l1.tussenvoegsel,''),' ',IFNULL(l1.achternaam,'')) AS voorzitter, COUNT(*) AS aantal_leden FROM dispuutlid dl
+        $stmt = $pdo->prepare("SELECT d.dispuutid, d.dispuutnaam, d.dispuutzin, CONCAT_WS(' ',l1.voornaam, l1.tussenvoegsel, l1.achternaam) AS voorzitter, COUNT(*) AS aantal_leden FROM dispuutlid dl
         JOIN dispuut d ON dl.dispuutID = d.dispuutID
         JOIN lid l1 ON d.dispuutvoorzitter = l1.lidID
         JOIN lid l2 ON dl.lidID = l2.lidID
@@ -291,13 +387,56 @@ if(isset($_GET['as']) && !(empty($_GET['as']))){
             foreach($data as $row) {
             ?>
             <tr class="thisId dispuut" id='<?php print($row['dispuutid']);?>'>
-              <td>
+              <td id='<?php print($row['voorzitter']);?>'>
                 <button class="btn btn-xs delModal dispuut" data-id="<?php print($row['dispuutnaam']);?>" data-toggle="modal" data-target="#verwijderen"><i class="icon ion-trash-b"></i></button>
+                <button class="btn btn-xs editModal btn-warning dispuut" data-id="<?php print($row['dispuutnaam']);?>" data-toggle="modal" data-target="#edit2"><i class="icon ion-edit"></i></button>
               </td>
               <td><?php print($row['dispuutnaam']);?></td>
               <td><?php print($row['voorzitter']);?></td>
               <td><?php print($row['aantal_leden']);?></td>
             </tr>
+            <!-- Modals -->
+            <div class="modal fade" id="edit2" tabindex="-1" role="dialog" aria-labelledby="edit2label" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="edit2label">Aanpassen <span class="deleteName"></span></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <small class="text-muted">Houdt er rekening mee dat zodra u <span class="deleteName"></span> verwijderd alle leden die hier in staan uit geschreven worden.</small>
+                    <form class="mt-3" id="getErrormess" action="commissiedisputen" method="post">
+                          <div class="form-group row">
+                              <label for="newName" class="col-sm-3 col-form-label">Naam:</label>
+                              <div class="col-sm-9 px-0 pr-5">
+                                <input  id="dispNaam" type="text" class="form-control" name="newName" placeholder="" required>
+                              </div>
+                          </div>
+                          <div class="imput-group row">
+                              <label for="dvoorzitterInput" class="col-sm-3 col-form-label">Voorzitter:</label>
+                              <div class="col-sm-9 px-0 pr-5">
+                                <div class="input-group mb-2 mb-sm-0">
+                                  <input  id="dvoorzitterNaam" type="text" class="form-control" name="voorzitter" value="" required>
+                                </div>
+                                <small id="dvoorzitterHelp" class="form-text text-muted">Vul de voornaam en de achternaam van de persoon in gescheiden met een spatie</small>
+                                <div id="feedkeuze" class="invalid-feedback" hidden>
+                                </div>
+                              </div>
+                          </div>
+                  </div>
+                  <input type="hidden" name="id" value="<?php print($row['dispuutid']);?>">
+                  <input type="hidden" name="as" value="dispuut">
+                  <input type="hidden" name="edit" value="true">
+                  <div class="modal-footer">
+                    <button id="setthisHref3" onclick="" class="btn btn-outline-warning" type="submit" name="add">aanpassen</button>
+                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Sluiten</button>
+                  </form>
+                  </div>
+                </div>
+              </div>
+            </div>
             <?php
             }
             ?>
@@ -357,7 +496,9 @@ if(isset($_GET['as']) && !(empty($_GET['as']))){
                     </div>
                   </div>
               </div>
+              <input type="hidden" name="id" value="">
               <input type="hidden" name="as" value="commissie">
+              <input type="hidden" name="edit" value="false">
       </div>
       <div class="modal-footer">
         <input id="voorzitter" class="btn btn-outline-primary" type="submit" name="add" value="Toevoegen">
@@ -397,7 +538,9 @@ if(isset($_GET['as']) && !(empty($_GET['as']))){
                   </div>
               </div>
       </div>
+      <input type="hidden" name="id" value="">
       <input type="hidden" name="as" value="dispuut">
+      <input type="hidden" name="edit" value="false">
       <div class="modal-footer">
         <input id="voorzitter" class="btn btn-outline-primary" type="submit" name="add" value="Toevoegen">
         <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Sluiten</button>
@@ -431,7 +574,7 @@ if(isset($_GET['as']) && !(empty($_GET['as']))){
             //
             foreach($data3 as $row) {
             print("<tr>
-              <td><a href='?nameid=".$row['lidID']."&newName=$newName&as=$as'>".$row['voornaam']." ".$row['tussenvoegsel']." ".$row['achternaam']."</a></td>
+              <td><a href='?nameid=".$row['lidID']."&newName=$newName&edit=$edit&as=$as&cid=$id'>".$row['voornaam']." ".$row['tussenvoegsel']." ".$row['achternaam']."</a></td>
               <td>".$row['geboortedatum']."</td>
               <td>".$row['woonplaats']."</td>
             </tr>");
