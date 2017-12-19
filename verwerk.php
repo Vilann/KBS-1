@@ -75,23 +75,6 @@ if (isset($_POST['login'])) {
             // // TODO: foutinformatie op login.php en terugsturen
             $errors = true;
             // //fout inlogpoging registreren
-            // if ($email = filter_input(INPUT_POST, 'email')) {
-            //     $stmt=$pdo->prepare("Insert into loginpoging(lidID) VALUES (?)");
-            //     $stmt->execute(array($info['lidID']));
-            //
-            //     // drie foute pogingen zet session failed op true
-            //     $stmt=$pdo->prepare("SELECT Count(*) as failed
-            //                           FROM   loginpoging
-            //                           WHERE  tijd > Date_sub(Now(), INTERVAL 15 minute) and  lidID=?");
-            //     $stmt->execute(array($info['lidID']));
-            //     $pogingen = $stmt->fetch(PDO::FETCH_ASSOC);
-            //     // die($pogingen['testbanaan']);
-            //     if ($pogingen['failed']>=3) {
-            //         session_start();
-            //         $_SESSION['failed']=true;
-            //         header("Location: login");
-            //     }
-            // }
         }
         if ($errors) {
             session_start();
@@ -144,6 +127,15 @@ if (isset($_POST['registreer'])) {
         }
         // kijk om het ingevulde emailadres geldig is
         if (filter_var($_POST["email"], FILTER_VALIDATE_EMAIL) && strpos($_POST["email"], '.')) {
+            include 'includes/dbconnect.php';
+            $email=$_POST['email'];
+            $stmt=$pdo->prepare("SELECT emailadres FROM lid WHERE emailadres=?");
+            $stmt->execute(array($email));
+            $bestaat = $stmt->fetch(PDO::FETCH_ASSOC);
+            if ($bestaat) {
+                $errors = true;
+                $errormess = "email,Het ingevulde emailadres bestaat al.";
+            }
             //
         } else {
             $errors = true;

@@ -87,6 +87,7 @@ integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfs
               <a id="leden" href="/KBS-1/admin/pages/leden" class="list-group-item" data-parent="#beheer"><i class="icon ion-person-stalker"></i> Ledenbestand </a>
               <a id="poll" href="/KBS-1/admin/pages/poll" class="list-group-item" data-parent="#beheer"><i class="icon ion-document-text"></i> Polls </a>
               <a id="commissiedisputen" href="/KBS-1/admin/pages/commissiedisputen" class="list-group-item" data-parent="#beheer"><i class="icon ion-chatbubbles"></i> Commissies & Disputen</a>
+              <a id="activiteiten" href="/KBS-1/admin/pages/activiteiten" class="list-group-item" data-parent="#beheer"><i class="icon ion-wineglass"></i> Activiteiten </a>
           </div>
           <!-- Commissie tools -->
           <?php
@@ -96,6 +97,7 @@ integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfs
           <div class="collapse" id="commissie">
               <a id="commissieleden" href="/KBS-1/admin/pages/commissieleden" class="list-group-item" data-parent="#commissie"><i class="icon ion-person-stalker"></i> Commissie leden </a>
               <a id="commissiepagina" href="/KBS-1/admin/pages/commissiepagina" class="list-group-item" data-parent="#commissie"><i class="icon ion-edit"></i> Commissie Pagina </a>
+              <a id="2activiteiten" href="/KBS-1/admin/pages/activiteiten" class="list-group-item" data-parent="#commissie"><i class="icon ion-wineglass"></i> Activiteiten </a>
           </div>
           <!-- Dispuut tools -->
           <?php
