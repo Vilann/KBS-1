@@ -1,14 +1,67 @@
 <?php
 include '../../includes/dbconnect.php';
 header('Content-Type: text/html; charset=ISO-8859-1');
-if(isset($_POST['edit']) && !(empty($_POST['edit']))){
+if(isset($_POST['submit']) && !(empty($_POST['submit']))){
+  if(isset($_POST['image']) && !(empty($_POST['image']))){
+    if (!unlink(dirname( dirname(__FILE__) ) . "/uploads/" . $_POST['image'])){
+      echo ("Error deleting ".$_POST['image']);
+    }else{
+      echo ("Deleted ".$_POST['image']);
+    }
+  }
+  $fileToUpload = $_FILES['fileToUpload']['name'];
+  $target_dir = "uploads/";
+  $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
+  $uploadOk = 1;
+  $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+  $newfilename= date('dmYHis')."-".str_replace(" ", "", basename($_FILES["fileToUpload"]["name"]));;
+  $newfilename2 = '../uploads/'.$newfilename;
+  //die($newfilename2);
+  // Check if image file is a actual image or fake image
+  $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
+  if($check !== false) {
+      echo "File is an image - " . $check["mime"] . ".";
+      $uploadOk = 1;
+  } else {
+      echo "File is not an image.";
+      $uploadOk = 0;
+  }
+  // Kijk of het bestand al bestaat
+  if (file_exists($target_file)) {
+      echo "Sorry, file already exists.";
+      $uploadOk = 0;
+  }
+  // Check file size
+  if ($_FILES["fileToUpload"]["size"] > 500000) {
+      echo "Sorry, your file is too large.";
+      $uploadOk = 0;
+  }
+  // Allow certain file formats
+  if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+  && $imageFileType != "gif" ) {
+      echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+      $uploadOk = 0;
+  }
+  // Check if $uploadOk is set to 0 by an error
+  if ($uploadOk == 0) {
+      echo "Sorry, your file was not uploaded.";
+  // if everything is ok, try to upload file
+  } else {
+      if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $newfilename2)) {
+          echo "The file ". basename( $_FILES["fileToUpload"]["name"]). " has been uploaded.";
+      } else {
+          echo "Sorry, there was an error uploading your file.";
+      }
+  }
   $stmt = $pdo->prepare("UPDATE commissie
-      SET commissienaam=?, commissiezin=?, commissietekst=?
+      SET commissienaam=?, commissiezin=?, commissietekst=?, commissiebanner=?
   		WHERE commissieID=?");
-  $stmt->execute(array($_POST['naam'],$_POST['zin'],$_POST['commissieTekst'],$_POST['commissieID']));
+  $stmt->execute(array($_POST['naam'],$_POST['zin'],$_POST['commissieTekst'],$newfilename,$_POST['commissieID']));
   //print(htmlspecialchars($_POST['commissieText']));
   //die("testico ".$_POST['naam']." ".$_POST['zin']." ".$_POST['commissieTekst']." ".$_POST['commissieID']);
   unset($_POST);
+  unset($_FILES);
+  header('Location: commissiepagina');
 }
 ?>
 <html lang="en">
@@ -22,16 +75,11 @@ if(isset($_POST['edit']) && !(empty($_POST['edit']))){
             </div>
             <br>
             <?php
-              $stmt = $pdo->prepare("SELECT c.commissieID, commissienaam, CONCAT(IFNULL(l2.voornaam,''),' ',IFNULL(l2.tussenvoegsel,''),' ',IFNULL(l2.achternaam,'')) AS naam, commissievoorzitter, commissiezin, commissietekst FROM commissie c
-              JOIN commissielid cl ON c.commissieID = cl.commissieID
-              JOIN lid l ON cl.lidID = l.lidID
-              JOIN lid l2 ON c.commissievoorzitter = l2.lidID
-              WHERE c.commissievoorzitter = ?");
+              $stmt = $pdo->prepare("SELECT c.commissieID, commissienaam, commissievoorzitter, commissiezin, commissietekst, commissiebanner FROM commissie c
+                WHERE c.commissievoorzitter = ?");
               $stmt->execute(array($_SESSION['lid']));
               $data = $stmt->fetchAll();
               foreach($data as $row) {
-                  //$id = $row['id'];
-                  //$content = $row['content'];
             ?>
             <div class="card">
               <div class="card-header">
@@ -40,7 +88,7 @@ if(isset($_POST['edit']) && !(empty($_POST['edit']))){
               <div class="card-body">
                 <div class="row">
                   <div class="col-12">
-                    <form id="getErrormess" action="commissiepagina" method="post">
+                    <form id="getErrormess" action="commissiepagina" method="post" enctype="multipart/form-data">
                         <div class="form-group row">
                             <label for="vraag" class="col-sm-2 col-form-label">Commissienaam:</label>
                             <div class="col-sm-10 px-0 pr-5">
@@ -51,6 +99,24 @@ if(isset($_POST['edit']) && !(empty($_POST['edit']))){
                               <label for="vraag" class="col-sm-2 col-form-label">Commissiezin:</label>
                               <div class="col-sm-10 px-0 pr-5">
                                 <input  id="vraag" type="text" class="form-control" name="zin" value="<?php print($row['commissiezin']);?>" placeholder="De beste commissie van heel ZHTC" required>
+                              </div>
+                          </div>
+                          <div class="form-group row">
+                              <label for="vraag" class="col-sm-2 col-form-label">Commissiebanner:</label>
+                              <div class="col-sm-10 px-0 pr-5">
+                                <div class="row">
+                                  <div class="col-sm-6">
+                                    <label class="custom-file align-top">
+                                      <input type="file" id="file2" name="fileToUpload" class="custom-file-input">
+                                      <span class="custom-file-control"></span>
+                                    </label>
+                                    <span class="text-muted" id="divFileName"></span>
+                                  </div>
+                                  <div class="col-sm-6">
+                                    <span class="text-muted">Huidige banner:</span>
+                                    <img src="../uploads/<?php print($row['commissiebanner']);?>" alt="Huidige banner" style="max-height:200px;" class="img-thumbnail">
+                                  </div>
+                                </div>
                               </div>
                           </div>
                           <div class="imput-group row">
@@ -66,9 +132,10 @@ if(isset($_POST['edit']) && !(empty($_POST['edit']))){
                           </div>
                           <hr>
                           <input type="hidden" name="commissieID" value="<?php print($row['commissieID']);?>">
+                          <input type="hidden" name="image" value="<?php print($row['commissiebanner']);?>">
                           <div class="form-group row">
                             <div class="col-sm-12 px-0 pr-5">
-                              <input class="btn btn-outline-primary float-right" type="submit" name="edit" value="aanpassen">
+                              <input class="btn btn-outline-primary float-right" type="submit" name="submit" value="aanpassen">
                             </div>
                           </div>
                     </form>

@@ -1,4 +1,6 @@
 $(document).ready(function(){
+  var addleden = [];
+
   var className = $( "#getError" ).attr("class");
   var classError = $( "#getErrormess" ).attr("class");
   $( "#"+className ).addClass( "is-invalid" );
@@ -54,7 +56,11 @@ $(document).ready(function(){
       $( "#"+pageName ).addClass( "selected" );
       $( "#2"+pageName ).addClass( "selected" );
     }
-    $( "#"+pageName ).addClass( "selected" );
+    if(pageName == "disabled"){
+      //niks
+    }else{
+      $( "#"+pageName ).addClass( "selected" );
+    }
 
     var voorzitterName = $( "#getVoorzitter" ).attr("class");
     if(voorzitterName != ""){
@@ -146,14 +152,42 @@ $(document).ready(function(){
       $(".M_activiteitinfo").attr("readonly", true);
       $(".editActiviteitTekst").css("display", "none");
     })
-    //$('#addcommissie').on('hidden', function () {
-      //alert('sluit commissie ');
-      //$('#kiesVoorzitter').modal('show');
-    //});
 
-    //$( "#voorzitter" ).click(function() {
-    //  var naam = $( "#voorzitterInput" ).val();
-    //  alert(naam);
-  //    getVoorzitter(naam);
-  //  });
+    $(".clickable-row").click(function(){
+        var id = $('.id').attr('id');
+        var choice = $('.choice').attr('id');
+        var str = "";
+        if($('.as').attr('id') == "voorzitter"){
+          var href = choice+"leden?as=voorzitter&choice="+choice+"&id="+id+"&leden=";
+          if($(this).hasClass('highlight')){
+            $(this).removeClass('highlight');
+            addleden.splice( $.inArray($(this).attr('id'),addleden) ,1 );
+          } else {
+            $(this).addClass('highlight').siblings().removeClass('highlight');
+            addleden = [];
+            addleden.push($(this).attr('id'));
+          }
+        }else{
+          var href = choice+"leden?as=lid&choice="+choice+"&id="+id+"&leden=";
+          if($(this).hasClass("highlight")){
+              $(this).removeClass('highlight');
+              addleden.splice( $.inArray($(this).attr('id'),addleden) ,1 );
+          }else{
+              $(this).addClass('highlight');
+              addleden.push($(this).attr('id'));
+          }
+        }
+        for (var i = 0; i < addleden.length; i++) {
+            str += addleden[i]+",";
+        }
+        href += str;
+        $('#voltooien').attr("href", href);
+    });
+    $( "#file2" ).change(function() {
+      var filename = $('input[type=file]').val().split('\\').pop();
+      $('#divFileName').text(filename);
+    });
+    $(".alert").fadeTo(2000, 500).slideUp(500, function(){
+        $(this).slideUp(500);
+    });
 });

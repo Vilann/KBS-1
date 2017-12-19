@@ -47,7 +47,7 @@
             ORDER by achternaam ASC");
             $stmt->execute();
             $count = $stmt->rowCount();
-            $resultsPer = 20;
+            $resultsPer = 2;
             $pages = ceil($count/$resultsPer);
             if(isset($_GET['p']) && !empty($_GET['p'])){
               $pageNr = $_GET['p'];
