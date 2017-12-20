@@ -6,6 +6,27 @@ Bij registreren wordt het tweede blok gebruikt.
  */
 $privatekey = "6Ld7nTsUAAAAALPpQKrdXPI3nJnSF11aSBmvx6HF";
 
+function foute_inlogpoging()
+{
+    // Foute inlogpoging registreren
+    $ip= $_SERVER['REMOTE_ADDR'];
+
+    $stmt=$pdo->prepare("Insert into loginpoging(ip) VALUES (?)");
+    $stmt->execute(array($ip));
+    // drie foute pogingen zet session failed op true
+    $stmt=$pdo->prepare("SELECT Count(*) as failed
+      FROM   loginpoging
+      WHERE  tijd > Date_sub(Now(), INTERVAL 15 minute) and  ip=?");
+    $stmt->execute(array($ip));
+    $pogingen = $stmt->fetch(PDO::FETCH_ASSOC);
+    $pdo = null;
+
+    if ($pogingen['failed']>=3) {
+        session_start();
+        $_SESSION['failed']=true;
+    }
+}
+
 if (isset($_POST['login'])) {
     // allereerst wordt er gekeken of de email en het wachtwoord overeen komen.
     // Filter_input is een functie die kijkt of de informatie bestaat.
@@ -31,47 +52,30 @@ if (isset($_POST['login'])) {
           WHERE emailadres = ?
           GROUP BY l.lidID");
         $stmt->execute(array($email));
+        // Kijken of een email bestaat
         if ($stmt->rowCount() == 1) {
             $info = $stmt->fetch(PDO::FETCH_ASSOC);
             // password_verify is een functie om een gehasht wachtwoord dat gemaakt is met password_hash()
+            // Kijken of het wachtwoord bij de email hoort
             if (password_verify($ww, $info["wachtwoord"])) {
                 session_start();
                 if ($info['toegangAdmin'] == "yes") {
-                    $adminRechten = array("Beheer"=>$info['bestuurslidID'], "Dispuut"=>$info['toegangAdmin'], "Commissie"=>$info['toegangAdmin']);
+                    $adminRechten = array("Beheer"=>$info['bestuurslidID'], "Dispuut"=>$info['dispuutLid'], "Commissie"=>$info['commissieLid']);
                     $_SESSION['admin'] = $adminRechten;
                 }
                 $_SESSION['lid'] = $info['lidID'];
                 $_SESSION['voornaam'] = $info['voornaam'];
-                if ($email = filter_input(INPUT_POST, 'email')) {
-                    $ip= $_SERVER['REMOTE_ADDR'];
-                    $stmt=$pdo->prepare("DELETE FROM loginpoging WHERE ip=?");
-                    $stmt->execute(array($ip));
-                }
+                $ip= $_SERVER['REMOTE_ADDR'];
+                $stmt=$pdo->prepare("DELETE FROM loginpoging WHERE ip=?");
+                $stmt->execute(array($ip));
             } else {
-                print("Wachtwoord klopt niet");
+                foute_inlogpoging();
                 // TODO: Foutinformatie op login.php en terugsturen
                 $errors = true;
             }
             $pdo = null;
         } else {
-            // Foute inlogpoging registreren
-            $ip= $_SERVER['REMOTE_ADDR'];
-            print $ip;
-
-
-            $stmt=$pdo->prepare("Insert into loginpoging(ip) VALUES (?)");
-            $stmt->execute(array($ip));
-            // drie foute pogingen zet session failed op true
-            $stmt=$pdo->prepare("SELECT Count(*) as failed
-                FROM   loginpoging
-                WHERE  tijd > Date_sub(Now(), INTERVAL 15 minute) and  ip=?");
-            $stmt->execute(array($ip));
-            $pogingen = $stmt->fetch(PDO::FETCH_ASSOC);
-            // die($pogingen['testbanaan']);
-            if ($pogingen['failed']>=3) {
-                session_start();
-                $_SESSION['failed']=true;
-            }
+            foute_inlogpoging();
             // print("Het emailadres bestaat niet");
             // // TODO: foutinformatie op login.php en terugsturen
             $errors = true;
@@ -207,6 +211,7 @@ if (isset($_POST['registreer'])) {
                     $naam="$voornaam $tussenvoegsel $achternaam";
                     mail_bevestigen($_POST["email"], $token, $naam);
                     header("Location: registreer?succes");
+                    $token= hash_hmac(sha256, $lidID, $email, false);
                 }
             }
         }
@@ -257,11 +262,15 @@ if ((isset($_POST['contact']))) {
     session_start();
     if ($result->success) {
         if (($naam = filter_input(INPUT_POST, 'naam')) && ($emailadres = filter_input(INPUT_POST, 'email')) && ($bericht = filter_input(INPUT_POST, 'bericht'))) {
-            include("includes/mail.php");
-            mail_contact($emailadres, $naam, $bericht);
-            $_SESSION['captchamelding'] = "Uw bericht is verstuurd. Binnen enkele momenten zal er een mail verstuurd worden ter bevestiging.";
+            if (filter_var($emailadres, FILTER_VALIDATE_EMAIL) && strpos($emailadres, '.')) {
+                include("includes/mail.php");
+                mail_contact($emailadres, $naam, $bericht);
+                $_SESSION['captchamelding'] = "Uw bericht is verstuurd. Binnen enkele momenten zal er een mail verstuurd worden ter bevestiging.";
+            } else {
+                $_SESSION['captchamelding'] = "Dit is geen geldig emailadres";
+            }
         } else {
-            $_SESSION['captchamelding'] = "U hebt iets niet goed ingevuld";
+            $_SESSION['captchamelding'] = "U heeft iets niet goed ingevuld";
         }
     } else {
         $_SESSION['captchamelding'] = "Er is iets fout gegaan met de verificatie van de captcha, probeer opnieuw!";
