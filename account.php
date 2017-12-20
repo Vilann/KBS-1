@@ -140,8 +140,15 @@ include 'includes/dbconnect.php';
                 <h4 class="card-header"><?php print($info['dispuutnaam']);?></h4>
                 <div class="card-body">
                   <h4 class="card-title"><?php print($info['dispuutzin']);?></h4>
-                  <p class="card-text text-justify"><?php $pos=strpos($info['dispuuttekst'], ' ', 250);
-                  print(substr($info['dispuuttekst'],0,$pos )."..."); ?></p>
+                  <p class="card-text text-justify"><?php
+                  if(!empty($row['dispuuttekst'])){
+                    $pos=strpos($row['dispuuttekst'], ' ', 250);
+                    print(substr($row['dispuuttekst'],0,$pos )."...");
+                  }else{
+                    print("Geen tekst gevonden...");
+                  }
+                  ?>
+                  </p>
                   <p class="card-text">Voorzitter: <span class="text-muted"><?php print(ucwords($info['naam']));?></span></p>
                   <a href="#" class="btn btn-outline-primary zhtc-button">Naar info pagina</a>
                   <?php
@@ -190,8 +197,15 @@ include 'includes/dbconnect.php';
                   <h4 class="card-header"><?php print($row['commissienaam']);?></h4>
                   <div class="card-body">
                     <h4 class="card-title"><?php print($row['commissiezin']);?></h4>
-                    <p class="card-text text-justify"><?php $pos=strpos($row['commissietekst'], ' ', 250);
-                    print(substr($row['commissietekst'],0,$pos )."..."); ?></p>
+                    <p class="card-text text-justify"><?php
+                    if(!empty($row['commissietekst'])){
+                      $pos=strpos($row['commissietekst'], ' ', 250);
+                      print(substr($row['commissietekst'],0,$pos )."...");
+                    }else{
+                      print("Geen tekst gevonden...");
+                    }
+                    ?>
+                    </p>
                     <p class="card-text">Voorzitter: <span class="text-muted"><?php print(ucwords($row['naam']));?></span></p>
                     <a href="#" class="btn btn-outline-primary zhtc-button">commissie pagina</a>
                     <?php
