@@ -215,6 +215,8 @@ if (isset($_POST['registreer'])) {
                     mail_bevestigen($_POST["email"], $token, $naam);
                     header("Location: registreer?succes");
                     $token= hash_hmac(sha256, $lidID, $email, false);
+                } else {
+                    print("Er is iets fout gegaan met registreren");
                 }
             }
         }
