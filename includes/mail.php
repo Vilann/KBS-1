@@ -7,7 +7,7 @@ function mail_contact($afzender, $verzendernaam, $tekst)
 
     $to = $zhtc_contactmail;
     $subject = "Nieuwe mail van " . $verzendernaam;
-    $message = $verzendernaam . " heeft dit ingevuld op het contactformulier:\n" . $tekst;
+    $message = $verzendernaam . " heeft dit ingevuld op het contactformulier:\n" . wordwrap($tekst, 70);
     $headers = "From: " . trim($afzender);
 
     // mail($to, $subject, $message, $headers);
@@ -19,7 +19,7 @@ function mail_contact($afzender, $verzendernaam, $tekst)
 
         $message = "Beste " . $verzendernaam . ", \n
 Dit is een geautomatiseerde bevestiging dat wij het contactformulier succesvol ontvangen hebben!
-Ter herinnering, dit is wat u gestuurd heeft: \n\n" . $tekst .
+Ter herinnering, dit is wat u gestuurd heeft: \n\n" . wordwrap($tekst, 70) .
 "\n\nWij zullen zo snel mogelijk contact met u opnemen. \n
 Met vriendelijke groet,
 Secretariaat ZHTC
