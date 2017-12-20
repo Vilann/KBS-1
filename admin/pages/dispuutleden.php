@@ -26,9 +26,25 @@
       $ledenArray = explode(",", $_GET['leden']);
       $id = $_GET['id'];
       if($_GET['as'] == "voorzitter"){
+        $stmt = $pdo->prepare("SELECT dispuutvoorzitter FROM dispuut
+        WHERE dispuutid = ?");
+        $stmt -> execute(array($id));
+        $cVoorzitter = $stmt -> fetch(PDO::FETCH_ASSOC);
+
+        $stmt2 = $pdo->prepare("DELETE FROM dispuutlid
+          WHERE dispuutid=?
+          AND lidID = ?");
+        $stmt2->execute(array($id,$cVoorzitter['dispuutvoorzitter']));
+        //get id huidige voorzitter query
+        //delete die van dispuutlid
         $stmt = $pdo->prepare("UPDATE dispuut SET dispuutvoorzitter=?
           WHERE dispuutid = ?");
         $stmt->execute(array($ledenArray[1],$id));
+        $stmt = $pdo->prepare("INSERT INTO dispuutlid(dispuutid, lidID)
+          VALUES(?, ?)");
+        $stmt->execute(array($id,$ledenArray[1]));
+        // header naar logout script
+        header('Location: ../../logout');
       }else{
         for($i = 0; $i <= count($ledenArray); $i++){
           $stmt = $pdo->prepare("INSERT INTO dispuutlid(dispuutid, lidid)
@@ -65,7 +81,7 @@
             <a class="zhtc-c" id="sidebar_toggler" href="#sidebar" data-toggle="collapse"><i class="icon ion-navicon-round"></i></a>
             <hr>
             <div class="page-header">
-                <h1 id="pageLoc" class="dispuutleden">ZHTC DispuutLeden<span class="lead">Welkom bij de ZHTC adminpanel</span></h1>
+                <h1 id="pageLoc" class="dispuutleden">ZHTC DispuutLeden<span class="lead">Welkom bij het ZHTC adminpanel</span></h1>
             </div>
             <br>
             <div class="row">
@@ -206,13 +222,13 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="verwijderenlabel">Weet u zeker dat u <span class="deleteName"></span> wilt verwijderen</h5>
+        <h5 class="modal-title" id="verwijderenlabel">Weet u zeker dat u "<span class="deleteName"></span>" wilt verwijderen</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <small class="text-muted">Houdt er rekening mee dat zodra u <span class="deleteName"></span> verwijderd alle leden die hier in staan uit geschreven worden.</small>
+        <small class="text-muted">Houdt er rekening mee dat zodra u "<span class="deleteName"></span>" verwijderd alle leden die hier in staan uit geschreven worden.</small>
       </div>
       <div class="modal-footer">
         <button id="setthisHref" onclick="" class="btn btn-outline-danger" type="button">Verwijderen</button>

@@ -39,15 +39,23 @@ if(isset($_GET['delete']) && !(empty($_GET['delete']))){
 if(isset($_GET['as']) && !(empty($_GET['as']))){
   if($_GET['as'] == "commissie"){
     if($_GET['edit'] == "true"){
+      $stmt = $pdo->prepare("SELECT commissievoorzitter FROM commissie
+      WHERE commissieID = ?");
+      $stmt -> execute(array($_GET['cid']));
+      $cVoorzitter = $stmt -> fetch(PDO::FETCH_ASSOC);
+
+      $stmt2 = $pdo->prepare("DELETE FROM commissielid
+        WHERE commissieID=?
+        AND lidID = ?");
+      $stmt2->execute(array($_GET['cid'],$cVoorzitter['commissievoorzitter']));
       $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
       $stmt = $pdo->prepare("UPDATE commissie
         SET commissienaam=?, commissievoorzitter=?
         WHERE commissieID=?");
       $stmt->execute(array($_GET['newName'], $_GET['nameid'], $_GET['cid']));
-      if (!$stmt) {
-        echo "\nPDO::errorInfo():\n";
-        print_r($dbh->errorInfo());
-      }
+      $stmt = $pdo->prepare("INSERT INTO commissielid(commissieID, lidID)
+        VALUES(?, ?)");
+      $stmt->execute(array($_GET['cid'],$_GET['nameid']));
     }else{
       //Prepare en execute de sql query om een nieuwe poll toe te voegen
       $stmt = $pdo->prepare("INSERT INTO commissie(commissienaam, commissievoorzitter)
@@ -66,15 +74,24 @@ if(isset($_GET['as']) && !(empty($_GET['as']))){
     }
   }elseif($_GET['as'] == "dispuut"){
     if($_GET['edit'] == "true"){
+      $stmt = $pdo->prepare("SELECT dispuutvoorzitter FROM dispuut
+      WHERE dispuutid = ?");
+      $stmt -> execute($_GET['cid']);
+      $dVoorzitter = $stmt -> fetch(PDO::FETCH_ASSOC);
+
+      $stmt2 = $pdo->prepare("DELETE FROM dispuutlid
+        WHERE dispuutid=?
+        AND lidID = ?");
+      $stmt2->execute(array($_GET['cid'],$dVoorzitter['commissievoorzitter']));
+
       $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
       $stmt = $pdo->prepare("UPDATE dispuut
         SET dispuutnaam=?, dispuutvoorzitter=?
         WHERE dispuutid=?");
       $stmt->execute(array($_GET['newName'], $_GET['nameid'], $_GET['cid']));
-      if (!$stmt) {
-        echo "\nPDO::errorInfo():\n";
-        print_r($dbh->errorInfo());
-      }
+      $stmt = $pdo->prepare("INSERT INTO dispuutlid(dispuutid, lidID)
+        VALUES(?, ?)");
+      $stmt->execute(array($_GET['cid'],$_GET['nameid']));
     }else{
       //Prepare en execute de sql query om een nieuwe poll toe te voegen
       $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -149,7 +166,7 @@ if(isset($_GET['as']) && !(empty($_GET['as']))){
             <a class="zhtc-c" id="sidebar_toggler" href="#sidebar" data-toggle="collapse"><i class="icon ion-navicon-round"></i></a>
             <hr>
             <div class="page-header">
-                <h1 id="pageLoc" class="commissiedisputen">ZHTC commissies en disputen overzicht<span class="lead">Welkom bij de ZHTC adminpanel</span></h1>
+                <h1 id="pageLoc" class="commissiedisputen">ZHTC commissies en disputen overzicht<span class="lead">Welkom bij het ZHTC adminpanel</span></h1>
             </div>
             <br>
             <div class="card">
@@ -266,7 +283,7 @@ if(isset($_GET['as']) && !(empty($_GET['as']))){
                         </button>
                       </div>
                       <div class="modal-body">
-                        <small class="text-muted">Houdt er rekening mee dat zodra u <span class="deleteName"></span> verwijderd alle leden die hier in staan uit geschreven worden.</small>
+                        <small class="text-muted">Houdt er rekening mee dat zodra u "<span class="deleteName"></span>" verwijderd alle leden die hier in staan uit geschreven worden.</small>
                         <form class="mt-3" id="getErrormess" action="commissiedisputen" method="post">
                               <div class="form-group row">
                                   <label for="newName" class="col-sm-3 col-form-label">Naam:</label>
@@ -290,7 +307,7 @@ if(isset($_GET['as']) && !(empty($_GET['as']))){
                       <input type="hidden" name="as" value="commissie">
                       <input type="hidden" name="edit" value="true">
                       <div class="modal-footer">
-                        <button id="setthisHref2" onclick="" class="btn btn-outline-warning" type="submit" name="add">aanpassen</button>
+                        <button id="setthisHref2" onclick="" class="btn btn-outline-warning" type="submit" name="add">Aanpassen</button>
                         <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Sluiten</button>
                       </form>
                       </div>
@@ -406,7 +423,7 @@ if(isset($_GET['as']) && !(empty($_GET['as']))){
                     </button>
                   </div>
                   <div class="modal-body">
-                    <small class="text-muted">Houdt er rekening mee dat zodra u <span class="deleteName"></span> verwijderd alle leden die hier in staan uit geschreven worden.</small>
+                    <small class="text-muted">Houdt er rekening mee dat zodra u "<span class="deleteName"></span>" verwijderd alle leden die hier in staan uit geschreven worden.</small>
                     <form class="mt-3" id="getErrormess" action="commissiedisputen" method="post">
                           <div class="form-group row">
                               <label for="newName" class="col-sm-3 col-form-label">Naam:</label>
@@ -430,7 +447,7 @@ if(isset($_GET['as']) && !(empty($_GET['as']))){
                   <input type="hidden" name="as" value="dispuut">
                   <input type="hidden" name="edit" value="true">
                   <div class="modal-footer">
-                    <button id="setthisHref3" onclick="" class="btn btn-outline-warning" type="submit" name="add">aanpassen</button>
+                    <button id="setthisHref3" onclick="" class="btn btn-outline-warning" type="submit" name="add">Aanpassen</button>
                     <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Sluiten</button>
                   </form>
                   </div>
@@ -452,13 +469,13 @@ if(isset($_GET['as']) && !(empty($_GET['as']))){
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="verwijderenlabel">Weet u zeker dat u <span class="deleteName"></span> wilt verwijderen</h5>
+        <h5 class="modal-title" id="verwijderenlabel">Weet u zeker dat u "<span class="deleteName"></span>" wilt verwijderen</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <small class="text-muted">Houdt er rekening mee dat zodra u <span class="deleteName"></span> verwijderd alle leden die hier in staan uit geschreven worden.</small>
+        <small class="text-muted">Houdt er rekening mee dat zodra u "<span class="deleteName"></span>" verwijderd alle leden die hier in staan uit geschreven worden.</small>
       </div>
       <div class="modal-footer">
         <button id="setthisHref" onclick="" class="btn btn-outline-danger" type="button">Verwijderen</button>
@@ -554,13 +571,13 @@ if(isset($_GET['as']) && !(empty($_GET['as']))){
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="kiesVoorzitterlabel">Voorzitter Kiezen</h5>
+        <h5 class="modal-title" id="kiesVoorzitterlabel">Voorzitter kiezen</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <p class="text-muted">Er zijn meerdere personen gevonden met de zelfde voornaam en achternaam. Klik op de persoon die u bedoelde.</p>
+        <p class="text-muted">Er zijn meerdere personen gevonden met dezelfde voornaam en achternaam. Klik op de persoon die u bedoelde.</p>
         <table class="table table-hover">
           <thead>
             <tr>

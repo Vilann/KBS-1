@@ -225,8 +225,8 @@ session_start();
                                   <label for="keuze" class="col-sm-3 col-form-label">Vanaf:</label>
                                   <div class="col-sm-9 px-0 pr-5">
                                     <div class="input-group mb-2 mb-sm-0">
-                                      <input type="date" class="form-control col-9 M_activiteitdatumvan" name="vanaf" value="<?php print(date_format($datevan, 'Y-m-d'));?>" min=<?php print('"' . date('Y-m-d', strtotime("+7 day")) . '"'); ?> required readonly>
-                                      <input type="time" class="form-control col-3 M_activiteittijdvan" name="vanaftijd" value="<?php print($row['tijdvanaf']);?>" min=<?php print('"' . date('Y-m-d', strtotime("+7 day")) . '"'); ?> required readonly>
+                                      <input type="date" class="form-control col-9 M_activiteitdatumvan" name="vanaf" value="<?php print(date_format($datevan, 'Y-m-d'));?>" min=<?php print('"' . date('Y-m-d', strtotime("+1 day")) . '"'); ?> required readonly>
+                                      <input type="time" class="form-control col-3 M_activiteittijdvan" name="vanaftijd" value="<?php print($row['tijdvanaf']);?>" min=<?php print('"' . date('Y-m-d', strtotime("+2 day")) . '"'); ?> required readonly>
                                     </div>
                                   </div>
                               </div>
@@ -276,13 +276,13 @@ session_start();
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="verwijderenlabel">Weet u zeker dat u <span class="deleteName"></span> wilt verwijderen</h5>
+        <h5 class="modal-title" id="verwijderenlabel">Weet u zeker dat u "<span class="deleteName"></span>" wilt verwijderen</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <small class="text-muted">Hou er rekening mee dat zodra u <span class="deleteName"></span> verwijderd alle leden die hier in staan uit geschreven worden.</small>
+        <small class="text-muted">Houd er rekening mee dat zodra u "<span class="deleteName"></span>" verwijderd, alle leden die hier in staan uitgeschreven worden.</small>
       </div>
       <div class="modal-footer">
         <button id="setthisHref" onclick="" class="btn btn-outline-danger" type="button">Verwijderen</button>
@@ -314,8 +314,8 @@ session_start();
                   <label for="keuze" class="col-sm-3 col-form-label">Vanaf:</label>
                   <div class="col-sm-9 px-0 pr-5">
                     <div class="input-group mb-2 mb-sm-0">
-                      <input type="date" class="form-control col-9" name="vanaf" value="" min=<?php print('"' . date('Y-m-d', strtotime("+7 day")) . '"'); ?> required>
-                      <input type="time" class="form-control col-3" name="vanaftijd" value="" min=<?php print('"' . date('Y-m-d', strtotime("+7 day")) . '"'); ?> required>
+                      <input type="date" class="form-control col-9" name="vanaf" value="" min=<?php print('"' . date('Y-m-d', strtotime("+1 day")) . '"'); ?> required>
+                      <input type="time" class="form-control col-3" name="vanaftijd" value="" min=<?php print('"' . date('Y-m-d', strtotime("+2 day")) . '"'); ?> required>
                     </div>
                   </div>
               </div>
