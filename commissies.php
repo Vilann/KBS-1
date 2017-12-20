@@ -68,8 +68,7 @@
                 <hr>
                 <div class='wrapper text-center'>
 
-									<?php
-									if(isset($_SESSION['lid'])){ ?>
+<?php if(isset($_SESSION['lid'])){ ?>
                   <div class="btn-group mx-auto" role="group" aria-label="...">
 										<a href="https://drive.google.com/embeddedfolderview?id=<?php print($info['cmagendaID']);?>" class="btn btn-outline-primary zhtc-button">Agenda</a>
 										<a href="https://drive.google.com/embeddedfolderview?id=<?php print($info['cmnotulenID']);?>" class="btn btn-outline-primary zhtc-button">Notulen</a>
@@ -101,14 +100,14 @@
 					foreach($data as $row) {
 					?>
         <div class="col-3">
-          <div class="card" style="width: 25rem;"><?php // NOTE: was class="card mb4" geen idee wat mb inhoud ?>
+          <div class="card mb-5" ><?php // NOTE: was class="card mb4" geen idee wat mb inhoud ?>
             <div class="card-body"> <?php // NOTE: alles in deze div staat in de kaart ?>
               <h4 class="card-title"><?php print($row['comm_naam'])?></h4> <?php // NOTE: de naam van de commissie ?>
               <p class="card-text">
 							<img class="card-img-top" src="images/dispuutfotos/afentikabanner.jpg" alt="" style="width: 20rem;"><br><?php// print($row['comm_zin']);?><?php // NOTE: de commissiezin ?>
             </div>
 						<div class="card-footer text-muted"><?php print($row['comm_zin']);?>
-							<a href=<?php print("?cm=".$row['commissieID']) ?> class="btn btn-outline-primary float-right zhtc-button">Meer<i class="icon ion-arrow-right-c"></i></a></p>
+							<a href=<?php print("?cm=".$row['commissieID']) ?> class="btn btn-outline-primary float-right zhtc-button">Meer <i class="icon ion-arrow-right-c"></i></a></p>
 						</div>
           </div>
         </div>
