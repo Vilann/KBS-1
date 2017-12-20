@@ -42,11 +42,7 @@
 		        <a class="nav-link" href="contact">Contact</a>
 		      </li>
 				<?php
-<<<<<<< HEAD
                 error_reporting(E_ERROR | E_WARNING | E_PARSE);
-=======
-                                error_reporting(E_ERROR | E_WARNING | E_PARSE);
->>>>>>> 977b8d8d134e33385226a0e9621e6e393f72afc8
                 if (!isset($_SESSION['lid'])) {
                     ?>
 										<li class="nav-item">
