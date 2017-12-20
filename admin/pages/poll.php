@@ -1,13 +1,7 @@
-<html lang="en">
       <?php
       session_start();
       include '../../includes/dbconnect.php';
       include '../alert.php';
-      include '../header.php';
-      ?>
-      <script src="http://code.highcharts.com/highcharts.js"></script>
-      <script src="http://code.highcharts.com/modules/exporting.js"></script>
-      <?php
       //Hier staat de functie om nieuwe polls toe te voegen.
       //Kijk of er niks leeg is gepost
         if(isset($_POST['add']) && !(empty($_POST['add']))){
@@ -33,11 +27,20 @@
           $_SESSION['errorType'] = "success";
           $_SESSION['errorAdd'] = "succes!";
           unset($_POST['add']);
+          header('Location: poll');
         }else{
           //Niks
         }
-
+        if(isset($_SESSION['error'])){
+          print(createError($_SESSION['error'],$_SESSION['errorType'],$_SESSION['errorAdd']));
+          unset($_SESSION['error']);
+        }
        ?>
+      <html lang="en">
+      <?php
+      include '../header.php';?>
+      <script src="http://code.highcharts.com/highcharts.js"></script>
+      <script src="http://code.highcharts.com/modules/exporting.js"></script>
         <main class="col-md-10 col-xs-11 pl-3 pt-3">
             <a class="zhtc-c" id="sidebar_toggler" href="#sidebar" data-toggle="collapse"><i class="icon ion-navicon-round"></i></a>
             <hr>
@@ -125,8 +128,7 @@
                             data: [
                             <?php
                             //Alle data inladen waar de chart uit bestaat
-                            $stmt2 = $pdo->prepare("SELECT pk.pollID,pk.pollkeuzemogelijkheid, COUNT(pr.pollkeuze) AS res_perlid FROM pollresultaat pr
-                            RIGHT JOIN pollkeuzemogelijkheid pk ON pr.pollkeuze = pk.pollkeuzemogelijkheid
+                            $stmt2 = $pdo->prepare("SELECT pr.pollID,pr.pollkeuze, COUNT(pr.pollkeuze) AS res_perlid FROM pollresultaat pr
                             WHERE pr.pollID = ?
                             GROUP BY pr.pollkeuze");
                             $stmt2->execute(array($row['pollID']));
@@ -134,7 +136,7 @@
                             foreach($data2 as $row2) {
                              ?>
                             {
-                                name: '<?php print($row2['pollkeuzemogelijkheid']); ?>',
+                                name: '<?php print($row2['pollkeuze']); ?>',
                                 y: <?php print($row2['res_perlid']); ?>
                             },
                             <?php } ?>
@@ -179,8 +181,7 @@
                           data: [
                           <?php
                           //Alle data inladen waar de chart uit bestaat
-                          $stmt2 = $pdo->prepare("SELECT pk.pollID,pk.pollkeuzemogelijkheid, COUNT(pr.pollkeuze) AS res_perlid FROM pollresultaat pr
-                          RIGHT JOIN pollkeuzemogelijkheid pk ON pr.pollkeuze = pk.pollkeuzemogelijkheid
+                          $stmt2 = $pdo->prepare("SELECT pr.pollID,pr.pollkeuze, COUNT(pr.pollkeuze) AS res_perlid FROM pollresultaat pr
                           WHERE pr.pollID = ?
                           GROUP BY pr.pollkeuze");
                           $stmt2->execute(array($row['pollID']));
@@ -188,7 +189,7 @@
                           foreach($data2 as $row2) {
                            ?>
                           {
-                              name: '<?php print($row2['pollkeuzemogelijkheid']); ?>',
+                              name: '<?php print($row2['pollkeuze']); ?>',
                               y: <?php print($row2['res_perlid']); ?>
                           },
                           <?php } ?>
@@ -368,16 +369,15 @@
                           colorByPoint: true,
                           data: [
                           <?php
-                          $stmt2 = $pdo->prepare("SELECT pk.pollID,pk.pollkeuzemogelijkheid, COUNT(pr.pollkeuze) AS res_perlid FROM pollresultaat pr
-                          RIGHT JOIN pollkeuzemogelijkheid pk ON pr.pollkeuze = pk.pollkeuzemogelijkheid
-                          WHERE pk.pollID = ?
+                          $stmt2 = $pdo->prepare("SELECT pr.pollID,pr.pollkeuze, COUNT(pr.pollkeuze) AS res_perlid FROM pollresultaat pr
+                          WHERE pr.pollID = ?
                           GROUP BY pr.pollkeuze");
                           $stmt2->execute(array($row['pollID']));
                           $data2 = $stmt2->fetchAll();
                           foreach($data2 as $row2) {
                            ?>
                           {
-                              name: '<?php print($row2['pollkeuzemogelijkheid']); ?>',
+                              name: '<?php print($row2['pollkeuze']); ?>',
                               y: <?php print($row2['res_perlid']); ?>
                           },
                           <?php } ?>

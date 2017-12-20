@@ -159,7 +159,7 @@
           <div class="position-fixed side-note">
             <div class="card" style="width: 20rem;">
               <div class="card-body">
-                <h4 class="card-title">Nieuwe poll</h4>
+                <h4 class="card-title"><i class="icon ion-alert"></i> Nieuwe poll</h4>
                 <h6 class="card-subtitle mb-2 text-muted"><?php print($info['vraag']);?></h6>
                 <form action="index" method="post">
                   <?php

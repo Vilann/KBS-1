@@ -28,27 +28,32 @@ if(isset($_POST['submit']) && !(empty($_POST['submit']))){
           echo "File is an image - " . $check["mime"] . ".";
           $uploadOk = 1;
       } else {
-          echo "File is not an image.";
+          $melding = "Bestand is geen foto.";
           $uploadOk = 0;
       }
       // Kijk of het bestand al bestaat
       if (file_exists($target_file)) {
-          echo "Sorry, file already exists.";
+          $melding = "Bestand bestaat al.";
           $uploadOk = 0;
       }
       // Check file size
       if ($_FILES["fileToUpload"]["size"] > 500000) {
-          echo "Sorry, your file is too large.";
+          $melding = "Bestand is te groot.";
           $uploadOk = 0;
       }
       // Allow certain file formats
       if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
       && $imageFileType != "gif" ) {
-          echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+          $melding = "Alleen jpg, png, jpeg en gif zijn toegestaan.";
           $uploadOk = 0;
       }
       // Check if $uploadOk is set to 0 by an error
       if ($uploadOk == 0) {
+        $_SESSION['error'] = "Er is een fout gevonden tijdens het uploaden van je bestand met error($melding)";
+        $_SESSION['errorType'] = "danger";
+        $_SESSION['errorAdd'] = "Let op!";
+        header('Location: dispuutpagina');
+        exit;
           echo "Sorry, your file was not uploaded.";
       // if everything is ok, try to upload file
       } else {

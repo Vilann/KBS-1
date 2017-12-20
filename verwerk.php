@@ -49,13 +49,10 @@ if (isset($_POST['login'])) {
                ELSE null
                END AS toegangAdmin
           FROM lid l
-          LEFT JOIN commissielid cl ON l.lidID = cl.lidID
-          LEFT JOIN commissie c ON cl.commissieID = c.commissieID
-          LEFT JOIN dispuutlid dl ON l.lidID = dl.lidID
-          LEFT JOIN dispuut d ON dl.dispuutID = d.dispuutid
-          LEFT JOIN bestuur b ON l.lidID = b.bestuurslidID
-          WHERE emailadres = ?
-          GROUP BY l.lidID");
+          LEFT JOIN commissie c ON c.commissievoorzitter = l.lidID
+          LEFT JOIN dispuut d ON d.dispuutvoorzitter = l.lidID
+          LEFT JOIN bestuur b ON b.bestuurslidID = l.lidID
+          WHERE emailadres = ?");
         $stmt->execute(array($email));
         // Kijken of een email bestaat
         if ($stmt->rowCount() == 1) {

@@ -28,9 +28,9 @@ include 'includes/dbconnect.php';
             <div class="media">
               <img class="align-self-center mr-3" src="http://via.placeholder.com/150x150" alt="Generic placeholder image">
               <div class="media-body vcenter">
-                <h5 class="mt-0"><?php print($vollenaam) ?></h5>
+                <h5 class="mt-0"><?php print(ucfirst($vollenaam)) ?></h5>
                 <p class="mb-0">Lid sinds: <span class="text-muted"><?php print(date("d-m-Y", strtotime($info['aanmaakdatum'])));?></span></p>
-                <p class="mb-0 text-muted">banaanlid</p>
+                <p class="mb-0 text-muted">Nieuwlid</p>
                 <p class="mb-0"></p>
               </div>
             </div>

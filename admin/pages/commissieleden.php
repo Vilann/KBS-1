@@ -2,6 +2,7 @@
   session_start();
   include '../../includes/dbconnect.php';
   include '../alert.php';
+  //Verwijder code
   if(isset($_GET['delete']) && !(empty($_GET['delete']))){
     if($_GET['delete'] == "yes"){
       $id = $_GET['id'];
@@ -21,9 +22,24 @@
     $_SESSION['errorAdd'] = "succes!";
     header('Location: commissieleden');
   }
+
+  //Toevoeg code
   if(isset($_GET['choice']) && !(empty($_GET['choice']))){
     if(isset($_GET['leden']) && isset($_GET['id'])){
       $ledenArray = explode(",", $_GET['leden']);
+      if(isset($_GET['leden']) && !(empty($_GET['leden']))){
+        //goed
+      }else{
+        if($_GET['as'] == "voorzitter"){
+          $_SESSION['error'] = "U heeft geen lid gekozen om als nieuwe voorzitter op te stellen.";
+        }else{
+          $_SESSION['error'] = "U heeft geen leden gekozen om aan u commissie toe te voegen.";
+        }
+        $_SESSION['errorType'] = "danger";
+        $_SESSION['errorAdd'] = "Let op!!";
+        header('Location: commissieleden');
+        exit;
+      }
       $id = $_GET['id'];
           if($_GET['as'] == "voorzitter"){
             $stmt = $pdo->prepare("SELECT commissievoorzitter FROM commissie
@@ -38,12 +54,12 @@
             //
             $stmt = $pdo->prepare("UPDATE commissie SET commissievoorzitter=?
               WHERE commissieID = ?");
-            $stmt->execute(array($ledenArray[1],$id));
+            $stmt->execute(array($ledenArray[0],$id));
             //
             $stmt = $pdo->prepare("INSERT INTO commissielid(commissieID, lidID)
               VALUES(?, ?)");
-            $stmt->execute(array($id,$ledenArray[1]));
-            header('Location: ../../logout');
+            $stmt->execute(array($id,$ledenArray[0]));
+            header('Location: ../../loguit');
           }else{
             for($i = 0; $i <= count($ledenArray); $i++){
               $stmt = $pdo->prepare("INSERT INTO commissielid(commissieid, lidid)
@@ -182,10 +198,15 @@
               <tbody>
                 <?php
                 foreach($data as $row) {
+                  if($row['lidID'] == $row['commissievoorzitter']){
+                    $disabled = "disabled";
+                  }else{
+                    $disabled = "verwijderen";
+                  }
                 ?>
                 <tr class="thisId commissie" id='<?php print($row['lidID']);?>'>
                   <td class="ChosenC" id='<?php print($row['commissieID']);?>'>
-                    <button class="btn btn-xs delModal commissie" data-id="<?php print($row['voornaam']." ".$row['achternaam']);?>" data-toggle="modal" data-target="#verwijderen"><i class="icon ion-trash-b"></i></button>
+                    <button class="btn btn-xs delModal commissie" data-id="<?php print($row['voornaam']." ".$row['achternaam']);?>" data-toggle="modal" data-target="#<?php print($disabled);?>"><i class="icon ion-trash-b" <?php print($disabled);?>></i></button>
                   </td>
                   <td><?php print($row['commissienaam']);?></td>
                   <td><?php print($row['voornaam']);?></td>
@@ -219,10 +240,29 @@
         </button>
       </div>
       <div class="modal-body">
-        <small class="text-muted">Houdt er rekening mee dat zodra u <span class="deleteName"></span> verwijderd alle leden die hier in staan uit geschreven worden.</small>
+        <small class="text-muted"></small>
       </div>
       <div class="modal-footer">
         <button id="setthisHref" onclick="" class="btn btn-outline-danger" type="button">Verwijderen</button>
+        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Sluiten</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modals -->
+<div class="modal fade" id="disabled" tabindex="-1" role="dialog" aria-labelledby="disabledlabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="disabledlabel">U kunt de voorzitter (uzelf) niet verwijderen</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <small class="text-muted">Als je van voorzitter wilt veranderen kan dat met de "Nieuwe voorzitter aanwijzen" knop</small>
+      </div>
+      <div class="modal-footer">
         <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Sluiten</button>
       </div>
     </div>

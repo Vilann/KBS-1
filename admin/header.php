@@ -59,10 +59,10 @@ integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfs
               <p class='small text-secondary'>Persoonlijke pagina's:</p>
               <div class='dropdown-divider'></div>
               <p class='dropdown-item'>LidNiveau:	<span class='text-secondary'>Nieuwlid</span></p>
-              <a href='../../account' class='dropdown-item'>Account</a>
-              <a href='../../index' class='dropdown-item'>Homepagina</a>
+              <a href='/KBS-1/account' class='dropdown-item'>Account</a>
+              <a href='/KBS-1/admin/index' class='dropdown-item'>Homepagina</a>
               <div class='dropdown-divider'></div>
-              <a class='btn btn-outline-danger mx-auto' href="../../loguit"><i class="icon ion-log-out"></i> <b>Afmelden</b></a>
+              <a class='btn btn-outline-danger mx-auto' href="/KBS-1/loguit"><i class="icon ion-log-out"></i> <b>Afmelden</b></a>
             </div>
           </div>
         </div>
@@ -112,6 +112,5 @@ integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfs
           <?php
           }
           ?>
-          <a href="#" class="list-group-item collapsed" data-parent="#sidebar"><i class="icon ion-gear-a"></i> <span class="hidden-sm-down">Instellingen</span></a>
       </div>
   </div>

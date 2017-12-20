@@ -7,7 +7,7 @@
       $id = $_GET['id'];
       if($_GET['choice'] == "leden"){
         $stmt = $pdo->prepare("UPDATE lid
-            SET liddelete=1
+            SET inactief=1
             WHERE lidID=?");
         $stmt->execute(array($id));
       }else{
@@ -90,7 +90,7 @@
             $startNr = ($resultsPer*$pageNr)-$resultsPer;
             $stmt = $pdo->prepare("SELECT * FROM lid
             WHERE inactief = 0
-            ORDER by $order ASC
+            ORDER by $order DESC
             LIMIT $startNr, $resultsPer");
             $stmt->execute();
             $data = $stmt->fetchAll();
@@ -290,7 +290,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <small class="text-muted">Hou er rekening mee dat zodra u "<span class="deleteName"></span>" verwijderd alle leden die hier in staan uit geschreven worden.</small>
+        <small class="text-muted">Het lid wordt op inactief gezet</small>
       </div>
       <div class="modal-footer">
         <button id="setthisHref" onclick="" class="btn btn-outline-danger" type="button">Verwijderen</button>

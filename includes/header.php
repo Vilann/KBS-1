@@ -53,7 +53,7 @@
                     ?>
 										<li class='nav-item dropdown'>
 						        <a class='nav-link dropdown-toggle' href='#' id='navbarDropdown' role='button' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
-										<img src='http://via.placeholder.com/30x30'> <?php print($_SESSION['voornaam']) ?>
+										<img src='http://via.placeholder.com/30x30'> <?php print(ucfirst($_SESSION['voornaam'])) ?>
 										</a>
 						        <div class='dropdown-menu' aria-labelledby='navbarDropdown'>
 										<div class='container'>
