@@ -1,6 +1,6 @@
 $(document).ready(function(){
   var addleden = [];
-
+  $('.carousel').carousel();
   var className = $( "#getError" ).attr("class");
   var classError = $( "#getErrormess" ).attr("class");
   $( "#"+className ).addClass( "is-invalid" );
@@ -189,5 +189,7 @@ $(document).ready(function(){
     });
     $(".alert").fadeTo(2000, 500).slideUp(500, function(){
         $(this).slideUp(500);
+        $(this).hide();
+        //$('#message').empty();
     });
 });

@@ -13,8 +13,11 @@ if(isset($_SESSION['error']) && !(empty($_SESSION['error']))){
   $errormess = $_SESSION['error'];
   $errortype = $_SESSION['errorType'];
   $errorAddon = $_SESSION['errorAdd'];
-  $error = createError($errormess,$errortype,$errorAddon);
-  print($error);
+
+  //die("shushdagsdsdjsdhjsedhg".$_SESSION['error2']);
+  //unset($_SESSION['error']);
+  //unset($_SESSION['errorType']);
+  //unset($_SESSION['errorAdd']);
 }
 
 ?>

@@ -9,6 +9,7 @@
     //error_reporting(E_ERROR | E_WARNING | E_PARSE);
 		if(isset($_GET['dp']) && !(empty($_GET['dp']))){
 			$stmt = $pdo->prepare("SELECT dispuutvoorzitter as dpvoorzit,
+				dispuutbanner as dpbann,
 				dispuutnaam as dpnaam,
 				dispuutzin as dpzin,
 				dispuuttekst as dptekst,
@@ -28,6 +29,9 @@
 				$dispuutzin = $info['dpzin'];
 				$dispuutid = $info['dpid'];
 				$dispuuttekst = $info['dptekst'];
+				$dispuutagenda = $info['dpagendaID'];
+				$dispuutnotulen = $info['dpnotulenID'];
+				$dispuutbanner = $info['dpbann'];
 				$voornaam = $info['voornaam'];
 			} else {
 					print("Werkt niet, of... of het database tabel waar je naar zoekt is leeg");
@@ -47,7 +51,7 @@
 								<div class="row">
 									<div class="col-12">
 										<h5 class="card-text text-left my-0">
-											<?php header('Content-Type: text/html; charset=ISO-8859-1'); print($info['voornaam']); ?></h5>
+											<?php print($info['voornaam']); ?></h5>
 									</div>
 								</div>
 								<div class="row">
@@ -69,13 +73,14 @@
 					<div class="col-md-12 col-lg-5 order-sm-1 order-lg-12">
 						<div class="card mb-4 card-noborder">
 							<div class="card-body">
-								<img src="http://via.placeholder.com/300x300" class="img-fluid mx-auto d-block rounded" alt="Responsive image">
+								<img src="images/dispuutfotos/<?php print($info['dpbann']) ?>" class="img-fluid mx-auto d-block rounded" alt="Responsive image">
 								<hr>
 								<div class='wrapper text-center'>
+									<?php if(isset($_SESSION['lid'])){ ?>
 									<div class="btn-group mx-auto" role="group" aria-label="...">
-										<a href="#" class="btn btn-outline-primary zhtc-button">Agenda</a>
-										<a href="<?php print($googleLink);?>" class="btn btn-outline-primary zhtc-button">Notulen</a>
-									</div>
+									<a href="https://drive.google.com/embeddedfolderview?id=<?php print($info['dpagendaID']);?>" class="btn btn-outline-primary zhtc-button">Agenda</a>
+									<a href="https://drive.google.com/embeddedfolderview?id=<?php print($info['dpnotulenID']);?>" class="btn btn-outline-primary zhtc-button">Notulen</a>
+								</div> <?php } ?>
 								</div>
 						</div>
 				</div>
@@ -94,7 +99,6 @@
 			<hr>
 			<div class="row">
 			<?php
-						header('Content-Type: text/html; charset=ISO-8859-1');
 					$stmt = $pdo->prepare('SELECT * FROM dispuut');
 					$stmt->execute();
 					$data = $stmt->fetchAll();
@@ -105,7 +109,7 @@
             <div class="card-body"> <?php // NOTE: alles in deze div staat in de kaart ?>
               <h4 class="card-title"><?php print($row['dispuutnaam'])?></h4>
               <p class="card-text">
-							<img class="card-img-left" src="images/dispuutfotos/afentikabanner.jpg" alt="" width="180px"></p>
+							<img class="card-img-left" src="images/dispuutfotos/<?php print($row['dispuutbanner'])?>" alt="" width="180px"></p>
             </div>
 						<div class="card-footer text-muted"><?php print($row['dispuutzin']);?>
 						<a href=<?php print("?dp=".$row['dispuutid']) ?> class="btn btn-outline-primary float-right zhtc-button">Meer<i class="icon ion-arrow-right-c"></i></a></p>

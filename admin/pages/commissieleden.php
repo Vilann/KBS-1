@@ -1,5 +1,7 @@
 <?php
+  session_start();
   include '../../includes/dbconnect.php';
+  include '../alert.php';
   if(isset($_GET['delete']) && !(empty($_GET['delete']))){
     if($_GET['delete'] == "yes"){
       $id = $_GET['id'];
@@ -14,13 +16,15 @@
         //
       }
     }
+    $_SESSION['error'] = "U heeft succesvol een lid verwijderd uit uw commissie";
+    $_SESSION['errorType'] = "success";
+    $_SESSION['errorAdd'] = "succes!";
     header('Location: commissieleden');
   }
   if(isset($_GET['choice']) && !(empty($_GET['choice']))){
     if(isset($_GET['leden']) && isset($_GET['id'])){
       $ledenArray = explode(",", $_GET['leden']);
       $id = $_GET['id'];
-        if($_GET['choice'] == "commissie"){
           if($_GET['as'] == "voorzitter"){
             $stmt = $pdo->prepare("UPDATE commissie SET commissievoorzitter=?
               WHERE commissieID = ?");
@@ -31,20 +35,10 @@
                 VALUES(?, ?)");
               $stmt->execute(array($id,$ledenArray[$i]));
             }
+            $_SESSION['error'] = "U heeft succesvol een lid toegevoegd uit uw commissie";
+            $_SESSION['errorType'] = "success";
+            $_SESSION['errorAdd'] = "succes!";
           }
-        }else{
-          if($_GET['as'] == "voorzitter"){
-            $stmt = $pdo->prepare("UPDATE dispuut SET dispuutvoorzitter=?
-              WHERE dispuutid = ?");
-            $stmt->execute(array($ledenArray[1],$id));
-          }else{
-            for($i = 0; $i <= count($ledenArray); $i++){
-              $stmt = $pdo->prepare("INSERT INTO dispuutlid(dispuutid, lidid)
-                VALUES(?, ?)");
-              $stmt->execute(array($id,$ledenArray[$i]));
-            }
-          }
-        }
     }
     header('Location: commissieleden');
   }
@@ -59,6 +53,10 @@
       //
   } else {
       print("Werkt niet");
+  }
+  if(isset($_SESSION['error'])){
+    print(createError($_SESSION['error'],$_SESSION['errorType'],$_SESSION['errorAdd']));
+    unset($_SESSION['error']);
   }
 ?>
 <html lang="en">
