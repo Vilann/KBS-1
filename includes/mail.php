@@ -30,20 +30,14 @@ P.S. Dit is een noreply email-adres, hier kan niet op gereageerd worden.
         }
     }
 }
+
 function mail_bevestigen($to, $token, $name)
 {
-    $message =" Beste $name,
-
+    $message ="Beste $name,
 Bedankt voor uw registratie op ZHTC.nl.
 
-
-Klik op onderstaande link om uw registratie te voltooien en uw account te activeren:".
-print("<a>http://testbanaan.zhtc.nl/KBS-1/activatie$token</a>");
-
-
-
-
-    "Als u zich niet aangemeld heeft voor een account mag u deze e-mail als niet verzonden beschouwen
+<a href=https:testbanaan.zhtc.nl/registreer?email='.$to.'&hash='.$token.'>Klik hier</a> om uw registratie te voltooien en uw account te activeren.
+Als u zich niet aangemeld heeft voor een account mag u deze e-mail als niet verzonden beschouwen.
 
 Bedankt!
 Secretariaat ZHTC
