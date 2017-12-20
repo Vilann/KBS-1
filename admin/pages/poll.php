@@ -307,6 +307,8 @@
                 </li>
               </ul>
             </nav>
+            <div class="container-fluid">
+              <div class="table-responsive">
             <table class="table table-hover">
               <thead class="thead-zhtc">
                 <tr id="orderBy" class="<?php print($order);?>">
@@ -411,6 +413,8 @@
                 ?>
               </tbody>
             </table>
+          </div>
+        </div>
         </main>
         <!-- Modal om overige poll gegevens in te laden -->
         <div class="modal fade bd-example-modal-lg" id="addPoll" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

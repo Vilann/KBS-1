@@ -195,6 +195,7 @@ session_start();
                 </li>
               </ul>
             </nav>
+            <div class="table-responsive">
             <table class="table table-hover">
               <thead class="thead-zhtc">
                 <tr id="orderBy" class="<?php print($order);?>">
@@ -289,6 +290,7 @@ session_start();
                 ?>
               </tbody>
             </table>
+          </div>
         </main>
     </div>
 </div>

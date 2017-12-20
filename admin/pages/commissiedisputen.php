@@ -289,6 +289,7 @@ if(isset($_GET['as']) && !(empty($_GET['as']))){
             </div>
           </div>
             <hr>
+            <div class="table-responsive">
             <table class="table table-hover">
               <caption>Commissies</caption>
               <thead class="thead-zhtc">
@@ -361,6 +362,7 @@ if(isset($_GET['as']) && !(empty($_GET['as']))){
             </table>
           </div>
         </div>
+        </div>
         <br>
         <div class="card">
           <div class="card-header">
@@ -429,6 +431,7 @@ if(isset($_GET['as']) && !(empty($_GET['as']))){
           </div>
         </div>
         <hr>
+        <div class="table-responsive">
         <table class="table table-hover">
           <caption>Disputen</caption>
           <thead class="thead-zhtc">
@@ -499,6 +502,7 @@ if(isset($_GET['as']) && !(empty($_GET['as']))){
             ?>
           </tbody>
         </table>
+      </div>
       </div>
     </div>
         </main>
