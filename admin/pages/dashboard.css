@@ -181,7 +181,16 @@ body > * {
 .full_length {
   min-height: 100vh;
 }
-#setthisHref a {
-  ccolor:white;
-  text-decoration: none;
+.highlight {
+  background-color: lightgrey;
+}
+#message {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 9999;
+}
+#inner-message {
+    margin: 0 auto;
 }

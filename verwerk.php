@@ -75,27 +75,10 @@ if (isset($_POST['login'])) {
             // // TODO: foutinformatie op login.php en terugsturen
             $errors = true;
             // //fout inlogpoging registreren
-            // if ($email = filter_input(INPUT_POST, 'email')) {
-            //     $stmt=$pdo->prepare("Insert into loginpoging(lidID) VALUES (?)");
-            //     $stmt->execute(array($info['lidID']));
-            //
-            //     // drie foute pogingen zet session failed op true
-            //     $stmt=$pdo->prepare("SELECT Count(*) as failed
-            //                           FROM   loginpoging
-            //                           WHERE  tijd > Date_sub(Now(), INTERVAL 15 minute) and  lidID=?");
-            //     $stmt->execute(array($info['lidID']));
-            //     $pogingen = $stmt->fetch(PDO::FETCH_ASSOC);
-            //     // die($pogingen['testbanaan']);
-            //     if ($pogingen['failed']>=3) {
-            //         session_start();
-            //         $_SESSION['failed']=true;
-            //         header("Location: login");
-            //     }
-            // }
         }
         if ($errors) {
             session_start();
-            $_SESSION["error"] = "wachtwoord,Het emailadres of wachtwoord is niet correct ingevult";
+            $_SESSION["error"] = "wachtwoord,Het emailadres of wachtwoord is niet correct ingevuld";
             header("Location: login");
             // anders voert het de gegevens in ($insert), en daarna het emailadres ($emailinsert)
         }
@@ -144,6 +127,15 @@ if (isset($_POST['registreer'])) {
         }
         // kijk om het ingevulde emailadres geldig is
         if (filter_var($_POST["email"], FILTER_VALIDATE_EMAIL) && strpos($_POST["email"], '.')) {
+            include 'includes/dbconnect.php';
+            $email=$_POST['email'];
+            $stmt=$pdo->prepare("SELECT emailadres FROM lid WHERE emailadres=?");
+            $stmt->execute(array($email));
+            $bestaat = $stmt->fetch(PDO::FETCH_ASSOC);
+            if ($bestaat) {
+                $errors = true;
+                $errormess = "email,Het ingevulde emailadres bestaat al.";
+            }
             //
         } else {
             $errors = true;
@@ -222,6 +214,39 @@ if (isset($_POST['edit'])) {
       // NOTE: door zhtc aangegeven dat het niet meer hoeft
       // $ZHTCemailadres = $voornaam . "." . $achternaam . "@zhtc.nl";
     }
+}
+$privatekey = "6Ld7nTsUAAAAALPpQKrdXPI3nJnSF11aSBmvx6HF";
+if ((isset($_POST['contact']))) {
+    error_reporting(E_ALL);
+
+    // Het gedeelte voor de 'if' regelt de captcha.
+    // Eerst halen we de response van de knop op contact.php
+    $captcha = $_POST['g-recaptcha-response'];
+    // Dan maken we met curl, want file_get_contents werkt op de een of andere manier niet, een request volgens de recaptcha api van google.
+    $ch = curl_init("https://www.google.com/recaptcha/api/siteverify?secret=".$privatekey."&response=".$captcha . "&remoteip=" . $_SERVER['REMOTE_ADDR']);
+    curl_setopt($ch, CURLOPT_FRESH_CONNECT, 1);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    // De response, dus of het goed gegaan is of niet, wordt opgeslagen in $response.
+    $response = curl_exec($ch);
+    curl_close($ch);
+
+    // Als laatst moeten we zorgen dat we de gegevens kunnen gebruiken. json_decode zet het json bestand om in een class.
+    $result  = json_decode($response);
+
+    // Nu kunnen we eindelijk kijken of het een geldige response is, dwz het is geen bot.
+    session_start();
+    if ($result->success) {
+        if (($naam = filter_input(INPUT_POST, 'naam')) && ($emailadres = filter_input(INPUT_POST, 'email')) && ($bericht = filter_input(INPUT_POST, 'bericht'))) {
+            include("includes/mail.php");
+            mail_contact($emailadres, $naam, $bericht);
+            $_SESSION['captchamelding'] = "Uw bericht is verstuurd. Binnen enkele momenten zal er een mail verstuurd worden ter bevestiging.";
+        } else {
+            $_SESSION['captchamelding'] = "U hebt iets niet goed ingevuld";
+        }
+    } else {
+        $_SESSION['captchamelding'] = "Er is iets fout gegaan met de verificatie van de captcha, probeer opnieuw!";
+    }
+    header("Location: contact");
 }
 if (isset($_POST['infoupdate'])) {
 }

@@ -14,7 +14,36 @@
         //
       }
     }
-    header('Location: commissieleden');
+    header('Location: dispuutleden');
+  }
+  if(isset($_GET['choice']) && !(empty($_GET['choice']))){
+    if(isset($_GET['leden']) && isset($_GET['id'])){
+      $ledenArray = explode(",", $_GET['leden']);
+      $id = $_GET['id'];
+      if($_GET['as'] == "voorzitter"){
+        $stmt = $pdo->prepare("UPDATE dispuut SET dispuutvoorzitter=?
+          WHERE dispuutid = ?");
+        $stmt->execute(array($ledenArray[1],$id));
+      }else{
+        for($i = 0; $i <= count($ledenArray); $i++){
+          $stmt = $pdo->prepare("INSERT INTO dispuutlid(dispuutid, lidid)
+            VALUES(?, ?)");
+          $stmt->execute(array($id,$ledenArray[$i]));
+        }
+      }
+    }
+    header('Location: dispuutleden');
+  }
+  error_reporting(E_ALL & ~E_NOTICE);
+  session_start();
+  $stmt = $pdo->prepare("SELECT dispuutid FROM dispuut WHERE dispuutvoorzitter = ?");
+  $stmt->execute(array($_SESSION['lid']));
+
+  $info = $stmt->fetch(PDO::FETCH_ASSOC);
+  if ($stmt->rowCount()) {
+      //
+  } else {
+      print("Werkt niet");
   }
 ?>
 <html lang="en">
@@ -27,6 +56,14 @@
                 <h1 id="pageLoc" class="dispuutleden">ZHTC DispuutLeden<span class="lead">Welkom bij de ZHTC adminpanel</span></h1>
             </div>
             <br>
+            <div class="row">
+              <div class="col-md-11">
+                <!-- Knop die de modal inlaadt voor het toevoegen van een nieuwe poll -->
+                  <button type="button" class="btn btn-outline-primary zhtc-button" onclick="location.href='toevoegenlid?choice=dispuut&id=<?php print($info['dispuutid']);?>&as=voorzitter'">Nieuwe voorzitter aanwijzen</button>
+                  <button type="button" class="btn btn-outline-primary zhtc-button" onclick="location.href='toevoegenlid?choice=dispuut&id=<?php print($info['dispuutid']);?>&as=lid'">Nieuwe leden toevoegen</button>
+              </div>
+            </div>
+            <hr>
             <?php
             $stmt = $pdo->prepare("SELECT dispuutid FROM dispuut WHERE dispuutvoorzitter = ?");
             $stmt->execute(array($_SESSION['lid']));

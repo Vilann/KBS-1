@@ -1,6 +1,7 @@
 <?php
 include('includes/beveiliging.php');
 beveilig_lid();
+include 'includes/dbconnect.php';
 if (isset($_SESSION['lid'])) {
     header("Location: index");
 } else {
@@ -44,14 +45,32 @@ if (isset($_SESSION['lid'])) {
                   </div>
                 </div>
             </div>
+            <?php
+            $ip= $_SERVER['REMOTE_ADDR'];
+    $stmt=$pdo->prepare("SELECT Count(*) as failed
+                FROM   loginpoging
+                WHERE  tijd > Date_sub(Now(), INTERVAL 15 minute) and  ip=?");
+    $stmt->execute(array($ip));
+    $pogingen = $stmt->fetch(PDO::FETCH_ASSOC);
+    // die($pogingen['testbanaan']);
+    if ($pogingen['failed']>=3) {
+        print('3 Foute inlogpogingen,probeer straks <a href="login">opnieuw</a>');
+        unset($_SESSION["failed"]);
+    } else {
+        print('
+            <div class="form-group row">
+              <label for="ingelogdblijven" class="col-sm-3 col-form-label">Ingelogd blijven:</label>
+              <div class="my-auto px-0">
+               <input type="checkbox" id="ingelogdblijven" class="form-control" name="ingelogdblijven" value="Ja">
+              </div>
+            </div>
             <div class="form-group row">
               <div class="col-sm-9 offset-sm-3 px-0">
                 <input class="btn btn-outline-primary" type="submit" name="login" value="Inloggen">
               </div>
             </div>
-            <?php if ($_SESSION['failed']) {
-        print "banaan kan niet inloggen";
-        unset($_SESSION["failed"]);
+
+');
     } ?>
 
             <hr>
