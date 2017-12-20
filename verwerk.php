@@ -60,7 +60,7 @@ if (isset($_POST['login'])) {
             if (password_verify($ww, $info["wachtwoord"])) {
                 session_start();
                 if ($info['toegangAdmin'] == "yes") {
-                    $adminRechten = array("Beheer"=>$info['bestuurslidID'], "Dispuut"=>$info['dispuutLid'], "Commissie"=>$info['commissieLid']);
+                    $adminRechten = array("Beheer"=>$info['bestuurslidID'], "Dispuut"=>$info['dispuutvoorzitter'], "Commissie"=>$info['commissievoorzitter']);
                     $_SESSION['admin'] = $adminRechten;
                 }
                 $_SESSION['lid'] = $info['lidID'];
