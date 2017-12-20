@@ -6,6 +6,11 @@ Bij registreren wordt het tweede blok gebruikt.
  */
 $privatekey = "6Ld7nTsUAAAAALPpQKrdXPI3nJnSF11aSBmvx6HF";
 
+function generate_token()
+{
+    $token = bin2hex(openssl_random_pseudo_bytes(16));
+    return $token;
+}
 function foute_inlogpoging()
 {
     // Foute inlogpoging registreren
@@ -130,30 +135,33 @@ if (isset($_POST['registreer'])) {
             $medicatie = !empty($_POST['medicatie']) ? $_POST['medicatie'] : null;
             $dieetwensen = !empty($_POST['dieetwensen']) ? $_POST['dieetwensen'] : null;
             $opmerking = !empty($_POST['opmerking']) ? $_POST['opmerking'] : null;
-
             // Een lid krijgt een zhtc-emailadres, dat is 'voornaam'.'achternaam'@zhtc.nl
             // Dit wordt samen met het eigen emailadres opgeslagen, dus een lid heeft 2 emailadressen
             // NOTE: door zhtc aangegeven dat het niet meer hoeft
             // $ZHTCemailadres = $voornaam . "." . $achternaam . "@zhtc.nl";
 
             // Als het geslacht niet in de array voorkomt, dan is er met het formulier geknoeid en accepteren we het niet.
+            // TODO: fix dit
             if (!in_array($_POST['gender'], array('man', 'vrouw', 'anders'))) {
                 $errors = true;
                 $errormess = "gender,Kies een geslacht uit de lijst.";
             }
+
+
             // als de geboortedatum nieuwer dan vandaag - 16 is, is er geknoeid met de geboortedatum
             if ($_POST['geboortedatum'] > date('Y-m-d', strtotime("-16 year"))) {
                 $errors = true;
                 $errormess = "geboortedatum,Je moet in ieder geval 16 jaar of ouder zijn.";
             }
             // kijk om het ingevulde emailadres geldig is
+
             if (filter_var($_POST["email"], FILTER_VALIDATE_EMAIL) && strpos($_POST["email"], '.')) {
-                include 'includes/dbconnect.php';
-                $email=$_POST['email'];
-                $stmt=$pdo->prepare("SELECT emailadres FROM lid WHERE emailadres=?");
+                include('includes/dbconnect.php');
+                $email = $_POST['email'];
+                $stmt = $pdo->prepare("SELECT * FROM lid WHERE emailadres = ?");
                 $stmt->execute(array($email));
-                $bestaat = $stmt->fetch(PDO::FETCH_ASSOC);
-                if ($bestaat) {
+
+                if ($stmt->RowCount()==1) {
                     $errors = true;
                     $errormess = "email,Het ingevulde emailadres bestaat al.";
                 }
@@ -162,6 +170,7 @@ if (isset($_POST['registreer'])) {
                 $errors = true;
                 $errormess = "email,Het ingevulde emailadres is niet geldig.";
             }
+
             if ($_POST["wachtwoord"] == $_POST["herhaalwachtwoord"]) {
                 if (preg_match('/[A-Za-z].*[0-9]|[0-9].*[A-Za-z]/', $_POST["wachtwoord"]) && !(strlen($_POST["wachtwoord"]) < 8)) {
                     //
@@ -183,15 +192,15 @@ if (isset($_POST['registreer'])) {
                 // anders voert het de gegevens in ($insert), en daarna het emailadres ($emailinsert)
             } else {
                 include 'includes/dbconnect.php';
-                $hash=random_bytes(5);
-                $token= hash_hmac("sha256", $hash, $_POST["email"]);
+                $token = generate_token();
+
                 //zet de juiste error reporting zodat fouten kunnen worden opgevangen
                 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 $insert = $pdo->prepare("INSERT INTO lid (voornaam, tussenvoegsel, achternaam, geboortedatum,
                                       adres, woonplaats, postcode, geslacht,
                                       emailadres, rekeningnummer, noodnummer, shirtmaat,
                                       medicatie, dieetwensen, opmerking, wachtwoord, aanmaakdatum, token)
-                    VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+                    VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
                 // str_replace haalt alle spaties uit de postcode zodat het altijd 6 tekens is
                 $insert->execute(array($voornaam, $tussenvoegsel, $achternaam, $_POST["geboortedatum"],
@@ -211,17 +220,19 @@ if (isset($_POST['registreer'])) {
                 // TODO: betaling
                 if ($insert->RowCount()/* && $emailinsert->RowCount() */) {
                     include 'includes/mail.php';
-                    $naam="$voornaam $tussenvoegsel $achternaam";
-                    mail_bevestigen($_POST["email"], $token, $naam);
+                    $naam = $voornaam . $tussenvoegsel . $achternaam;
+                    mail_bevestigen($email, $token, $naam);
                     header("Location: registreer?succes");
-                    $token= hash_hmac(sha256, $lidID, $email, false);
                 } else {
                     print("Er is iets fout gegaan met registreren");
                 }
             }
+        } else {
+            print_r($_POST);
         }
     } else {
         $_SESSION['captchamelding'] = "Er is iets fout gegaan met de verificatie van de captcha, probeer opnieuw!";
+        header('Location: registreer');
     }
 }
 if (isset($_POST['edit'])) {
