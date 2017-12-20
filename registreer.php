@@ -9,20 +9,24 @@ beveilig_lid();
     <script src='https://www.google.com/recaptcha/api.js'></script>
 
     <?php include 'includes/header.php';
-    error_reporting(E_ERROR | E_WARNING | E_PARSE);
-    if (isset($_SESSION["error"])) {
-        $error = explode(",", $_SESSION["error"]);
-        switch ($error[0]) {
-        case "email":
-          $errormess = $error[1];
-        break;
-        case "noodnummer":
-        //
-        break;
-      }
-        unset($_SESSION["error"]);
-    }
-    ?>
+    if (isset($_GET['succes'])) {
+        print("Je bent succesvol geregistreerd!");
+    } elseif (isset($_GET['token'])) {
+        // Voeg toe melding voor als je je account geactiveerd hebt.
+    } else {
+        error_reporting(E_ERROR | E_WARNING | E_PARSE);
+        if (isset($_SESSION["error"])) {
+            $error = explode(",", $_SESSION["error"]);
+            switch ($error[0]) {
+          case "email":
+            $errormess = $error[1];
+          break;
+          case "noodnummer":
+          //
+          break;
+        }
+            unset($_SESSION["error"]);
+        } ?>
     <div class="container-fluid">
       <div class="row">
         <div class="col-12">
@@ -189,11 +193,10 @@ beveilig_lid();
           <?php
           error_reporting(E_ERROR | E_WARNING | E_PARSE);
 
-          if (isset($_SESSION['captchamelding'])) {
-              print('<p>' . $_SESSION['captchamelding'] . '</p>');
-              unset($_SESSION["captchamelding"]);
-          }
-          ?>
+        if (isset($_SESSION['captchamelding'])) {
+            print('<p>' . $_SESSION['captchamelding'] . '</p>');
+            unset($_SESSION["captchamelding"]);
+        } ?>
           <div class="form-group row">
             <div class="col-sm-9 offset-sm-3 px-0">
               <input class="btn btn-outline-primary" type="submit" name="registreer" value="Registreer">
@@ -204,6 +207,8 @@ beveilig_lid();
   </div>
   </div>
   </div>
+<?php
+    } ?>
   <script>
   <?php include 'includes/script.js'; ?>
   </script>
