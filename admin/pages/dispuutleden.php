@@ -26,9 +26,25 @@
       $ledenArray = explode(",", $_GET['leden']);
       $id = $_GET['id'];
       if($_GET['as'] == "voorzitter"){
+        $stmt = $pdo->prepare("SELECT dispuutvoorzitter FROM dispuut
+        WHERE dispuutid = ?");
+        $stmt -> execute(array($id));
+        $cVoorzitter = $stmt -> fetch(PDO::FETCH_ASSOC);
+
+        $stmt2 = $pdo->prepare("DELETE FROM dispuutlid
+          WHERE dispuutid=?
+          AND lidID = ?");
+        $stmt2->execute(array($id,$cVoorzitter['dispuutvoorzitter']));
+        //get id huidige voorzitter query
+        //delete die van dispuutlid
         $stmt = $pdo->prepare("UPDATE dispuut SET dispuutvoorzitter=?
           WHERE dispuutid = ?");
         $stmt->execute(array($ledenArray[1],$id));
+        $stmt = $pdo->prepare("INSERT INTO dispuutlid(dispuutid, lidID)
+          VALUES(?, ?)");
+        $stmt->execute(array($id,$ledenArray[1]));
+        // header naar logout script
+        header('Location: ../../logout');
       }else{
         for($i = 0; $i <= count($ledenArray); $i++){
           $stmt = $pdo->prepare("INSERT INTO dispuutlid(dispuutid, lidid)

@@ -39,15 +39,23 @@ if(isset($_GET['delete']) && !(empty($_GET['delete']))){
 if(isset($_GET['as']) && !(empty($_GET['as']))){
   if($_GET['as'] == "commissie"){
     if($_GET['edit'] == "true"){
+      $stmt = $pdo->prepare("SELECT commissievoorzitter FROM commissie
+      WHERE commissieID = ?");
+      $stmt -> execute(array($_GET['cid']));
+      $cVoorzitter = $stmt -> fetch(PDO::FETCH_ASSOC);
+
+      $stmt2 = $pdo->prepare("DELETE FROM commissielid
+        WHERE commissieID=?
+        AND lidID = ?");
+      $stmt2->execute(array($_GET['cid'],$cVoorzitter['commissievoorzitter']));
       $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
       $stmt = $pdo->prepare("UPDATE commissie
         SET commissienaam=?, commissievoorzitter=?
         WHERE commissieID=?");
       $stmt->execute(array($_GET['newName'], $_GET['nameid'], $_GET['cid']));
-      if (!$stmt) {
-        echo "\nPDO::errorInfo():\n";
-        print_r($dbh->errorInfo());
-      }
+      $stmt = $pdo->prepare("INSERT INTO commissielid(commissieID, lidID)
+        VALUES(?, ?)");
+      $stmt->execute(array($_GET['cid'],$_GET['nameid']));
     }else{
       //Prepare en execute de sql query om een nieuwe poll toe te voegen
       $stmt = $pdo->prepare("INSERT INTO commissie(commissienaam, commissievoorzitter)
@@ -66,15 +74,24 @@ if(isset($_GET['as']) && !(empty($_GET['as']))){
     }
   }elseif($_GET['as'] == "dispuut"){
     if($_GET['edit'] == "true"){
+      $stmt = $pdo->prepare("SELECT dispuutvoorzitter FROM dispuut
+      WHERE dispuutid = ?");
+      $stmt -> execute($_GET['cid']);
+      $dVoorzitter = $stmt -> fetch(PDO::FETCH_ASSOC);
+
+      $stmt2 = $pdo->prepare("DELETE FROM dispuutlid
+        WHERE dispuutid=?
+        AND lidID = ?");
+      $stmt2->execute(array($_GET['cid'],$dVoorzitter['commissievoorzitter']));
+
       $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
       $stmt = $pdo->prepare("UPDATE dispuut
         SET dispuutnaam=?, dispuutvoorzitter=?
         WHERE dispuutid=?");
       $stmt->execute(array($_GET['newName'], $_GET['nameid'], $_GET['cid']));
-      if (!$stmt) {
-        echo "\nPDO::errorInfo():\n";
-        print_r($dbh->errorInfo());
-      }
+      $stmt = $pdo->prepare("INSERT INTO dispuutlid(dispuutid, lidID)
+        VALUES(?, ?)");
+      $stmt->execute(array($_GET['cid'],$_GET['nameid']));
     }else{
       //Prepare en execute de sql query om een nieuwe poll toe te voegen
       $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
