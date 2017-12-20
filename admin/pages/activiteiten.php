@@ -225,8 +225,8 @@ session_start();
                                   <label for="keuze" class="col-sm-3 col-form-label">Vanaf:</label>
                                   <div class="col-sm-9 px-0 pr-5">
                                     <div class="input-group mb-2 mb-sm-0">
-                                      <input type="date" class="form-control col-9 M_activiteitdatumvan" name="vanaf" value="<?php print(date_format($datevan, 'Y-m-d'));?>" min=<?php print('"' . date('Y-m-d', strtotime("+7 day")) . '"'); ?> required readonly>
-                                      <input type="time" class="form-control col-3 M_activiteittijdvan" name="vanaftijd" value="<?php print($row['tijdvanaf']);?>" min=<?php print('"' . date('Y-m-d', strtotime("+7 day")) . '"'); ?> required readonly>
+                                      <input type="date" class="form-control col-9 M_activiteitdatumvan" name="vanaf" value="<?php print(date_format($datevan, 'Y-m-d'));?>" min=<?php print('"' . date('Y-m-d', strtotime("+1 day")) . '"'); ?> required readonly>
+                                      <input type="time" class="form-control col-3 M_activiteittijdvan" name="vanaftijd" value="<?php print($row['tijdvanaf']);?>" min=<?php print('"' . date('Y-m-d', strtotime("+2 day")) . '"'); ?> required readonly>
                                     </div>
                                   </div>
                               </div>
@@ -314,8 +314,8 @@ session_start();
                   <label for="keuze" class="col-sm-3 col-form-label">Vanaf:</label>
                   <div class="col-sm-9 px-0 pr-5">
                     <div class="input-group mb-2 mb-sm-0">
-                      <input type="date" class="form-control col-9" name="vanaf" value="" min=<?php print('"' . date('Y-m-d', strtotime("+7 day")) . '"'); ?> required>
-                      <input type="time" class="form-control col-3" name="vanaftijd" value="" min=<?php print('"' . date('Y-m-d', strtotime("+7 day")) . '"'); ?> required>
+                      <input type="date" class="form-control col-9" name="vanaf" value="" min=<?php print('"' . date('Y-m-d', strtotime("+1 day")) . '"'); ?> required>
+                      <input type="time" class="form-control col-3" name="vanaftijd" value="" min=<?php print('"' . date('Y-m-d', strtotime("+2 day")) . '"'); ?> required>
                     </div>
                   </div>
               </div>

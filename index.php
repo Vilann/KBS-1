@@ -6,13 +6,15 @@
         <?php include 'includes/header.php';
               include 'includes/dbconnect.php';
 
-              if(isset($_POST['submit']) && !(empty($_POST['submit']))){
+              if(isset($_POST['submit'])){
                 //sla de datum van vandaag op in $date
-                $date = date("Y-m-d");
                 //Prepare en execute de sql query om een nieuwe poll toe te voegen
-                $stmt = $pdo->prepare("INSERT INTO pollresultaten(lidID, pollkeuze)
-                  VALUES(?, ?)");
-                $stmt->execute(array($_SESSION['lid'],$_POST['keuze']));
+                error_reporting(E_ERROR | E_WARNING | E_PARSE);
+                $stmt = $pdo->prepare("INSERT INTO pollresultaat(pollId, lidID, pollkeuze)
+                  VALUES(?, ?, ?)");
+                $stmt->execute(array($_POST['id'],$_SESSION['lid'],$_POST['keuze']));
+                //die("succes maybe???".$_POST['id']." ".$_SESSION['lid']." ".$_POST['keuze']);
+                header('Location: index');
               }else{
                 //Niks
               }
@@ -144,6 +146,15 @@
             LIMIT 1");
             $stmt->execute();
             $info = $stmt->fetch(PDO::FETCH_ASSOC);
+            $stmt2 = $pdo->prepare("SELECT p.lidID FROM pollresultaat p
+            WHERE p.pollID = ?
+            AND p.lidID = ?");
+            $stmt2->execute(array($info['pollID'],$_SESSION['lid']));
+            $info2 = $stmt2->fetch(PDO::FETCH_ASSOC);
+            //die($info2['lidID']." | ".$info['pollID']." | ".$_SESSION['lid']);
+            if(!empty($info2['lidID'])){
+              //niks
+            }else{
           ?>
           <div class="position-fixed side-note">
             <div class="card" style="width: 20rem;">
@@ -163,20 +174,22 @@
                    ?>
                 <div class="form-check">
                   <label class="form-check-label">
-                    <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1">
+                    <input class="form-check-input" type="radio" name="keuze" id="exampleRadios1" value="<?php print($row['pollkeuzemogelijkheid']);?>">
                     <?php print($row['pollkeuzemogelijkheid']);?>
                   </label>
                 </div>
                 <?php
                 } ?>
                 <br>
-                <button type="button" name="submit" class="btn btn-outline-primary zhtc-button">Verzenden</button>
+                <input type="hidden" name="id" value="<?php print($row['pollID']);?>"/>
+                <button type="submit" name="submit" class="btn btn-outline-primary zhtc-button">Verzenden</button>
               </form>
               </div>
             </div>
           </div>
           <?php
         }
+          }
            ?>
           <br>
 
