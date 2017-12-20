@@ -23,7 +23,7 @@
 		        <a class="nav-link" href="index">Home <span class="sr-only">(current)</span></a>
 		      </li>
 		      <li class="nav-item">
-		        <a class="nav-link" href="#">De vereniging</a>
+		        <a class="nav-link" href="vereniging">De vereniging</a>
 		      </li>
 		      <li class="nav-item">
 		        <a class="nav-link" href="commissies">Commissies</a>
@@ -41,7 +41,7 @@
 		        <a class="nav-link" href="contact">Contact</a>
 		      </li>
 				<?php
-								error_reporting(E_ERROR | E_WARNING | E_PARSE);
+                                error_reporting(E_ERROR | E_WARNING | E_PARSE);
                 if (!isset($_SESSION['lid'])) {
                     ?>
 										<li class="nav-item">
