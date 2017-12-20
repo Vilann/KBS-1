@@ -31,6 +31,6 @@ function beveilig_nietlid()
 function beveilig_adminpagina()
 {
     if (!isset($_SESSION['admin'])) {
-        header('Location: ../index');
+        header('Location: index');
     }
 }

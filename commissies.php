@@ -7,8 +7,7 @@
 		<?php include 'includes/header.php';
 		include 'includes/dbconnect.php';
 		if(isset($_GET['cm']) && !(empty($_GET['cm']))){
-      $stmt = $pdo->prepare("SELECT commissievoorzitter as cmvoorzit,commissienaam as cmnaam,
-				c.commissieID as cmID,commissiezin as cmzin, commissietekst as cmtekst, l.voornaam as voornaam, cl.lidID as cmlid
+      $stmt = $pdo->prepare("SELECT commissievoorzitter as cmvoorzit,commissienaam as cmnaam, c.commissieID as cmID,commissiezin as cmzin, commissietekst as cmtekst, l.voornaam as voornaam, cl.lidID as cmlid, commissieagenda as cmagendaID, commissienotulen as cmnotulenID
 			FROM commissie c
 			JOIN lid l ON c.commissievoorzitter = l.lidID
 			JOIN commissielid cl ON cl.commissieID = c.commissieID
@@ -22,6 +21,8 @@
         $commissiezin = $info['cmzin'];
         $commissieid = $info['cmID'];
         $commissietekst = $info['cmtekst'];
+        $commissieagenda = $info['cmagendaID'];
+        $commissienotulen = $info['cmnotulenID'];
         $voornaam = $info['voornaam'];
       } else {
           print("Werkt niet, of... of het database tabel waar je naar zoekt is leeg");
@@ -41,7 +42,7 @@
                 <div class="row">
                   <div class="col-12">
                     <h5 class="card-text text-left my-0">
-											<?php header('Content-Type: text/html; charset=ISO-8859-1'); print($info['voornaam']); ?></h5>
+											<?php print($info['voornaam']); ?></h5>
                   </div>
                 </div>
                 <div class="row">
@@ -66,10 +67,13 @@
                 <img src="http://via.placeholder.com/300x300" class="img-fluid mx-auto d-block rounded" alt="Responsive image">
                 <hr>
                 <div class='wrapper text-center'>
+
+									<?php
+									if(isset($_SESSION['lid'])){ ?>
                   <div class="btn-group mx-auto" role="group" aria-label="...">
-                    <a href="#" class="btn btn-outline-primary zhtc-button">Agenda</a>
-                    <a href="<?php print($googleLink);?>" class="btn btn-outline-primary zhtc-button">Notulen</a>
-                  </div>
+										<a href="https://drive.google.com/embeddedfolderview?id=<?php print($info['cmagendaID']);?>" class="btn btn-outline-primary zhtc-button">Agenda</a>
+										<a href="https://drive.google.com/embeddedfolderview?id=<?php print($info['cmnotulenID']);?>" class="btn btn-outline-primary zhtc-button">Notulen</a>
+                  </div> <?php } ?>
                 </div>
             </div>
         </div>
