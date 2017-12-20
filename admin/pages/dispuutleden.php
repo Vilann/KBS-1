@@ -1,5 +1,7 @@
 <?php
+  session_start();
   include '../../includes/dbconnect.php';
+  include '../alert.php';
   if(isset($_GET['delete']) && !(empty($_GET['delete']))){
     if($_GET['delete'] == "yes"){
       $id = $_GET['id'];
@@ -14,6 +16,9 @@
         //
       }
     }
+    $_SESSION['error'] = "U heeft succesvol een lid verwijderd uit uw dispuut";
+    $_SESSION['errorType'] = "success";
+    $_SESSION['errorAdd'] = "succes!";
     header('Location: dispuutleden');
   }
   if(isset($_GET['choice']) && !(empty($_GET['choice']))){
@@ -30,6 +35,9 @@
             VALUES(?, ?)");
           $stmt->execute(array($id,$ledenArray[$i]));
         }
+        $_SESSION['error'] = "U heeft succesvol leden toegevoegd aan uw dispuut";
+        $_SESSION['errorType'] = "success";
+        $_SESSION['errorAdd'] = "succes!";
       }
     }
     header('Location: dispuutleden');
@@ -44,6 +52,10 @@
       //
   } else {
       print("Werkt niet");
+  }
+  if(isset($_SESSION['error'])){
+    print(createError($_SESSION['error'],$_SESSION['errorType'],$_SESSION['errorAdd']));
+    unset($_SESSION['error']);
   }
 ?>
 <html lang="en">

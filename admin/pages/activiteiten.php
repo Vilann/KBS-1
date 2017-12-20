@@ -1,9 +1,9 @@
 <?php
+session_start();
   include '../../includes/dbconnect.php';
+  include '../alert.php';
   error_reporting(E_ALL & ~E_NOTICE);
-  session_start();
   if(isset($_SESSION['admin']['Commissie']) && !isset($_SESSION['admin']['Beheer'])){
-    print("susads");
     $stmt = $pdo->prepare("SELECT commissieid FROM commissie WHERE commissievoorzitter = ?");
     $stmt->execute(array($_SESSION['lid']));
     $info = $stmt->fetchAll();
@@ -32,6 +32,9 @@
         //
       }
     }
+    $_SESSION['error'] = "U heeft succesvol een activiteit verwijderd.";
+    $_SESSION['errorType'] = "success";
+    $_SESSION['errorAdd'] = "succes!";
     header('Location: activiteiten');
   }
   if(isset($_POST['addActiviteit']) && !(empty($_POST['addActiviteit']))){
@@ -43,7 +46,13 @@
         echo "\nPDO::errorInfo():\n";
         print_r($dbh->errorInfo());
       }
+      $_SESSION['error'] = "U heeft succesvol een activiteit toegevoegd";
+      $_SESSION['errorType'] = "success";
+      $_SESSION['errorAdd'] = "succes!";
     }else{
+      $_SESSION['error'] = "U heeft niet alles ingevuld";
+      $_SESSION['errorType'] = "danger";
+      $_SESSION['errorAdd'] = "Let op!";
       //error niet alles ingevuld
     }
     header('Location: activiteiten');
@@ -54,14 +63,20 @@
       $stmt = $pdo->prepare("UPDATE activiteit SET activiteitnaam=?, datumvan=?, datumtot=?, activiteitlocatie=?, activiteitinfo=?
         WHERE activiteitid = ?");
       $stmt->execute(array($_POST['naam'],($_POST['vanaf']." ".$_POST['vanaftijd']),($_POST['tot']." ".$_POST['tottijd']),$_POST['locatie'],$_POST['uitleg'],$_POST['id']));
-      if (!$stmt) {
-        echo "\nPDO::errorInfo():\n";
-        print_r($dbh->errorInfo());
-      }
+      $_SESSION['error'] = "U heeft succesvol een activiteit aangepast";
+      $_SESSION['errorType'] = "success";
+      $_SESSION['errorAdd'] = "succes!";
     }else{
+      $_SESSION['error'] = "U heeft niet alles ingevuld";
+      $_SESSION['errorType'] = "danger";
+      $_SESSION['errorAdd'] = "Let op!";
       //error niet alles ingevuld
     }
     header('Location: activiteiten');
+  }
+  if(isset($_SESSION['error'])){
+    print(createError($_SESSION['error'],$_SESSION['errorType'],$_SESSION['errorAdd']));
+    unset($_SESSION['error']);
   }
 ?>
 <html lang="en">
