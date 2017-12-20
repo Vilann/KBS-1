@@ -257,7 +257,7 @@ if(isset($_GET['as']) && !(empty($_GET['as']))){
             $data = $stmt->fetchAll();
              ?>
              <div class="row">
-               <div class="col-6">
+               <div class="col-sm-6 col-xs-12">
             <nav aria-label="Page navigation example">
               <ul class="pagination">
                 <li class="page-item <?php print($page_status_left)?>">
@@ -284,7 +284,7 @@ if(isset($_GET['as']) && !(empty($_GET['as']))){
               </ul>
             </nav>
           </div>
-            <div class="col-6">
+            <div class="col-sm-6 col-xs-12">
                 <button type="button" class="btn btn-outline-primary zhtc-button float-right" data-toggle="modal" data-target="#addcommissie">Nieuwe commissie toevoegen</button>
             </div>
           </div>
@@ -399,7 +399,7 @@ if(isset($_GET['as']) && !(empty($_GET['as']))){
         $data = $stmt->fetchAll();
          ?>
         <div class="row">
-          <div class="col-6">
+          <div class="col-sm-6 col-xs-12">
             <nav aria-label="Page navigation example">
               <ul class="pagination">
                 <li class="page-item <?php print($page_status_left)?>">
@@ -426,7 +426,7 @@ if(isset($_GET['as']) && !(empty($_GET['as']))){
               </ul>
             </nav>
           </div>
-          <div class="col-6">
+          <div class="col-sm-6 col-xs-12">
               <button type="button" class="btn btn-outline-primary zhtc-button float-right" data-toggle="modal" data-target="#adddispuut">Nieuw dispuut toevoegen</button>
           </div>
         </div>
