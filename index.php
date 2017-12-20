@@ -6,16 +6,12 @@
         <?php include 'includes/header.php';
               include 'includes/dbconnect.php';
               //include 'includes/sidebar.php';?>
-<<<<<<< HEAD
               <!-- This script triggers the modal without a button -->
               <!-- <script type="text/javascript">
               	$(document).ready(function(){
               		$("#myModal").modal('show');
               	});
               </script> -->
-=======
-
->>>>>>> f61b6378e4a360921614f90c27eed3f5c5ce4c36
               <script>(function(d, s, id) {
                 var js, fjs = d.getElementsByTagName(s)[0];
                 if (d.getElementById(id)) return;
@@ -45,18 +41,16 @@
                 <div class="carousel-inner">
                   <div class="carousel-item active" role="listbox">
                     <?php
-                    $stmt = $pdo->prepare('SELECT *
-          					FROM slider');
+                    $stmt = $pdo->prepare('SELECT * FROM slider');
                     $stmt->execute();
                     $data = $stmt->fetchAll(); ?>
-                    <img src="images/slider/Batavierenrace.jpg" alt="De Batavierenrace">
+                    <img src="images/slider/<?php strtolower(print($data["afbeelding"])); ?>" alt="<?php strtolower(print($data["fototitel"])); ?>">
                     <div class="carousel-caption">
                     <h3><?php strtoupper(print($data["fototitel"])); ?></h3>
                       <p><?php print($data["tekst"]); ?></p>
                     </div>
                   </div>
-                  <?php
-                } ?>
+                  <?php } ?>
 <!--
                   <div class="carousel-item">
                     <img class="d-block img-fluid" src="images/slider/<?php print($data["afbeelding"]); ?>" alt="De Bierweek">
