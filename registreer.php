@@ -102,19 +102,19 @@ beveilig_lid();
               <div class="col-sm-9">
                 <div class="form-check">
                   <label class="form-check-label">
-                    <input class="form-check-input" type="radio" name="geslacht" value="man" checked>
+                    <input class="form-check-input" type="radio" name="gender" value="man" checked>
                     Man
                   </label>
                 </div>
                 <div class="form-check">
                   <label class="form-check-label">
-                    <input class="form-check-input" type="radio" name="geslacht" value="vrouw">
+                    <input class="form-check-input" type="radio" name="gender" value="vrouw">
                     Vrouw
                   </label>
                 </div>
                 <div class="form-check">
                   <label class="form-check-label">
-                    <input class="form-check-input" type="radio" name="geslacht" value="anders">
+                    <input class="form-check-input" type="radio" name="gender" value="anders">
                     Geen van bovenstaande
                   </label>
                 </div>
@@ -222,5 +222,4 @@ beveilig_lid();
     } ?>
   <script>
   <?php include 'includes/script.js'; ?>
-  </script>
 <?php include("includes/footer.php"); ?>
