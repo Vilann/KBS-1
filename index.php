@@ -195,6 +195,5 @@
 
               <!-- <a href="https://zhtc.nl/lustrumshop/">Ga naar de Lustrumshop</a> -->
 
-
     <?php include 'includes/footer.php'; ?>
 </html>

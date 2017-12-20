@@ -42,8 +42,6 @@ Asv. ZHTC heeft als enige studentenvereniging de beschikking over een eigen soci
 			<p> Info... </p>
 			<?php
 
-                        header('Content-Type: text/html; charset=ISO-8859-1');
-
                     $stmt = $pdo->prepare('SELECT dispuutnaam, dispuutzin, dispuuttekst
 					FROM dispuut');
                     $stmt->execute();
