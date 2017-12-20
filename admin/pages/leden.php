@@ -1,5 +1,7 @@
 <?php
+  session_start();
   include '../../includes/dbconnect.php';
+  include '../alert.php';
   if(isset($_GET['delete']) && !(empty($_GET['delete']))){
     if($_GET['delete'] == "yes"){
       $id = $_GET['id'];
@@ -11,6 +13,9 @@
       }else{
         //
       }
+      $_SESSION['error'] = "U heeft succesvol een lid op inactief gezet";
+      $_SESSION['errorType'] = "success";
+      $_SESSION['errorAdd'] = "succes!";
     }
     header('Location: leden');
   }
@@ -27,9 +32,16 @@
         echo "\nPDO::errorInfo():\n";
         print_r($dbh->errorInfo());
       }
+      $_SESSION['error'] = "Het lid is succesvol aangepast";
+      $_SESSION['errorType'] = "success";
+      $_SESSION['errorAdd'] = "succes!";
     }
     unset($_POST);
     header('Location: leden');
+  }
+  if(isset($_SESSION['error'])){
+    print(createError($_SESSION['error'],$_SESSION['errorType'],$_SESSION['errorAdd']));
+    unset($_SESSION['error']);
   }
 ?>
 <html lang="en">
@@ -43,11 +55,11 @@
             <br>
             <?php
             $stmt = $pdo->prepare("SELECT * FROM lid
-            WHERE liddelete = 0
+            WHERE inactief = 0
             ORDER by achternaam ASC");
             $stmt->execute();
             $count = $stmt->rowCount();
-            $resultsPer = 2;
+            $resultsPer = 20;
             $pages = ceil($count/$resultsPer);
             if(isset($_GET['p']) && !empty($_GET['p'])){
               $pageNr = $_GET['p'];
@@ -77,7 +89,7 @@
             $page_status_right = $page_status[1];
             $startNr = ($resultsPer*$pageNr)-$resultsPer;
             $stmt = $pdo->prepare("SELECT * FROM lid
-            WHERE liddelete = 0
+            WHERE inactief = 0
             ORDER by $order ASC
             LIMIT $startNr, $resultsPer");
             $stmt->execute();

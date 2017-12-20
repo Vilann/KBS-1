@@ -1,8 +1,10 @@
 <?php
 session_start();
 include '../../includes/dbconnect.php';
+include '../alert.php';
 header('Content-Type: text/html; charset=ISO-8859-1');
 if(isset($_POST['submit']) && !(empty($_POST['submit']))){
+  print("test");
   if(isset($_POST['image']) && !(empty($_POST['image']))){
     if (!unlink(dirname( dirname(__FILE__) ) . "/uploads/" . $_POST['image'])){
       //echo ("Error deleting ".$_POST['image']);
@@ -58,15 +60,17 @@ if(isset($_POST['submit']) && !(empty($_POST['submit']))){
       SET dispuutnaam=?, dispuutzin=?, dispuuttekst=?, dispuutbanner=?
   		WHERE dispuutID=?");
   $stmt->execute(array($_POST['naam'],$_POST['zin'],$_POST['dispuutTekst'],$newfilename,$_POST['dispuutID']));
-  //print(htmlspecialchars($_POST['dispuutText']));
-  //die("testico ".$_POST['naam']." ".$_POST['zin']." ".$_POST['dispuutTekst']." ".$_POST['dispuutID']);
-  unset($_POST);
+  unset($_POST['submit']);
   unset($_FILES);
-  $_SESSION['error'] = "testZIN!!!!!!!!!!!!!";
-  $_SESSION['errorType'] = "danger";
-  $_SESSION['errorAdd'] = "test!";
+  $_SESSION['error'] = "De dispuut aanpassingen zijn succesvol ingevoerd";
+  $_SESSION['errorType'] = "success";
+  $_SESSION['errorAdd'] = "succes!";
   header('Location: dispuutpagina');
 }
+  if(isset($_SESSION['error'])){
+    print(createError($_SESSION['error'],$_SESSION['errorType'],$_SESSION['errorAdd']));
+    unset($_SESSION['error']);
+  }
 ?>
 <html lang="en">
       <?php

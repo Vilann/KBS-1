@@ -1,6 +1,9 @@
 <html lang="en">
-      <?php include '../header.php';
+      <?php
+      session_start();
       include '../../includes/dbconnect.php';
+      include '../alert.php';
+      include '../header.php';
       ?>
       <script src="http://code.highcharts.com/highcharts.js"></script>
       <script src="http://code.highcharts.com/modules/exporting.js"></script>
@@ -26,6 +29,9 @@
             $stmt->execute(array($maxId, $_POST['keuze'.$i]));
           }
           //Unset de post waarde add zodat hij niet perongeluk nog een keer de zelfde query uitvoerd
+          $_SESSION['error'] = "Er is succesvol een nieuwe poll toegevoegd. Leden kunnen deze nu invullen op de homepagina";
+          $_SESSION['errorType'] = "success";
+          $_SESSION['errorAdd'] = "succes!";
           unset($_POST['add']);
         }else{
           //Niks

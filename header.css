@@ -1,3 +1,6 @@
+.carousel, .carousel-item, .img-fluid {
+	width:100%;
+}
 .navigation{
 	  background-color:#003878;
 	}
@@ -45,9 +48,12 @@
 }
 
 .zhtc-brd, .zhtc-button, .zhtc-button:active, .zhtc-button:hover {
-	border-color: #003878;
+	border-color: #003878 !important;
 }
 
+.slide-border {
+	border-width: 2px !important;
+}
 .zhtc-bg, .zhtc-button:active, .zhtc-button:hover {
 	background-color: #003878;
 }
@@ -56,4 +62,38 @@
 }
 .card-noborder {
 	border: 1px solid rgba(0,0,0,0);
+}
+.full-screen {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+h2 {
+    margin-top: 30px;
+    position: relative;
+    text-align: center;
+    z-index: 1;
+}
+
+h2:before {
+    border-top: 2px solid #dfdfdf;
+    content:"";
+    margin: 0 auto;
+    position: absolute;
+    top: 25px; left: 0; right: 0; bottom: 0;
+    width: 95%;
+    z-index: -1;
+}
+
+h2 span { background: #fff; padding: 0 10px; }
+
+.width-60 {
+	width:60%;
+}
+.side-note {
+	top:40vh;
+	right:19vh;
+	height:10vh;
+	width:15vw;
 }
