@@ -180,6 +180,18 @@ beveilig_lid();
                 </div>
               </div>
           </div>
+
+          <div class="form-group row">
+            <div class="g-recaptcha col-sm-9 offset-sm-3 px-0" data-sitekey="6Ld7nTsUAAAAADXHtsQJLwU-Zt1wcQ_ysEB9B0Dz"></div>
+          </div>
+          <?php
+          error_reporting(E_ERROR | E_WARNING | E_PARSE);
+
+          if (isset($_SESSION['captchamelding'])) {
+              print('<p>' . $_SESSION['captchamelding'] . '</p>');
+              unset($_SESSION["captchamelding"]);
+          }
+          ?>
           <div class="form-group row">
             <div class="col-sm-9 offset-sm-4 px-0">
               <input class="btn btn-outline-primary" type="submit" name="registreer" value="Registreer">
