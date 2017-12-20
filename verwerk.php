@@ -183,21 +183,21 @@ if (isset($_POST['registreer'])) {
                 // anders voert het de gegevens in ($insert), en daarna het emailadres ($emailinsert)
             } else {
                 include 'includes/dbconnect.php';
-                $hash=rand(0, 10000);
-                $token= hash_hmac("sha256", "$hash", $_POST["email"], false);
+                $hash=random_bytes(5);
+                $token= hash_hmac("sha256", $hash, $_POST["email"]);
                 //zet de juiste error reporting zodat fouten kunnen worden opgevangen
                 $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
                 $insert = $pdo->prepare("INSERT INTO lid (voornaam, tussenvoegsel, achternaam, geboortedatum,
                                       adres, woonplaats, postcode, geslacht,
                                       emailadres, rekeningnummer, noodnummer, shirtmaat,
-                                      medicatie, dieetwensen, opmerking, wachtwoord, aanmaakdatum, token, inactief)
+                                      medicatie, dieetwensen, opmerking, wachtwoord, aanmaakdatum, token)
                     VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 
                 // str_replace haalt alle spaties uit de postcode zodat het altijd 6 tekens is
                 $insert->execute(array($voornaam, $tussenvoegsel, $achternaam, $_POST["geboortedatum"],
                                  $_POST["adres"],$_POST["woonplaats"],str_replace(' ', '', $_POST["postcode"]),$_POST["gender"],
                                  $_POST["email"],$_POST["iban"],$_POST["noodnummer"],$_POST["maat"],
-                                 $medicatie,$dieetwensen,$opmerking,$encryptedww ,date("Y-m-d"),"$token",2));
+                                 $medicatie,$dieetwensen,$opmerking,$encryptedww ,date("Y-m-d"), $token));
 
                 // PDO::lastInsertID() geeft het laatste id terug die gemaakt is. Dat is dus de id van de bovenstaande query.
                 // $insertID = $pdo->lastInsertId();

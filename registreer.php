@@ -10,9 +10,20 @@ beveilig_lid();
 
     <?php include 'includes/header.php';
     if (isset($_GET['succes'])) {
-        print("Je bent succesvol geregistreerd!");
+        print("U bent succesvol geregistreerd, u krijgt binnen enkele minuten een mail met een activatiecode.");
     } elseif (isset($_GET['token'])) {
         // Voeg toe melding voor als je je account geactiveerd hebt.
+        $email=$_GET['email'];
+        $token=$_GET['token'];
+        $stmt = $pdo->prepare("SELECT lidID FROM lid WHERE emailadres=? AND token=?");
+        $stmt->execute(array($email,$token));
+        $id = $stmt->fetch(PDO::FETCH_ASSOC)["lidID"];
+        if ($id) {
+            $stmt = $pdo->prepare("UPDATE lid SET inactief='0', token = NULL WHERE lidID = ?");
+            $stmt->execute(array($id));
+            print('Uw account is geactiveerd,  <a href="login">klik hier</a> om in te loggen');
+        } else {
+        }
     } else {
         error_reporting(E_ERROR | E_WARNING | E_PARSE);
         if (isset($_SESSION["error"])) {
