@@ -71,7 +71,7 @@ if(isset($_POST['submit']) && !(empty($_POST['submit']))){
             <a class="zhtc-c" id="sidebar_toggler" href="#sidebar" data-toggle="collapse"><i class="icon ion-navicon-round"></i></a>
             <hr>
             <div class="page-header">
-                <h1 id="pageLoc" class="commissiepagina">ZHTC Aanpassen commissie pagina<span class="lead">Welkom bij de ZHTC adminpanel</span></h1>
+                <h1 id="pageLoc" class="commissiepagina">ZHTC aanpassen commissie pagina<span class="lead">Welkom bij het ZHTC adminpanel</span></h1>
             </div>
             <br>
             <?php

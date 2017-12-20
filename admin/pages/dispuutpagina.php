@@ -79,7 +79,7 @@ if(isset($_POST['submit']) && !(empty($_POST['submit']))){
             <a class="zhtc-c" id="sidebar_toggler" href="#sidebar" data-toggle="collapse"><i class="icon ion-navicon-round"></i></a>
             <hr>
             <div class="page-header">
-                <h1 id="pageLoc" class="dispuutpagina">ZHTC Aanpassen dispuut pagina<span class="lead">Welkom bij de ZHTC adminpanel</span></h1>
+                <h1 id="pageLoc" class="dispuutpagina">ZHTC Aanpassen dispuut pagina<span class="lead">Welkom bij het ZHTC adminpanel</span></h1>
             </div>
             <br>
             <?php
@@ -110,7 +110,7 @@ if(isset($_POST['submit']) && !(empty($_POST['submit']))){
                               </div>
                           </div>
                           <div class="form-group row">
-                              <label for="vraag" class="col-sm-2 col-form-label">Dispuutbanner:</label>
+                              <label for="vraag" class="col-sm-2 col-form-label">dispuutbanner:</label>
                               <div class="col-sm-10 px-0 pr-5">
                                 <div class="row">
                                   <div class="col-sm-6">

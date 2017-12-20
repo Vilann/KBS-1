@@ -50,7 +50,7 @@
             <a class="zhtc-c" id="sidebar_toggler" href="#sidebar" data-toggle="collapse"><i class="icon ion-navicon-round"></i></a>
             <hr>
             <div class="page-header">
-                <h1 id="pageLoc" class="leden">ZHTC ledenbestand<span class="lead">Welkom bij de ZHTC adminpanel</span></h1>
+                <h1 id="pageLoc" class="leden">ZHTC ledenbestand<span class="lead">Welkom bij het ZHTC adminpanel</span></h1>
             </div>
             <br>
             <?php
@@ -182,13 +182,13 @@
                                   </div>
                               </div>
                               <div class="form-group row">
-                                  <label for="achternaam" class="col-sm-4 col-form-label">* achternaam:</label>
+                                  <label for="achternaam" class="col-sm-4 col-form-label">* Achternaam:</label>
                                   <div class="col-sm-8 px-0">
                                     <input type="text" class="form-control" name="achternaam" placeholder="Achternaam" value="<?php print($row['achternaam']);?>" required>
                                   </div>
                               </div>
                               <div class="form-group row">
-                                  <label for="geboortedatum" class="col-sm-4 col-form-label">* geboortedatum:</label>
+                                  <label for="geboortedatum" class="col-sm-4 col-form-label">* Geboortedatum:</label>
                                   <div class="col-sm-8 px-0">
                                     <input type="date" class="form-control" name="geboortedatum" placeholder="geboortedatum" value="<?php print($row['geboortedatum']);?>" max=<?php print('"' . date('Y-m-d', strtotime("-16 year")) . '"'); ?> required>
                                   </div>
@@ -284,13 +284,13 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="verwijderenlabel">Weet u zeker dat u <span class="deleteName"></span> wilt verwijderen</h5>
+        <h5 class="modal-title" id="verwijderenlabel">Weet u zeker dat u <span class="deleteName"></span>" wilt verwijderen</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        <small class="text-muted">Hou er rekening mee dat zodra u <span class="deleteName"></span> verwijderd alle leden die hier in staan uit geschreven worden.</small>
+        <small class="text-muted">Hou er rekening mee dat zodra u "<span class="deleteName"></span>" verwijderd alle leden die hier in staan uit geschreven worden.</small>
       </div>
       <div class="modal-footer">
         <button id="setthisHref" onclick="" class="btn btn-outline-danger" type="button">Verwijderen</button>

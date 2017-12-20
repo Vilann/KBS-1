@@ -42,7 +42,7 @@
             <a class="zhtc-c" id="sidebar_toggler" href="#sidebar" data-toggle="collapse"><i class="icon ion-navicon-round"></i></a>
             <hr>
             <div class="page-header">
-                <h1 id="pageLoc" class="poll">ZHTC Poll<span class="lead">Welkom bij de ZHTC adminpanel</span></h1>
+                <h1 id="pageLoc" class="poll">ZHTC Poll<span class="lead">Welkom bij het ZHTC adminpanel</span></h1>
             </div>
             <div class="row">
               <div class="col-md-11">
