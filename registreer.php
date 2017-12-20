@@ -190,8 +190,7 @@ beveilig_lid();
   </div>
   </div>
   </div>
-  </body>
   <script>
   <?php include 'includes/script.js'; ?>
   </script>
-</html>
+<?php include("includes/footer.php"); ?>
