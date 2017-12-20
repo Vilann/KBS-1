@@ -189,6 +189,8 @@ if (isset($_POST['registreer'])) {
             if ($insert->RowCount()/* && $emailinsert->RowCount() */) {
                 print("succes!<br>");
                 header("Location: index");
+                $naam="$voornaam $tussenvoegsel $achternaam";
+                mail_bevestigen($_POST["email"], $token, $naam);
             }
         }
     }
