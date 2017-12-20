@@ -248,5 +248,3 @@ if ((isset($_POST['contact']))) {
     }
     header("Location: contact");
 }
-if (isset($_POST['infoupdate'])) {
-}
