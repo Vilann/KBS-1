@@ -83,8 +83,8 @@ if (isset($_SESSION['lid'])) {
     </div>
   </div>
   </div>
-  </body>
-</html>
+
 <?php
+include("includes/footer.php");
 }
  ?>

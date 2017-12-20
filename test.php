@@ -1,7 +1,9 @@
 <?php
-$to = "jelle.santema@gmail.com";
-$subject = "My subject";
-$txt = "Hello world!";
-$headers = "From: webmaster@example.com";
-mail($to, $subject, $txt, $headers);
-?> 
+include 'includes/dbconnect.php';
+
+
+
+
+$hash=rand(0, 10000);
+$token= hash_hmac("sha256", $hash, "banaan@email.com", false);
+print $token;
