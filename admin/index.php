@@ -53,10 +53,10 @@ wachtwoord vergeten*/
                 <p class='small text-secondary'>Persoonlijke pagina's:</p>
                 <div class='dropdown-divider'></div>
                 <p class='dropdown-item'>LidNiveau:	<span class='text-secondary'>Nieuwlid</span></p>
-                <a href='../../account' class='dropdown-item'>Account</a>
-                <a href='../../index' class='dropdown-item'>Homepagina</a>
+                <a href='/KBS-1/account' class='dropdown-item'>Account</a>
+                <a href='/KBS-1/admin/index' class='dropdown-item'>Homepagina</a>
                 <div class='dropdown-divider'></div>
-                <a class='btn btn-outline-danger mx-auto' href="../../loguit"><i class="icon ion-log-out"></i> <b>Afmelden</b></a>
+                <a class='btn btn-outline-danger mx-auto' href="/KBS-1/loguit"><i class="icon ion-log-out"></i> <b>Afmelden</b></a>
               </div>
             </div>
           </div>
@@ -71,7 +71,7 @@ wachtwoord vergeten*/
   <div class="row full_length">
     <div class="col-md-2 col-xs-1 pl-0 pr-0 collapse show" id="sidebar">
         <div class="list-group panel">
-            <a href="../index" class="list-group-item collapsed" data-parent="#sidebar"><i class="icon ion-home"></i> <span class="hidden-sm-down"> Adminpanel</span></a>
+            <a href="/KBS-1/admin/index" class="list-group-item collapsed" data-parent="#sidebar"><i class="icon ion-home"></i> <span class="hidden-sm-down"> Adminpanel</span></a>
             <!-- Beheer tools -->
             <?php
             if(isset($_SESSION['admin']['Beheer'])){
@@ -106,7 +106,6 @@ wachtwoord vergeten*/
             <?php
             }
             ?>
-            <a href="#" class="list-group-item collapsed" data-parent="#sidebar"><i class="icon ion-gear-a"></i> <span class="hidden-sm-down">Instellingen</span></a>
         </div>
     </div>
         <main class="col-md-10 col-xs-11 pl-3 pt-3">

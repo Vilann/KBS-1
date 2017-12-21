@@ -41,7 +41,7 @@
             <br>
             <?php
             $sql = "SELECT * FROM lid l
-            WHERE liddelete = 0
+            WHERE inactief = 0
             AND l.lidID NOT IN (SELECT lidID FROM $choiceSQL1
             WHERE $choiceSQL2 = ?)
             ORDER by achternaam ASC";
@@ -79,7 +79,7 @@
             $page_status_right = $page_status[1];
             $startNr = ($resultsPer*$pageNr)-$resultsPer;
             $sql = "SELECT * FROM lid l
-            WHERE liddelete = 0
+            WHERE inactief = 0
             AND l.lidID NOT IN (SELECT lidID FROM $choiceSQL1
             WHERE $choiceSQL2 = ?)
             ORDER by $order ASC

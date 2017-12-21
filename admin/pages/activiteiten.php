@@ -24,10 +24,6 @@ session_start();
         $stmt2 = $pdo->prepare("DELETE FROM activiteit
           WHERE activiteitid=?");
         $stmt2->execute(array($id));
-        if (!$stmt) {
-          echo "\nPDO::errorInfo():\n";
-          print_r($pdo->errorInfo());
-        }
       }else{
         //
       }
@@ -39,13 +35,24 @@ session_start();
   }
   if(isset($_POST['addActiviteit']) && !(empty($_POST['addActiviteit']))){
     if (isset($_POST['naam']) && isset($_POST['vanaf']) && isset($_POST['tot']) && isset($_POST['vanaftijd']) && isset($_POST['tottijd']) && isset($_POST['locatie']) && isset($_POST['uitleg'])) {
+      if(($_POST['tot'] < $_POST['vanaf'])){
+        $_SESSION['error'] = "Er is iets fout gegaan betreft de datum en/of tijd.";
+        $_SESSION['errorType'] = "danger";
+        $_SESSION['errorAdd'] = "Let op!";
+        header('Location: activiteiten');
+        exit;
+      }
+      if(($_POST['tot'] == $_POST['vanaf']) && ($_POST['tottijd'] < $_POST['vanaftijd'])){
+        $_SESSION['error'] = "Er is iets fout gegaan betreft de datum en/of tijd.";
+        $_SESSION['errorType'] = "danger";
+        $_SESSION['errorAdd'] = "Let op!";
+        header('Location: activiteiten');
+        exit;
+      }
       $stmt = $pdo->prepare("INSERT INTO activiteit(activiteitnaam, datumvan, datumtot, activiteitlocatie, activiteitinfo, lidID)
         VALUES(?, ?, ?, ?, ?, ?)");
       $stmt->execute(array($_POST['naam'],($_POST['vanaf']." ".$_POST['vanaftijd']),($_POST['tot']." ".$_POST['tottijd']),$_POST['locatie'],$_POST['uitleg'], $_SESSION['lid']));
-      if (!$stmt) {
-        echo "\nPDO::errorInfo():\n";
-        print_r($dbh->errorInfo());
-      }
+
       $_SESSION['error'] = "U heeft succesvol een activiteit toegevoegd";
       $_SESSION['errorType'] = "success";
       $_SESSION['errorAdd'] = "succes!";
@@ -60,6 +67,20 @@ session_start();
 
   if(isset($_POST['editActiviteit']) && !(empty($_POST['editActiviteit']))){
     if (isset($_POST['naam']) && isset($_POST['vanaf']) && isset($_POST['tot']) && isset($_POST['vanaftijd']) && isset($_POST['tottijd']) && isset($_POST['locatie']) && isset($_POST['uitleg'])) {
+      if(($_POST['tot'] < $_POST['vanaf'])){
+        $_SESSION['error'] = "Er is iets fout gegaan betreft de datum en/of tijd.";
+        $_SESSION['errorType'] = "danger";
+        $_SESSION['errorAdd'] = "Let op!";
+        header('Location: activiteiten');
+        exit;
+      }
+      if(($_POST['tot'] == $_POST['vanaf']) && ($_POST['tottijd'] < $_POST['vanaftijd'])){
+        $_SESSION['error'] = "Er is iets fout gegaan betreft de datum en/of tijd.";
+        $_SESSION['errorType'] = "danger";
+        $_SESSION['errorAdd'] = "Let op!";
+        header('Location: activiteiten');
+        exit;
+      }
       $stmt = $pdo->prepare("UPDATE activiteit SET activiteitnaam=?, datumvan=?, datumtot=?, activiteitlocatie=?, activiteitinfo=?
         WHERE activiteitid = ?");
       $stmt->execute(array($_POST['naam'],($_POST['vanaf']." ".$_POST['vanaftijd']),($_POST['tot']." ".$_POST['tottijd']),$_POST['locatie'],$_POST['uitleg'],$_POST['id']));
@@ -174,6 +195,7 @@ session_start();
                 </li>
               </ul>
             </nav>
+            <div class="table-responsive">
             <table class="table table-hover">
               <thead class="thead-zhtc">
                 <tr id="orderBy" class="<?php print($order);?>">
@@ -268,6 +290,7 @@ session_start();
                 ?>
               </tbody>
             </table>
+          </div>
         </main>
     </div>
 </div>
@@ -282,7 +305,7 @@ session_start();
         </button>
       </div>
       <div class="modal-body">
-        <small class="text-muted">Houd er rekening mee dat zodra u "<span class="deleteName"></span>" verwijderd, alle leden die hier in staan uitgeschreven worden.</small>
+        <small class="text-muted">Alle opgeslagen gegevens die wat met deze activiteit te maken hebben zullen verloren gaan.</small>
       </div>
       <div class="modal-footer">
         <button id="setthisHref" onclick="" class="btn btn-outline-danger" type="button">Verwijderen</button>
@@ -315,7 +338,7 @@ session_start();
                   <div class="col-sm-9 px-0 pr-5">
                     <div class="input-group mb-2 mb-sm-0">
                       <input type="date" class="form-control col-9" name="vanaf" value="" min=<?php print('"' . date('Y-m-d', strtotime("+1 day")) . '"'); ?> required>
-                      <input type="time" class="form-control col-3" name="vanaftijd" value="" min=<?php print('"' . date('Y-m-d', strtotime("+2 day")) . '"'); ?> required>
+                      <input type="time" class="form-control col-3" name="vanaftijd" value="" required>
                     </div>
                   </div>
               </div>
@@ -323,7 +346,7 @@ session_start();
                   <label for="keuze" class="col-sm-3 col-form-label">Tot:</label>
                   <div class="col-sm-9 px-0 pr-5">
                     <div class="input-group mb-2 mb-sm-0">
-                      <input type="date" class="form-control col-9" name="tot" value="" required>
+                      <input type="date" class="form-control col-9" name="tot" value="" min=<?php print('"' . date('Y-m-d', strtotime("+1 day")) . '"'); ?> required>
                       <input type="time" class="form-control col-3" name="tottijd" value="" required>
                     </div>
                   </div>
