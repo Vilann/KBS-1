@@ -58,11 +58,7 @@
             } ?> </span> </p>
                     </div>
                 </div>
-<<<<<<< HEAD
-                <h2 class="card-title text-left mt-5 header-txt">Informatie</h2>
-=======
-                <h2 class="card-title text-center mt-5">Informatie</h2>
->>>>>>> d52a7d55eb9b1e20ef29ec4d7f74c6cc38b62b22
+                <h2 class="card-title text-center mt-5 header-txt">Informatie</h2>
                 <p class="card-text text-justify">
                   <?php print($info['cmtekst']); ?>
                 </p>
@@ -95,7 +91,7 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-12">
-          <h1 class="text-center mt-4">Commissies</h1>
+          <h1 class="text-centers mt-4">Commissies</h1>
 <!-- <a href="#">
 	 <audio autoplay loop >
   <source src="files/AxelF.wav" type="audio/wav">
