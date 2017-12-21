@@ -38,7 +38,7 @@
 			<div class="container-fluid">
 				<div class="row">
 					<div class="col-12">
-						<h1 class="text-center mt-4"><u> <?php print($info['dpnaam']); ?></u></h1>
+						<h1 class="text-center mt-4"><?php print($info['dpnaam']) ?></h1>
 					</div>
 				</div>
 				<hr>
@@ -52,13 +52,18 @@
 											<?php print($info['voornaam']); ?></h5>
 									</div>
 								</div>
+								<?php
+                $stmt = $pdo->prepare("SELECT voornaam FROM lid l JOIN dispuutlid dl ON dl.lidID = l.lidID WHERE dispuutID = ?");
+            $stmt->execute(array($dispuutid));
+            $leden = $stmt->fetchAll();
+            print_r($leden)?>
 								<div class="row">
 									<div class="col-5 offset-7">
 
-										<p class="card-text text-right my-0">Voorzitter: <span class="text-muted"><?php print ucfirst(($info['voornaam'])); ?></span></p>
+										<p class="card-text text-right my-0">Voorzitter: <span class="text-muted"><?php print(ucfirst($voornaam)); ?></span></p>
 										<p class="card-text text-right my-0">Leden:<span class="text-muted">
-										<?php foreach ($info as $dispuutlid) {
-                print($info['dplid'] . "<br>");
+										<?php foreach ($leden as $lid) {
+                print(ucfirst($lid['voornaam'] . "<br>"));
             } ?> </span> </p>
 										</div>
 								</div>
