@@ -35,6 +35,7 @@ function foute_inlogpoging()
 if (isset($_POST['wwreset'])) {
 
 if ($email = filter_input(INPUT_POST, 'email')) {
+    print("Dit emailadres is wel gevonden in onze database.");
 
 }else {
   print("Dit emailadres is niet gevonden in onze database.");

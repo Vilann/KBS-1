@@ -72,13 +72,13 @@
                 <hr>
                 <div class='wrapper text-center'>
 
-<?php if (isset($_SESSION['lid'])) {
-                ?>
+<?php if (isset($_SESSION['lid'])) { ?>
                   <div class="btn-group mx-auto" role="group" aria-label="...">
 										<a href="https://drive.google.com/embeddedfolderview?id=<?php print($info['cmagendaID']); ?>" class="btn btn-outline-primary zhtc-button">Agenda</a>
 										<a href="https://drive.google.com/embeddedfolderview?id=<?php print($info['cmnotulenID']); ?>" class="btn btn-outline-primary zhtc-button">Notulen</a>
-                  </div> <?php
-            } ?>
+                  </div> <?php } ?>
+<?php if (isset($_SESSION['lid'])) { ?>
+				<audio autoplay loop ><source src="files/AxelF.wav" type="audio/wav"></audio><?php } ?>
                 </div>
             </div>
         </div>
@@ -91,13 +91,8 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-12">
-          <h1 class="text-centers mt-4">Commissies</h1>
-<!-- <a href="#">
-	 <audio autoplay loop >
-  <source src="files/AxelF.wav" type="audio/wav">
-</audio>.</a> -->
-
-          <!-- <p class="text-muted"><i class="icon ion-chevron-left"></i> oude commissies</p> -->
+          <h1 class="text-center mt-4">Commissies</h1>
+<!-- <p class="text-muted"><i class="icon ion-chevron-left"></i> oude commissies</p> -->
         </div>
       </div>
 			<hr>

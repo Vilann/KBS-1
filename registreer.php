@@ -10,20 +10,7 @@ beveilig_lid();
 
     <?php include 'includes/header.php';
     if (isset($_GET['succes'])) {
-        ?>
-        <div class="container-fluid">
-          <div class="wrapper mx-auto width-60 mt-5">
-            <h2 class="align-middle"><span class="font-weight-light align-middle"><span class="badge badge-success">Succes!</span></span></h2>
-          </div>
-        </div>
-        <div class="container-fluid">
-          <div class="row">
-            <p class="text-center text-muted font-weight-light mx-auto"> U krijgt binnen enkele minuten een mail met een activatiecode.</p>
-          </div>
-          <div class="row">
-          </div>
-        </div>
-        <?php
+        print("U bent succesvol geregistreerd, u krijgt binnen enkele minuten een mail met een activatiecode.");
     } elseif (isset($_GET['token'])) {
         include("includes/dbconnect.php");
         // Voeg toe melding voor als je je account geactiveerd hebt.
