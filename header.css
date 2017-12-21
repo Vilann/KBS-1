@@ -91,6 +91,9 @@ h2 span { background: #fff; padding: 0 10px; }
 .width-60 {
 	width:60%;
 }
+.width-100 {
+	width:100%;
+}
 .side-note {
 	top:40vh;
 	right:19vh;

@@ -6,17 +6,17 @@
         <?php include 'includes/header.php';
               include 'includes/dbconnect.php';
 
-              if(isset($_POST['submit'])){
-                //sla de datum van vandaag op in $date
-                //Prepare en execute de sql query om een nieuwe poll toe te voegen
-                error_reporting(E_ERROR | E_WARNING | E_PARSE);
-                $stmt = $pdo->prepare("INSERT INTO pollresultaat(pollId, lidID, pollkeuze)
+              if (isset($_POST['submit'])) {
+                  //sla de datum van vandaag op in $date
+                  //Prepare en execute de sql query om een nieuwe poll toe te voegen
+                  error_reporting(E_ERROR | E_WARNING | E_PARSE);
+                  $stmt = $pdo->prepare("INSERT INTO pollresultaat(pollId, lidID, pollkeuze)
                   VALUES(?, ?, ?)");
-                $stmt->execute(array($_POST['id'],$_SESSION['lid'],$_POST['keuze']));
-                //die("succes maybe???".$_POST['id']." ".$_SESSION['lid']." ".$_POST['keuze']);
-                header('Location: index');
-              }else{
-                //Niks
+                  $stmt->execute(array($_POST['id'],$_SESSION['lid'],$_POST['keuze']));
+                  //die("succes maybe???".$_POST['id']." ".$_SESSION['lid']." ".$_POST['keuze']);
+                  header('Location: index');
+              } else {
+                  //Niks
               }
               //include 'includes/sidebar.php';?>
               <div id="fb-root"></div>
@@ -57,7 +57,7 @@
                     foreach ($data as $data) {
                         ?>
                     <div class="carousel-item" role="listbox">
-                      <img class="d-block img-fluid" src="images/slider/<?php print($data['afbeelding']); ?>" alt="<?php print(strtolower($data['fototitel'])); ?>">
+                      <img class="d-block img-fluid" src="images/slider/<?php print(ucfirst($data['afbeelding'])); ?>" alt="<?php print(strtolower($data['fototitel'])); ?>">
                       <div class="carousel-caption">
                       <h3><?php strtoupper(print($data["fototitel"])); ?></h3>
                         <p><?php print($data["tekst"]); ?></p>
@@ -87,11 +87,11 @@
             </div>
             <hr>
             <div class="container-fluid">
-                <h2 class="align-middle"><span class="font-weight-light align-middle">De studentenvereniging van Zwolle</span></h2>
+                <h2 class="align-middle"><span class="font-weight-light align-middle">D&eacute; studentenvereniging van Zwolle</span></h2>
             </div>
             <div class="container-fluid">
               <div class="row">
-                <p class="text-center text-muted font-weight-light mx-3">Gesticht in 1952 is ZHTC de oudste vereniging van Zwolle. De vereniging zet zich in voor contacten leggen met andere studenten, kennis opdoen in commissies, vrienden maken, en leuke activiteiten organiseren. Broederschap staat hierbij hoog in het vaandel. ZHTC is ook de enige studentenvereniging met een eigen sociëteit binnen Zwolle. Hier worden veel activiteiten georganiseerd en het is een ontmoetingsplek voor alle leden. Kortom is ZHTC het juiste begin van iedereens studententijd.</p>
+                <p class="text-center text-muted font-weight-light mx-3">Gesticht in 1952 is ZHTC de oudste vereniging van Zwolle. De vereniging zet zich in voor contacten leggen met andere studenten, kennis opdoen in commissies, vrienden maken, en leuke activiteiten organiseren. Broederschap staat hierbij hoog in het vaandel. ZHTC is ook de enige studentenvereniging met een eigen sociëteit binnen Zwolle. Hier worden veel activiteiten georganiseerd en het is een ontmoetingsplek voor alle leden. Kortom: ZHTC is het juiste begin van iedereens studententijd.</p>
               </div>
             </div>
             <br>
@@ -139,28 +139,28 @@
             </div>
           </div>
           <?php
-          if(isset($_SESSION['lid'])){
-            $stmt = $pdo->prepare("SELECT p.vraag, p.pollID FROM poll p
+          if (isset($_SESSION['lid'])) {
+              $stmt = $pdo->prepare("SELECT p.vraag, p.pollID FROM poll p
             WHERE einddatum >= CURDATE()
             ORDER BY pollID DESC
             LIMIT 1");
-            $stmt->execute();
-            $info = $stmt->fetch(PDO::FETCH_ASSOC);
-            $stmt2 = $pdo->prepare("SELECT p.lidID FROM pollresultaat p
+              $stmt->execute();
+              $info = $stmt->fetch(PDO::FETCH_ASSOC);
+              $stmt2 = $pdo->prepare("SELECT p.lidID FROM pollresultaat p
             WHERE p.pollID = ?
             AND p.lidID = ?");
-            $stmt2->execute(array($info['pollID'],$_SESSION['lid']));
-            $info2 = $stmt2->fetch(PDO::FETCH_ASSOC);
-            //die($info2['lidID']." | ".$info['pollID']." | ".$_SESSION['lid']);
-            if(!empty($info2['lidID'])){
-              //niks
-            }else{
-          ?>
+              $stmt2->execute(array($info['pollID'],$_SESSION['lid']));
+              $info2 = $stmt2->fetch(PDO::FETCH_ASSOC);
+              //die($info2['lidID']." | ".$info['pollID']." | ".$_SESSION['lid']);
+              if (!empty($info2['lidID'])) {
+                  //niks
+              } else {
+                  ?>
           <div class="position-fixed side-note">
             <div class="card" style="width: 20rem;">
               <div class="card-body">
                 <h4 class="card-title"><i class="icon ion-alert"></i> Nieuwe poll</h4>
-                <h6 class="card-subtitle mb-2 text-muted"><?php print($info['vraag']);?></h6>
+                <h6 class="card-subtitle mb-2 text-muted"><?php print($info['vraag']); ?></h6>
                 <form action="index" method="post">
                   <?php
                   $stmt = $pdo->prepare("SELECT p.vraag, p.pollID, pk.pollkeuzemogelijkheid FROM poll p
@@ -170,25 +170,25 @@
                   ORDER BY pollID DESC");
                   $stmt->execute(array($info['pollID']));
                   $data = $stmt->fetchAll();
-                  foreach($data as $row) {
-                   ?>
+                  foreach ($data as $row) {
+                      ?>
                 <div class="form-check">
                   <label class="form-check-label">
-                    <input class="form-check-input" type="radio" name="keuze" id="exampleRadios1" value="<?php print($row['pollkeuzemogelijkheid']);?>">
-                    <?php print($row['pollkeuzemogelijkheid']);?>
+                    <input class="form-check-input" type="radio" name="keuze" id="exampleRadios1" value="<?php print($row['pollkeuzemogelijkheid']); ?>">
+                    <?php print($row['pollkeuzemogelijkheid']); ?>
                   </label>
                 </div>
                 <?php
-                } ?>
+                  } ?>
                 <br>
-                <input type="hidden" name="id" value="<?php print($row['pollID']);?>"/>
+                <input type="hidden" name="id" value="<?php print($row['pollID']); ?>"/>
                 <button type="submit" name="submit" class="btn btn-outline-primary zhtc-button">Verzenden</button>
               </form>
               </div>
             </div>
           </div>
           <?php
-        }
+              }
           }
            ?>
           <br>
