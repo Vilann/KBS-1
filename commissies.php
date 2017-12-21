@@ -63,7 +63,7 @@
           <div class="col-md-12 col-lg-5 order-sm-1 order-lg-12">
             <div class="card mb-4 card-noborder">
               <div class="card-body">
-                <img src="images/commissiefotos/<?php print($info['cmbann']) ?>" class="img-fluid mx-auto d-block rounded" alt="Responsive image">
+                <img src="images/commissiefotos/<?php print($info['cmbann']) ?>" class="img-fluid mx-auto d-block rounded" alt="<?php print($info['cmnaam']); ?>">
                 <hr>
                 <div class='wrapper text-center'>
 
