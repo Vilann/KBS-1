@@ -12,6 +12,35 @@ if (isset($_SESSION['lid'])) {
     <title>ZHTC - Login</title>
 
     <?php include 'includes/header.php';
+if(isset($_GET['dp']) && !(empty($_GET['dp']))){?>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12 col-lg-5 mr-md-5">
+    <h3 id="getError" class="<?php print($error[0]); ?>">wachtwoord vergeten</h3>
+    <p class="text-muted">Vul hier je emailadres in om je wachtwoord te herstellen.</p>
+    <form id="getErrormess" class="<?php print($error[1]); ?>" action="verwerk" method="post">
+          <div class="form-group row">
+              <label for="email" class="col-sm-3 col-form-label">Email:</label>
+              <div class="col-sm-9 px-0">
+                <input  id="email" type="email" class="form-control" name="email" placeholder="ZHTC-emailadres" required>
+              </div>
+          </div>
+          <div class="form-group row">
+              <label for="email" class="col-sm-3 col-form-label"> bevestig Email:</label>
+              <div class="col-sm-9 px-0">
+                <input  id="email" type="email" class="form-control" name="email" placeholder="ZHTC-emailadres" required>
+              </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-sm-9 offset-sm-3 px-0">
+              <input class="btn btn-outline-primary" type="submit" name="wwreset" value="verzenden">
+            </div>
+          </div>
+
+<?php }
+
+
+    else{
     error_reporting(E_ERROR | E_WARNING | E_PARSE);
     if (isset($_SESSION["error"])) {
         $error = explode(",", $_SESSION["error"]);
@@ -41,6 +70,9 @@ if (isset($_SESSION['lid'])) {
                 <label for="wachtwoord" class="col-sm-3 col-form-label">Wachtwoord:</label>
                 <div class="col-sm-9 px-0">
                   <input  id="wachtwoord" type="password" class="form-control" name="wachtwoord" value="" required>
+                  <div class="col-sm-9 px-0">
+                    <a href=<?php print("?dp=". "hoi") ?> class="btn btn-outline-primary float-left zhtc-button">wachtwoord vergeten</a></p>
+                  </div>
                   <div id="feedwachtwoord" class="invalid-feedback" hidden>
                   </div>
                 </div>
@@ -85,6 +117,7 @@ if (isset($_SESSION['lid'])) {
   </div>
 
 <?php
+}
 include("includes/footer.php");
 }
  ?>
