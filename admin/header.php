@@ -84,7 +84,7 @@ integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfs
           ?>
           <a id="beheerlink" href="#beheer" class="list-group-item collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"> <span class="hidden-sm-down">ZHTC-beheer tools </span><i class="icon ion-android-arrow-dropdown-circle"></i></a>
           <div class="collapse" id="beheer">
-            <a id="beheerpagina" href="/KBS-1/admin/pages/beheerpagina" class="list-group-item" data-parent="#beheer"><i class="icon ion-edit"></i> aanpassen pagina's </a>
+            <!--<a id="beheerpagina" href="/KBS-1/admin/pages/beheerpagina" class="list-group-item" data-parent="#beheer"><i class="icon ion-edit"></i> aanpassen pagina's </a>-->
               <a id="leden" href="/KBS-1/admin/pages/leden" class="list-group-item" data-parent="#beheer"><i class="icon ion-person-stalker"></i> Ledenbestand </a>
               <a id="poll" href="/KBS-1/admin/pages/poll" class="list-group-item" data-parent="#beheer"><i class="icon ion-document-text"></i> Polls </a>
               <a id="commissiedisputen" href="/KBS-1/admin/pages/commissiedisputen" class="list-group-item" data-parent="#beheer"><i class="icon ion-chatbubbles"></i> Commissies & Disputen</a>
