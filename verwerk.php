@@ -13,7 +13,7 @@ function generate_token()
 }
 function foute_inlogpoging()
 {
-    include 'includes/dbconnect.php';
+    include("includes/dbconnect.php");
     // Foute inlogpoging registreren
     $ip= $_SERVER['REMOTE_ADDR'];
 
@@ -75,7 +75,6 @@ if (isset($_POST['login'])) {
                 // TODO: Foutinformatie op login.php en terugsturen
                 $errors = true;
             }
-            $pdo = null;
         } else {
             foute_inlogpoging();
             // print("Het emailadres bestaat niet");
@@ -83,6 +82,8 @@ if (isset($_POST['login'])) {
             $errors = true;
             // //fout inlogpoging registreren
         }
+        $pdo = null;
+
         if ($errors) {
             session_start();
             $_SESSION["error"] = "wachtwoord,Het emailadres of wachtwoord is niet correct ingevuld";
