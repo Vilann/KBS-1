@@ -107,7 +107,7 @@ if (isset($_POST['login'])) {
     } else {
         print("Je hebt het niet goed ingevuld, ga terug!");
     }
-}
+
 if (isset($_POST['registreer'])) {
 
   // Het gedeelte voor de 'if' regelt de captcha.
