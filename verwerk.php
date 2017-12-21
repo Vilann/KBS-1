@@ -32,6 +32,15 @@ function foute_inlogpoging()
     }
 }
 
+if (isset($_POST['wwreset'])) {
+
+if ($email = filter_input(INPUT_POST, 'email')) {
+
+}else {
+  print("Dit emailadres is niet gevonden in onze database.");
+}
+}
+
 if (isset($_POST['login'])) {
     // allereerst wordt er gekeken of de email en het wachtwoord overeen komen.
     // Filter_input is een functie die kijkt of de informatie bestaat.
@@ -59,7 +68,6 @@ if (isset($_POST['login'])) {
             $info = $stmt->fetch(PDO::FETCH_ASSOC);
             // password_verify is een functie om een gehasht wachtwoord dat gemaakt is met password_hash() te vergelijken met een raw input ww
             // Kijken of het wachtwoord bij de email hoort
-            if (password_verify($ww, $info["wachtwoord"])) {
                 session_start();
                 if ($info['toegangAdmin'] == "yes") {
                     $adminRechten = array("Beheer"=>$info['bestuurslidID'], "Dispuut"=>$info['dispuutvoorzitter'], "Commissie"=>$info['commissievoorzitter']);

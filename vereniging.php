@@ -11,7 +11,7 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-12">
-          <h1 class="text-center mx-3">Over ZHTC</h1>
+          <h1 class="text-center mx-3"><span class="font-weight-light align-middle">Over ZHTC</span></h1>
           <!-- <p class="text-muted"><i class="icon ion-chevron-left"></i> oude commissies</p> -->
         </div>
 			</div>
@@ -28,16 +28,16 @@ Asv. ZHTC heeft als enige studentenvereniging de beschikking over een eigen soci
 			<div class="container-fluid">
 				<div class="row">
 					<div class="col-12">
-						<h1 class="text-center mt-4">Bestuur</h1>
+						<h1 class="text-center mt-4"><span class="font-weight-light align-middle">Bestuur</span></h1>
 
 					</div>
 				</div>
 			</div>
-			<div class="container-fluid">
+			<!-- <div class="container-fluid">
 				<div class="row">
 					<img src="Website-logo-blauw.png" class="mx-auto d-block img-responsive" width="10%" height="14%">
 				</div>
-			</div>
+			</div> -->
 				<hr>
 			<p class="text-center text-muted font-weight-light mx-3">Het bestuur der A.s.v. ZHTC is het overkoepelend orgaan van de vereniging. Zij zorgt ervoor dat alle zaken binnen de vereniging naar wens verlopen. Hierbij kan gedacht worden aan het onderhouden van relaties, het beheren van de liquide middelen, maar ook het coördineren van de verscheidene commissies welke onze vereniging rijk is. Deze taken maken dat het bestuur de verantwoordelijkheid draagt voor de koers van de vereniging, welke zij dan ook meerdere malen aflegt tijdens ALV’s.
 
@@ -49,7 +49,7 @@ Op dit moment bestaat het bestuur uit: (van links naar rechts)
 <div class="container_fluid">
 	<div class="row">
 		<div class="col-12">
-			<h1 class="text-center mt-4">Het Gilde</h1>
+			<h1 class="text-center mt-4"><span class="font-weight-light align-middle">Het Gilde</spam></h1>
 		</div>
 	</div>
 </div>
@@ -59,7 +59,7 @@ Op dit moment bestaat het bestuur uit: (van links naar rechts)
 <p class="text-center text-muted font-weight-light mx-3">
 	Na een aantal zeer interessante brainstormsessies met enkele donateurs, diverse feesten en activiteiten die daar uit voortvloeiden worden deze donateursactiviteiten geformaliseerd middels de oprichting van Het Gilde. We willen circa maandelijks activiteiten organiseren. Deze activiteiten bestaan uit reeds bestaande successen (o.a. de bierweekvrijdag, maar ook de druiffuif en spit piggy zijn recent weer terug gekomen), dispuutsfeesten, bierproeverijen en nieuwe activiteiten. Bij deze laatste denken we onder andere ook aan opleidingsgerichte netwerkborrels.
 
-Voor meer informatie zie<a href=http://www.zhtc.nl/gilde>http://www.zhtc.nl/gilde</a> of onze Facebook. Hierop komt onder andere informatie over de diverse activiteiten te staan, maar komt er ook ruimte voor uw ZHTC-belevenissen, bijvoorbeeld onder het kopje anekdotes.
+Voor meer informatie zie <a href=http://www.zhtc.nl/gilde>http://www.zhtc.nl/gilde</a> of onze Facebook. Hierop komt onder andere informatie over de diverse activiteiten te staan, maar komt er ook ruimte voor uw ZHTC-belevenissen, bijvoorbeeld onder het kopje anekdotes.
 
 Samen kunnen we er een prachtig platform/ZHTC-archief van maken!
 
@@ -68,7 +68,6 @@ Hopelijk tot ziens bij een van onze activiteiten.
 Emile Hoogterp
 Voorzitter oprichtingsbestuur Het Gilde.
 <a href=http://www.zhtc.nl/gilde>http://www.zhtc.nl/gilde</a>
-Facebook
 </p>
 </div>
 </div>
@@ -78,7 +77,7 @@ Facebook
 			<div class="container_fluid">
 				<div class="row">
 					<div class="col-12">
-						<h1 class="text-center mt-4">Geschiedenis</h1>
+						<h1 class="text-center mt-4"><span class="font-weight-light align-middle">Geschiedenis</span></h1>
 
 					</div>
 				</div>
@@ -94,7 +93,7 @@ Facebook
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-12">
-			<h1 class="text-center mt-4">Oud-Besturen</h1>
+			<h1 class="text-center mt-4"><span class="font-weight-light align-middle">Oud-Besturen</span></h1>
 
 		</div>
 	</div>
@@ -104,8 +103,8 @@ Facebook
 				<div class="row">
 					<div class="col-12">
 
-			<h4 class="text-center mt-4"> Oud bestuur 2015-2016: </h4>
-			<ul class="text-center text-muted font-weight-light mx-3">
+			<h4 class="text-center mt-4"><span class="font-weight-light align-middle"> Oud bestuur 2015-2016: </span></h4>
+			<ul class="text-center text-muted font-weight-light mx-3 list-unstyled">
 				<li> Voorzitter: Emile Hoogterp</li>
 				<li> Secretaris: Wieger van der Werf</li>
 				<li> Penningmeester: Hans Blom</li>
@@ -115,16 +114,16 @@ Facebook
 				<li> Algemeen-secundus: Joost Leliveld</li>
 				<li> Algemeen-secundus: Mark van Duuren</li>
 				 </ul>
-				 <h4 class="text-center mt-4"> Oud bestuur 2014-2015: </h4>
-				 <ul class="text-center text-muted font-weight-light mx-3">
+				 <h4 class="text-center mt-4"><span class="font-weight-light align-middle"> Oud bestuur 2014-2015: </span></h4>
+				 <ul class="text-center text-muted font-weight-light mx-3 list-unstyled">
 			<li>Voorzitter: Emile Hoogterp</li>
 			<li>Secretaris: Martijn van der Vlag</li>
 			<li>Penningmeester: Hans Blom</li>
 			<li>Algemeen-secundus: Olaf Brugman</li>
 			<li>Algemeen-secundus: Dirk Schut</li>
 		</ul>
-		<h4 class="text-center mt-4"> Oud bestuur 2013-2014: </h4>
-		<ul class="text-center text-muted font-weight-light mx-3">
+		<h4 class="text-center mt-4"><span class="font-weight-light align-middle"> Oud bestuur 2013-2014: </span></h4>
+		<ul class="text-center text-muted font-weight-light mx-3 list-unstyled">
 		<li>Voorzitter: Emile Hoogterp</li>
 		<li>Secretaris: Merel van Rees</li>
 		<li>Penningmeester: Hans Blom</li>
