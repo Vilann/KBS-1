@@ -13,6 +13,7 @@ function generate_token()
 }
 function foute_inlogpoging()
 {
+    include 'includes/dbconnect.php';
     // Foute inlogpoging registreren
     $ip= $_SERVER['REMOTE_ADDR'];
 
@@ -24,7 +25,6 @@ function foute_inlogpoging()
       WHERE  tijd > Date_sub(Now(), INTERVAL 15 minute) and  ip=?");
     $stmt->execute(array($ip));
     $pogingen = $stmt->fetch(PDO::FETCH_ASSOC);
-    $pdo = null;
 
     if ($pogingen['failed']>=3) {
         session_start();

@@ -114,18 +114,6 @@
           </div>
         </div>
 		<?php } ?>
-		<div class="col-3" >
-			<div class="card mb-5 h-100 mt-3"><?php // NOTE: was class="card mb4" geen idee wat mb inhoud ?>
-				<div class="card-body p-0"> <?php // NOTE: alles in deze div staat in de kaart ?>
-					<img class="card-img-top" src="images/commissiefotos/<?php print($row['cmbann'])?>" alt="" ><br><?php// print($row['comm_zin']);?><?php // NOTE: de commissiezin ?>
-					<h4 class="card-title"><?php print($row['comm_naam'])?></h4> <?php // NOTE: de naam van de commissie ?>
-					<p class="card-text">
-				</div>
-				<div class="card-footer text-muted"><?php print($row['comm_zin']);?>
-					<a href=<?php print("?cm=".$row['commissieID']) ?> class="btn btn-outline-primary float-right zhtc-button">Meer <i class="icon ion-arrow-right-c"></i></a></p>
-				</div>
-			</div>
-		</div>
 	</div>
 </div>
 <hr class="mt-3">

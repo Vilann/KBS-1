@@ -1,6 +1,6 @@
 <?php
 try {
-	$db = "mysql:host=localhost;dbname=zhtc;port=3306";
+	$db = "mysql:host=localhost;dbname=zhtc2;port=3306";
 	$user = "root";
 	$pass = "";
 	$pdo = new PDO($db, $user, $pass);
