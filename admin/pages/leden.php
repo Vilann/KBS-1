@@ -144,7 +144,7 @@
                 <tr class="thisId leden" id='<?php print($row['lidID']);?>'>
                   <td>
                     <button class="mb-2 btn btn-xs delModal leden" data-id="<?php print($row['voornaam']." ".$row['achternaam']);?>" data-toggle="modal" data-target="#verwijderen"><i class="icon ion-trash-b"></i></button>
-                    <button class="btn btn-warning btn-xs editmodal leden" data-id="<?php print($row['voornaam']." ".$row['achternaam']);?>" data-toggle="modal" data-target="#edit"><i class="icon ion-edit"></i></button>
+                    <button class="btn btn-warning btn-xs editmodal leden" data-id="<?php print($row['voornaam']." ".$row['achternaam']);?>" data-toggle="modal" data-target="#edit<?php print($row['lidID']);?>"><i class="icon ion-edit"></i></button>
                   </td>
                   <td><?php print($row['voornaam']);?></td>
                   <td><?php print($row['tussenvoegsel']);?></td>
@@ -158,11 +158,11 @@
                   <td><?php print($row['rekeningnummer']);?></td>
                   <td><?php print($row['noodnummer']);?></td>
                 </tr>
-                <div class="modal fade bd-example-modal-lg" id="edit" tabindex="-1" role="dialog" aria-labelledby="editlabel" aria-hidden="true">
+                <div class="modal fade bd-example-modal-lg" id="edit<?php print($row['lidID']);?>" tabindex="-1" role="dialog" aria-labelledby="edit<?php print($row['lidID']);?>label" aria-hidden="true">
                   <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
                       <div class="modal-header">
-                        <h5 class="modal-title" id="editlabel">Aanpassen <span class="deleteName"></span></h5>
+                        <h5 class="modal-title" id="edit<?php print($row['lidID']);?>label">Aanpassen <span class="deleteName"></span></h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                           <span aria-hidden="true">&times;</span>
                         </button>
