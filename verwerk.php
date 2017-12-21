@@ -25,7 +25,7 @@ function foute_inlogpoging()
       WHERE  tijd > Date_sub(Now(), INTERVAL 15 minute) and  ip=?");
     $stmt->execute(array($ip));
     $pogingen = $stmt->fetch(PDO::FETCH_ASSOC);
-
+    $pdo = null;
     if ($pogingen['failed']>=3) {
         session_start();
         $_SESSION['failed']=true;
@@ -57,7 +57,7 @@ if (isset($_POST['login'])) {
         // Kijken of een email bestaat
         if ($stmt->rowCount() == 1) {
             $info = $stmt->fetch(PDO::FETCH_ASSOC);
-            // password_verify is een functie om een gehasht wachtwoord dat gemaakt is met password_hash()
+            // password_verify is een functie om een gehasht wachtwoord dat gemaakt is met password_hash() te vergelijken met een raw input ww
             // Kijken of het wachtwoord bij de email hoort
             if (password_verify($ww, $info["wachtwoord"])) {
                 session_start();

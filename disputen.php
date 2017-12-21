@@ -2,13 +2,12 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta charset="utf-8">
 		<title>ZHTC - disputen</title>
 		<?php include 'includes/header.php';
     include 'includes/dbconnect.php';
     //error_reporting(E_ERROR | E_WARNING | E_PARSE);
-		if(isset($_GET['dp']) && !(empty($_GET['dp']))){
-			$stmt = $pdo->prepare("SELECT dispuutvoorzitter as dpvoorzit,
+        if (isset($_GET['dp']) && !(empty($_GET['dp']))) {
+            $stmt = $pdo->prepare("SELECT dispuutvoorzitter as dpvoorzit,
 				dispuutbanner as dpbann,
 				dispuutnaam as dpnaam,
 				dispuutzin as dpzin,
@@ -20,23 +19,22 @@
 			JOIN lid l ON d.dispuutvoorzitter = l.lidID
 			JOIN dispuutlid dl ON dl.dispuutID = d.dispuutid
 			WHERE d.dispuutid = ?");
-			$stmt->execute(array($_GET['dp']));
-			$info = $stmt->fetch(PDO::FETCH_ASSOC);
-			if ($stmt->rowCount()) {
-				$dispuutvoorzitter = $info['dpvoorzit'];
-				$dispuutnaam = $info['dpnaam'];
-				$dispuutlid = $info['dplid'];
-				$dispuutzin = $info['dpzin'];
-				$dispuutid = $info['dpid'];
-				$dispuuttekst = $info['dptekst'];
-				$dispuutagenda = $info['dpagendaID'];
-				$dispuutnotulen = $info['dpnotulenID'];
-				$dispuutbanner = $info['dpbann'];
-				$voornaam = $info['voornaam'];
-			} else {
-					print("Werkt niet, of... of het database tabel waar je naar zoekt is leeg");
-			}
-			?>
+            $stmt->execute(array($_GET['dp']));
+            $info = $stmt->fetch(PDO::FETCH_ASSOC);
+            if ($stmt->rowCount()) {
+                $dispuutvoorzitter = $info['dpvoorzit'];
+                $dispuutnaam = $info['dpnaam'];
+                $dispuutlid = $info['dplid'];
+                $dispuutzin = $info['dpzin'];
+                $dispuutid = $info['dpid'];
+                $dispuuttekst = $info['dptekst'];
+                $dispuutagenda = $info['dpagendaID'];
+                $dispuutnotulen = $info['dpnotulenID'];
+                $dispuutbanner = $info['dpbann'];
+                $voornaam = $info['voornaam'];
+            } else {
+                print("Werkt niet, of... of het database tabel waar je naar zoekt is leeg");
+            } ?>
 			<div class="container-fluid">
 				<div class="row">
 					<div class="col-12">
@@ -60,7 +58,8 @@
 										<p class="card-text text-right my-0">Voorzitter: <span class="text-muted"><?php print ucfirst(($info['voornaam'])); ?></span></p>
 										<p class="card-text text-right my-0">Leden:<span class="text-muted">
 										<?php foreach ($info as $dispuutlid) {
-											print($info['dplid'] . "<br>");}?> </span> </p>
+                print($info['dplid'] . "<br>");
+            } ?> </span> </p>
 										</div>
 								</div>
 								<h2 class="card-title text-left mt-5">Informatie</h2>
@@ -76,11 +75,13 @@
 								<img src="images/dispuutfotos/<?php print($info['dpbann']) ?>" class="img-fluid mx-auto d-block rounded" alt="Responsive image">
 								<hr>
 								<div class='wrapper text-center'>
-									<?php if(isset($_SESSION['lid'])){ ?>
+									<?php if (isset($_SESSION['lid'])) {
+                ?>
 									<div class="btn-group mx-auto" role="group" aria-label="...">
-									<a href="https://drive.google.com/embeddedfolderview?id=<?php print($info['dpagendaID']);?>" class="btn btn-outline-primary zhtc-button">Agenda</a>
-									<a href="https://drive.google.com/embeddedfolderview?id=<?php print($info['dpnotulenID']);?>" class="btn btn-outline-primary zhtc-button">Notulen</a>
-								</div> <?php } ?>
+									<a href="https://drive.google.com/embeddedfolderview?id=<?php print($info['dpagendaID']); ?>" class="btn btn-outline-primary zhtc-button">Agenda</a>
+									<a href="https://drive.google.com/embeddedfolderview?id=<?php print($info['dpnotulenID']); ?>" class="btn btn-outline-primary zhtc-button">Notulen</a>
+								</div> <?php
+            } ?>
 								</div>
 						</div>
 				</div>
@@ -88,7 +89,8 @@
 		</div>
 	</div>
 			<?php
-		}else{?>
+        } else {
+            ?>
     <div class="container-fluid">
       <div class="row">
         <div class="col-12">
@@ -99,26 +101,28 @@
 			<hr>
 			<div class="row">
 			<?php
-					$stmt = $pdo->prepare('SELECT * FROM dispuut');
-					$stmt->execute();
-					$data = $stmt->fetchAll();
-					foreach($data as $row) {
-					?>
+                    $stmt = $pdo->prepare('SELECT * FROM dispuut');
+            $stmt->execute();
+            $data = $stmt->fetchAll();
+            foreach ($data as $row) {
+                ?>
         <div class="col-12">
-          <div class="card mb4">
-            <div class="card-body"> <?php // NOTE: alles in deze div staat in de kaart ?>
+          <div class="card mb-4">
+            <div class="card-body"> <?php // NOTE: alles in deze div staat in de kaart?>
               <h4 class="card-title"><?php print($row['dispuutnaam'])?></h4>
               <p class="card-text">
 							<img class="card-img-left" src="images/dispuutfotos/<?php print($row['dispuutbanner'])?>" alt="" width="180px"></p>
             </div>
-						<div class="card-footer text-muted"><?php print($row['dispuutzin']);?>
+						<div class="card-footer text-muted"><?php print($row['dispuutzin']); ?>
 						<a href=<?php print("?dp=".$row['dispuutid']) ?> class="btn btn-outline-primary float-right zhtc-button">Meer <i class="icon ion-arrow-right-c"></i></a></p>
 					</div>
           </div>
         </div>
-			<?php } ?>
+			<?php
+            } ?>
 		</div>
-	    </div><?php } ?>
+	    </div><?php
+        } ?>
 			<?php include 'includes/footer.php'; ?>
 			<script>
 			<?php include 'includes/script.js'; ?>
