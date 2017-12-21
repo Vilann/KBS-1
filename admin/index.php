@@ -117,7 +117,7 @@ wachtwoord vergeten*/
                             <span class="lead">Welkom bij de ZHTC adminpanel</span></h1>
             </div>
             <p class="text-muted">
-              Bacon ipsum dolor amet meatball shank pork belly cow jowl ham hock ribeye biltong beef ribs capicola bacon t-bone. Doner cow porchetta tongue. Pork picanha bresaola, kevin sausage boudin salami. Sausage cow capicola doner. Andouille beef meatloaf burgdoggen kielbasa, flank jowl drumstick beef ribs ground round tail.
+              hier kun je Bacon ipsum dolor amet meatball shank pork belly cow jowl ham hock ribeye biltong beef ribs capicola bacon t-bone. Doner cow porchetta tongue. Pork picanha bresaola, kevin sausage boudin salami. Sausage cow capicola doner. Andouille beef meatloaf burgdoggen kielbasa, flank jowl drumstick beef ribs ground round tail.
             </p>
         </main>
     </div>
