@@ -112,7 +112,7 @@
 							<img class="card-img-left" src="images/dispuutfotos/<?php print($row['dispuutbanner'])?>" alt="" width="180px"></p>
             </div>
 						<div class="card-footer text-muted"><?php print($row['dispuutzin']);?>
-						<a href=<?php print("?dp=".$row['dispuutid']) ?> class="btn btn-outline-primary float-right zhtc-button">Meer<i class="icon ion-arrow-right-c"></i></a></p>
+						<a href=<?php print("?dp=".$row['dispuutid']) ?> class="btn btn-outline-primary float-right zhtc-button">Meer <i class="icon ion-arrow-right-c"></i></a></p>
 					</div>
           </div>
         </div>
