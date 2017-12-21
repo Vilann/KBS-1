@@ -25,12 +25,13 @@
                 $commissiebanner = $info['cmbann'];
                 $voornaam = $info['voornaam'];
             } else {
-                print("Werkt niet, of... of het database tabel waar je naar zoekt is leeg");
+                print("Werkt niet, of... of de database tabel waar je naar zoekt is leeg");
             } ?>
+
       <div class="container-fluid">
         <div class="row">
           <div class="col-12">
-            <h1 class="text-center mt-4"><u> <?php print($info['cmnaam']); ?></u></h1>
+            <h1 class="text-center mt-4"><?php print($info['cmnaam']); ?></h1>
           </div>
         </div>
         <hr>
@@ -43,17 +44,21 @@
                     <h5 class="card-text text-left my-0"><?php print($info['voornaam']); ?></h5>
                   </div>
                 </div>
+								<?php
+                                $stmt = $pdo->prepare("SELECT voornaam FROM lid l JOIN commissielid cl ON cl.lidID = l.lidID WHERE commissieID = ?");
+            $stmt->execute(array($commissieid));
+            $leden = $stmt->fetchAll(); ?>
                 <div class="row">
                   <div class="col-5 offset-7">
 
                     <p class="card-text text-right my-0">Voorzitter: <span class="text-muted"><?php print ucfirst(($info['voornaam'])); ?></span></p>
                     <p class="card-text text-right my-0">Leden:<span class="text-muted">
-                    <?php foreach ($info as $commissielid) {
-                print($info['cmlid'] . "<br>");
+                    <?php foreach ($leden as $lid) {
+                print(ucfirst($lid['voornaam'] . "<br>"));
             } ?> </span> </p>
                     </div>
                 </div>
-                <h2 class="card-title text-left mt-5">Informatie</h2>
+                <h2 class="card-title text-center mt-5 header-txt">Informatie</h2>
                 <p class="card-text text-justify">
                   <?php print($info['cmtekst']); ?>
                 </p>
@@ -86,8 +91,18 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-12">
+<<<<<<< HEAD
           <h1 class="text-center mt-4">Commissies</h1>
 <!-- <p class="text-muted"><i class="icon ion-chevron-left"></i> oude commissies</p> -->
+=======
+          <h1 class="text-centers mt-4">Commissies</h1>
+<!-- <a href="#">
+	 <audio autoplay loop >
+  <source src="files/AxelF.wav" type="audio/wav">
+</audio>.</a> -->
+
+          <!-- <p class="text-muted"><i class="icon ion-chevron-left"></i> oude commissies</p> -->
+>>>>>>> 4d862fb2e53b1d3b4e295c4dc35b1da5e8850136
         </div>
       </div>
 			<hr>

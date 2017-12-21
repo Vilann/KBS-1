@@ -85,7 +85,9 @@ h2:before {
     width: 95%;
     z-index: -1;
 }
-
+.header-txt:before {
+	border-top: 0px solid #dfdfdf;
+}
 h2 span { background: #fff; padding: 0 10px; }
 
 .width-60 {

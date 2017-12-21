@@ -97,7 +97,7 @@
             <br>
             <div class="container-fluid">
               <div class="wrapper mx-auto width-60">
-                <h2 class="align-middle"><span class="font-weight-light align-middle">Nieuwsberichten</span></h2>
+                <h2 class="align-middle h2-fac"><span class="font-weight-light align-middle span-fac">Nieuwsberichten</span></h2>
               </div>
             </div>
             <div class="container-fluid">

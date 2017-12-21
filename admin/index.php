@@ -78,7 +78,7 @@ wachtwoord vergeten*/
             ?>
             <a id="beheerlink" href="#beheer" class="list-group-item collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"> <span class="hidden-sm-down">ZHTC-beheer tools </span><i class="icon ion-android-arrow-dropdown-circle"></i></a>
             <div class="collapse" id="beheer">
-              <a id="beheerpagina" href="/KBS-1/admin/pages/beheerpagina" class="list-group-item" data-parent="#beheer"><i class="icon ion-edit"></i> Aanpassen pagina's </a>
+              <!--<a id="beheerpagina" href="/KBS-1/admin/pages/beheerpagina" class="list-group-item" data-parent="#beheer"><i class="icon ion-edit"></i> Aanpassen pagina's </a>-->
                 <a id="leden" href="/KBS-1/admin/pages/leden" class="list-group-item" data-parent="#beheer"><i class="icon ion-person-stalker"></i> Ledenbestand </a>
                 <a id="poll" href="/KBS-1/admin/pages/poll" class="list-group-item" data-parent="#beheer"><i class="icon ion-document-text"></i> Polls </a>
                 <a id="commissiedisputen" href="/KBS-1/admin/pages/commissiedisputen" class="list-group-item" data-parent="#beheer"><i class="icon ion-chatbubbles"></i> Commissies & Disputen</a>
@@ -116,7 +116,7 @@ wachtwoord vergeten*/
                             <span class="lead">Welkom bij de ZHTC adminpanel</span></h1>
             </div>
             <p class="text-muted">
-              hier kun je Bacon ipsum dolor amet meatball shank pork belly cow jowl ham hock ribeye biltong beef ribs capicola bacon t-bone. Doner cow porchetta tongue. Pork picanha bresaola, kevin sausage boudin salami. Sausage cow capicola doner. Andouille beef meatloaf burgdoggen kielbasa, flank jowl drumstick beef ribs ground round tail.
+              Op dit gedeelte van de ZHTC site kun je van alles doen met betrekking tot het beheren van vanalles rondom ZHTC. Dit zijn dingen zoals het muteren van leden, commissie en dispuut gegevens. Het aanpassen van commissie en dispuut pagina's en nog veel meer.
             </p>
         </main>
     </div>
