@@ -91,18 +91,8 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-12">
-<<<<<<< HEAD
           <h1 class="text-center mt-4">Commissies</h1>
 <!-- <p class="text-muted"><i class="icon ion-chevron-left"></i> oude commissies</p> -->
-=======
-          <h1 class="text-centers mt-4">Commissies</h1>
-<!-- <a href="#">
-	 <audio autoplay loop >
-  <source src="files/AxelF.wav" type="audio/wav">
-</audio>.</a> -->
-
-          <!-- <p class="text-muted"><i class="icon ion-chevron-left"></i> oude commissies</p> -->
->>>>>>> 4d862fb2e53b1d3b4e295c4dc35b1da5e8850136
         </div>
       </div>
 			<hr>
