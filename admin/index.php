@@ -116,7 +116,7 @@ wachtwoord vergeten*/
                             <span class="lead">Welkom bij de ZHTC adminpanel</span></h1>
             </div>
             <p class="text-muted">
-              hier kun je Bacon ipsum dolor amet meatball shank pork belly cow jowl ham hock ribeye biltong beef ribs capicola bacon t-bone. Doner cow porchetta tongue. Pork picanha bresaola, kevin sausage boudin salami. Sausage cow capicola doner. Andouille beef meatloaf burgdoggen kielbasa, flank jowl drumstick beef ribs ground round tail.
+              Op dit gedeelte van de ZHTC site kun je van alles doen met betrekking tot het beheren van vanalles rondom ZHTC. Dit zijn dingen zoals het muteren van leden, commissie en dispuut gegevens. Het aanpassen van commissie en dispuut pagina's en nog veel meer.
             </p>
         </main>
     </div>

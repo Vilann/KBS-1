@@ -67,7 +67,7 @@
             } ?> </span> </p>
 										</div>
 								</div>
-								<h2 class="card-title text-left mt-5">Informatie</h2>
+								<h2 class="card-title text-center mt-5 header-txt">Informatie</h2>
 								<p class="card-text text-justify">
 									<?php print($info['dptekst']); ?>
 								</p>
