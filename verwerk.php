@@ -4,8 +4,9 @@ Het registratieformulier en loginformulier hebben allebei een verstuurknop met e
 De buitenste if-statements kijken welke van de 2 gebruikt is. Bij login wordt het eerste gebruikt, de loginfunctionaliteit.
 Bij registreren wordt het tweede blok gebruikt.
  */
+//de geheime sleutel voor recaptcha v2 van google
 $privatekey = "6Ld7nTsUAAAAALPpQKrdXPI3nJnSF11aSBmvx6HF";
-
+//veranderd 16 willekeurige bytes in hexadecimalen voor het gebruik bij activatie van account
 function generate_token()
 {
     $token = bin2hex(openssl_random_pseudo_bytes(16));
@@ -14,12 +15,15 @@ function generate_token()
 function foute_inlogpoging()
 {
     include("includes/dbconnect.php");
-    // Foute inlogpoging registreren
+    // Foute inlogpoging registreren in de database
+    // Tijd word opgeslagen door database zelf
     $ip= $_SERVER['REMOTE_ADDR'];
 
     $stmt=$pdo->prepare("Insert into loginpoging(ip) VALUES (?)");
     $stmt->execute(array($ip));
     // drie foute pogingen zet session failed op true
+    // controleert of de pogingen in het laatste kwartier zijn gedaan
+    // zoek op ipadres van inlogger
     $stmt=$pdo->prepare("SELECT Count(*) as failed
       FROM   loginpoging
       WHERE  tijd > Date_sub(Now(), INTERVAL 15 minute) and  ip=?");
@@ -33,13 +37,11 @@ function foute_inlogpoging()
 }
 
 if (isset($_POST['wwreset'])) {
-
-if ($email = filter_input(INPUT_POST, 'email')) {
-    print("Dit emailadres is wel gevonden in onze database.");
-
-}else {
-  print("Dit emailadres is niet gevonden in onze database.");
-}
+    if ($email = filter_input(INPUT_POST, 'email')) {
+        print("Dit emailadres is wel gevonden in onze database.");
+    } else {
+        print("Dit emailadres is niet gevonden in onze database.");
+    }
 }
 
 if (isset($_POST['login'])) {
@@ -69,37 +71,37 @@ if (isset($_POST['login'])) {
             $info = $stmt->fetch(PDO::FETCH_ASSOC);
             // password_verify is een functie om een gehasht wachtwoord dat gemaakt is met password_hash() te vergelijken met een raw input ww
             // Kijken of het wachtwoord bij de email hoort
-                session_start();
-                if ($info['toegangAdmin'] == "yes") {
-                    $adminRechten = array("Beheer"=>$info['bestuurslidID'], "Dispuut"=>$info['dispuutvoorzitter'], "Commissie"=>$info['commissievoorzitter']);
-                    $_SESSION['admin'] = $adminRechten;
-                }
-                $_SESSION['lid'] = $info['lidID'];
-                $_SESSION['voornaam'] = $info['voornaam'];
-                $ip= $_SERVER['REMOTE_ADDR'];
-                $stmt=$pdo->prepare("DELETE FROM loginpoging WHERE ip=?");
-                $stmt->execute(array($ip));
-            } else {
-                foute_inlogpoging();
-                // TODO: Foutinformatie op login.php en terugsturen
-                $errors = true;
+            session_start();
+            if ($info['toegangAdmin'] == "yes") {
+                $adminRechten = array("Beheer"=>$info['bestuurslidID'], "Dispuut"=>$info['dispuutvoorzitter'], "Commissie"=>$info['commissievoorzitter']);
+                $_SESSION['admin'] = $adminRechten;
             }
+            $_SESSION['lid'] = $info['lidID'];
+            $_SESSION['voornaam'] = $info['voornaam'];
+            $ip= $_SERVER['REMOTE_ADDR'];
+            $stmt=$pdo->prepare("DELETE FROM loginpoging WHERE ip=?");
+            $stmt->execute(array($ip));
         } else {
             foute_inlogpoging();
-            // print("Het emailadres bestaat niet");
-            // // TODO: foutinformatie op login.php en terugsturen
+            // TODO: Foutinformatie op login.php en terugsturen
             $errors = true;
-            // //fout inlogpoging registreren
         }
-        $pdo = null;
-
-        if ($errors) {
-            session_start();
-            $_SESSION["error"] = "wachtwoord,Het emailadres of wachtwoord is niet correct ingevuld";
-            header("Location: login");
-            // anders voert het de gegevens in ($insert), en daarna het emailadres ($emailinsert)
-        }
+    } else {
+        foute_inlogpoging();
+        // print("Het emailadres bestaat niet");
+        // // TODO: foutinformatie op login.php en terugsturen
+        $errors = true;
+        // //fout inlogpoging registreren
     }
+    $pdo = null;
+
+    if ($errors) {
+        session_start();
+        $_SESSION["error"] = "wachtwoord,Het emailadres of wachtwoord is niet correct ingevuld";
+        header("Location: login");
+        // anders voert het de gegevens in ($insert), en daarna het emailadres ($emailinsert)
+    }
+}
 
 
     // Testcode om te kijken of de sessie werkt
@@ -161,7 +163,7 @@ if (isset($_POST['registreer'])) {
                 $errormess = "geboortedatum,Je moet in ieder geval 16 jaar of ouder zijn.";
             }
             // kijk om het ingevulde emailadres geldig is
-
+            // Kijkt in de database of een emailadres al geregistreerd is en geeft een foutmelding terug als dat zo is
             if (filter_var($_POST["email"], FILTER_VALIDATE_EMAIL) && strpos($_POST["email"], '.')) {
                 include('includes/dbconnect.php');
                 $email = $_POST['email'];
@@ -199,6 +201,7 @@ if (isset($_POST['registreer'])) {
                 // anders voert het de gegevens in ($insert), en daarna het emailadres ($emailinsert)
             } else {
                 include 'includes/dbconnect.php';
+                //genereert een token bij succesvolle registratie voor het activeren van het account
                 $token = generate_token();
 
                 //zet de juiste error reporting zodat fouten kunnen worden opgevangen
