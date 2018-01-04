@@ -295,6 +295,8 @@ if(isset($_GET['as']) && !(empty($_GET['as']))){
                   </a>
                 </li>
                 <?php
+                //zet alle pages in setPagination
+                //en geef de pagina waarop de gebruiker zich bevindt
                 for($i = 1; $i <= $pages; $i++){
                   if($i == $pageNr){
                     print("<li class='page-item active'><a class='page-link zhtc-bg zhtc-brd' href='?p=$i'> $i </a></li>");
@@ -331,6 +333,7 @@ if(isset($_GET['as']) && !(empty($_GET['as']))){
               </thead>
               <tbody>
                 <?php
+                //alle results in een tabel zetten (commissies)
                 foreach($data as $row) {
                 ?>
                 <tr class="thisId commissie" id='<?php print($row['commissieID']);?>'>
@@ -399,24 +402,32 @@ if(isset($_GET['as']) && !(empty($_GET['as']))){
           </div>
           <div class="card-body">
         <?php
+        //query voor het ophalen van de disputen aantal
         $stmt = $pdo->prepare("SELECT d.dispuutnaam, d.dispuutzin, CONCAT_WS(' ',l1.voornaam, l1.tussenvoegsel, l1.achternaam) AS voorzitter, COUNT(*) AS aantal_leden FROM dispuutlid dl
         JOIN dispuut d ON dl.dispuutID = d.dispuutID
         JOIN lid l1 ON d.dispuutvoorzitter = l1.lidID
         JOIN lid l2 ON dl.lidID = l2.lidID
         GROUP BY d.dispuutID");
         $stmt->execute();
+        //kijk hoeveel resultaten hij heeft
         $count = $stmt->rowCount();
+        //zet het aantal resultaten per pagina
         $resultsPer = 20;
+        //bereken het aantal pagina's
         $pages = ceil($count/$resultsPer);
-        if(isset($_GET['p2']) && !empty($_GET['p2'])){
-          $pageNr = $_GET['p2'];
+        //als er in de url een ander pagina nummer staat zet dan die neer als pageNr anders gewoon paginaNr 1
+        if(isset($_GET['p']) && !empty($_GET['p'])){
+          $pageNr = $_GET['p'];
         }else{
           $pageNr = 1;
         }
+        //kijk welke onderdelen hij moet disabelen
         $page_status = setPagination($pages, $pageNr);
         $page_status_left = $page_status[0];
         $page_status_right = $page_status[1];
+        //bereken bij hoeveel resultaten hij moet beginnen op basis van welke pagina die is
         $startNr = ($resultsPer*$pageNr)-$resultsPer;
+        //alle disputen ophalen
         $stmt = $pdo->prepare("SELECT d.dispuutid, d.dispuutnaam, d.dispuutzin, CONCAT_WS(' ',l1.voornaam, l1.tussenvoegsel, l1.achternaam) AS voorzitter, COUNT(*) AS aantal_leden FROM dispuutlid dl
         JOIN dispuut d ON dl.dispuutID = d.dispuutID
         JOIN lid l1 ON d.dispuutvoorzitter = l1.lidID
@@ -456,6 +467,7 @@ if(isset($_GET['as']) && !(empty($_GET['as']))){
             </nav>
           </div>
           <div class="col-sm-6 col-xs-12">
+            <!-- knop nieuwe disputen toevoegen -->
               <button type="button" class="btn btn-outline-primary zhtc-button float-right" data-toggle="modal" data-target="#adddispuut">Nieuw dispuut toevoegen</button>
           </div>
         </div>
@@ -473,6 +485,7 @@ if(isset($_GET['as']) && !(empty($_GET['as']))){
           </thead>
           <tbody>
             <?php
+            //loop om alle resultaten van de siputen query in een tabel te zetten
             foreach($data as $row) {
             ?>
             <tr class="thisId dispuut" id='<?php print($row['dispuutid']);?>'>
@@ -485,6 +498,7 @@ if(isset($_GET['as']) && !(empty($_GET['as']))){
               <td><?php print($row['aantal_leden']);?></td>
             </tr>
             <!-- Modals -->
+            <!-- Modaal voor het aanpassen van een dispuut -->
             <div class="modal fade" id="edit<?php print($row['dispuutid']);?>" tabindex="-1" role="dialog" aria-labelledby="edit<?php print($row['dispuutid']);?>label" aria-hidden="true">
               <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -537,7 +551,7 @@ if(isset($_GET['as']) && !(empty($_GET['as']))){
         </main>
     </div>
 </div>
-<!-- Modals -->
+<!-- Modaal voor het verwijderen van zowel een dispuut als een commissie-->
 <div class="modal fade" id="verwijderen" tabindex="-1" role="dialog" aria-labelledby="verwijderenlabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -639,7 +653,7 @@ if(isset($_GET['as']) && !(empty($_GET['as']))){
     </div>
   </div>
 </div>
-<!-- Modal nieuwe dispuut toevoegen -->
+<!-- Modaal voor het kiezen van een voorzitten deze wordt aangeroepen als er bij het aanpassen of toevoegen van een nieuwe sipuut/commissie meerdere leden zijn gevonden met de zelfde naam -->
 <div class="modal fade" id="kiesVoorzitter" tabindex="-1" role="dialog" aria-labelledby="kiesVoorzitterlabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -661,7 +675,7 @@ if(isset($_GET['as']) && !(empty($_GET['as']))){
           </thead>
           <tbody>
             <?php
-            //
+            //plaats de gevonden leden in de tabel
             foreach($data3 as $row) {
             print("<tr>
               <td><a href='?nameid=".$row['lidID']."&newName=$newName&edit=$edit&as=$as&cid=$id'>".$row['voornaam']." ".$row['tussenvoegsel']." ".$row['achternaam']."</a></td>
