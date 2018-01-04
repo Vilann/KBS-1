@@ -5,7 +5,7 @@ Op deze pagina kun je:
 -Alle commissies zien waarvan jij een voorzitter bent
 -De commissie zin aanpassen (motto)
 -Commissie tekstje schrijven/aanpassen deze komt op de commissie die voor iedereen te zien is
--Aanpassen/toevoegen banner/foto van jou commissie
+-Aanpassen/toevoegen banner/foto van jouw commissie
  */
 session_start();
 //includes
@@ -181,6 +181,7 @@ if(isset($_SESSION['error'])){
                           <input type="hidden" name="image" value="<?php print($row['commissiebanner']);?>">
                           <div class="form-group row">
                             <div class="col-sm-12 px-0 pr-5">
+                              <!-- 'aanpassen' knop -->
                               <input class="btn btn-outline-primary float-right" type="submit" name="submit" value="aanpassen">
                             </div>
                           </div>

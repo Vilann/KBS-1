@@ -1,9 +1,19 @@
       <?php
-      session_start();
-      include '../../includes/dbconnect.php';
-      include '../alert.php';
-      //Hier staat de functie om nieuwe polls toe te voegen.
-      //Kijk of er niks leeg is gepost
+        /*
+        ##pollpagina##
+        Op deze pagina kun je:
+        -Alle polls zien die in het verleden zijn afgerond
+        -Nieuwe polls toevoegen
+        -...
+        -...
+         */
+        session_start();
+        //includes
+        include '../../includes/dbconnect.php'; //connectie met de database
+        include '../alert.php'; //include alerts
+
+        //Hier staat de functie om nieuwe polls toe te voegen.
+        //Kijk of er niks leeg is gepost
         if(isset($_POST['add']) && !(empty($_POST['add']))){
           //sla de datum van vandaag op in $date
           $date = date("Y-m-d");
@@ -23,6 +33,7 @@
             $stmt->execute(array($maxId, $_POST['keuze'.$i]));
           }
           //Unset de post waarde add zodat hij niet perongeluk nog een keer de zelfde query uitvoerd
+          //en zet error melding
           $_SESSION['error'] = "Er is succesvol een nieuwe poll toegevoegd. Leden kunnen deze nu invullen op de homepagina";
           $_SESSION['errorType'] = "success";
           $_SESSION['errorAdd'] = "succes!";
@@ -31,8 +42,10 @@
         }else{
           //Niks
         }
+        //kijk of er errors gezet zijn zo ja voer dan de createerror functie uit (wordt geladen via alert.php) met de opgeslagen parameters
         if(isset($_SESSION['error'])){
           print(createError($_SESSION['error'],$_SESSION['errorType'],$_SESSION['errorAdd']));
+          //unset de error zodat hij niet vaker displayed
           unset($_SESSION['error']);
         }
        ?>

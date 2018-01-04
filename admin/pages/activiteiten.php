@@ -214,6 +214,7 @@
                 <?php
                 //voeg pagination toe op basis van hoeveel paginas er zijn
                 for($i = 1; $i <= $pages; $i++){
+                  //Geef de pagina waar de gebruiker zich op bevindt een ander kleurtje
                   if($i == $pageNr){
                     print("<li class='page-item active'><a class='page-link zhtc-bg zhtc-brd' href='?p=$i'> $i </a></li>");
                   }else{
