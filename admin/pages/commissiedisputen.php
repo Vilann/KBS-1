@@ -1,10 +1,17 @@
 <?php
 session_start();
-include '../../includes/dbconnect.php';
-include '../alert.php';
+//includes
+include '../../includes/dbconnect.php'; //connectie met de database
+include '../alert.php'; //include alerts
+
+//de code hieronder is voor het verwijderen van commissies en disputen
 if(isset($_GET['delete']) && !(empty($_GET['delete']))){
   if($_GET['delete'] == "yes"){
     $id = $_GET['id'];
+    //kijk of het een dispuut is zo nee dan is het een commissie
+    //daarna alle leden van dispuut/commissie verwijderen
+    //hierna het dispuut of de commissie verwijderen
+    //als alles succesvol is gedaan geef dan een melding weer
     if($_GET['choice'] == "dispuut"){
       $stmt2 = $pdo->prepare("DELETE FROM dispuutlid
         WHERE dispuutid=?");
@@ -31,9 +38,13 @@ if(isset($_GET['delete']) && !(empty($_GET['delete']))){
       }
     }
   }
+  //terug naar commissiedisputen zonder post
   header('Location: commissiedisputen');
 }
+
+//de code hieronder is voor zowel het aanpassen en het toevoegen van commissies en disputen
 if(isset($_GET['as']) && !(empty($_GET['as']))){
+  //check of het een commissie is zoniet dan is het een dispuut
   if($_GET['as'] == "commissie"){
     if($_GET['edit'] == "true"){
       //opvragen Huidige voorzitter
@@ -103,7 +114,7 @@ if(isset($_GET['as']) && !(empty($_GET['as']))){
         WHERE dispuutid=?
         AND lidID = ?");
       $stmt2->execute(array($_GET['cid'],$dVoorzitter['commissievoorzitter']));
-      //die($_GET['newName']." | ".$_GET['nameid']." | ".$_GET['cid']);
+
       //Verander dispuutvoorzitter naar de nieuwe voorzitter
       $stmt = $pdo->prepare("UPDATE dispuut
         SET dispuutnaam=?, dispuutvoorzitter=?
@@ -151,34 +162,41 @@ if(isset($_GET['as']) && !(empty($_GET['as']))){
   header('Location: commissiedisputen');
 }
 
-//Kijk of er niks leeg is gepost
+//de code hieronder is voor het controleren van de gekozen voorzitter
   if(isset($_POST['add'])){
+    //zet alle POST variablen naar gewone variabelen
     $as = $_POST['as'];
     $edit = $_POST['edit'];
     $newName = $_POST['newName'];
     $id = $_POST['id'];
     $voorzitterNaam = explode(" ", $_POST['voorzitter']);
+    //als er geen achternaam gezet is geef een waarschuwing weer
     if(!isset($voorzitterNaam[1])){
       $_SESSION['error'] = "Er is iets fout gegaan. Kijk goed of u daadwerkelijk alle velden goed heeft ingevuld.(Geen voornaam en achternaam gevonden)";
       $_SESSION['errorType'] = "danger";
       $_SESSION['errorAdd'] = "Let op!";
       header('Location: commissiedisputen');
     }else{
+      //selecteer lidID van de gekozen voorzitter
       $stmt = $pdo->prepare("SELECT lidID, voornaam, tussenvoegsel, achternaam, geboortedatum, woonplaats FROM lid
       WHERE voornaam = ?
       AND achternaam = ?");
       $stmt->execute(array($voorzitterNaam[0],$voorzitterNaam[1]));
       $data3 = $stmt->fetchAll();
       if (!$stmt->rowCount() > 0) {
+        //melding als er geen persoon gevonden is met de combinatie voornaam en achternaam
         $_SESSION['error'] = "Er is geen persoon in het systeem gevonden met die voornaam en achternaam.(Controleer of je de naam goed hebt ingevuld.)";
         $_SESSION['errorType'] = "danger";
         $_SESSION['errorAdd'] = "Let op!";
         header('Location: commissiedisputen');
       }
+      //als er maar een persoon is gevonden kan hij gewoon verder gaan zie (header) anders zet de variabelen in de pagina zodat deze later kunnen worden
+      //opgehaald met jquery
       if($count = $stmt->rowCount() == 1){
         foreach($data3 as $row) {
           $voorzitterID = $row['lidID'];
         }
+        //header
         header('Location: commissiedisputen?as='.$as.'&nameid='.$voorzitterID.'&newName='.$newName.'&edit='.$edit.'&cid='.$id);
         exit;
       }
@@ -194,8 +212,10 @@ if(isset($_GET['as']) && !(empty($_GET['as']))){
     $newName = "";
     $as="";
   }
+  //kijk of er errors gezet zijn zo ja voer dan de createerror functie uit (wordt geladen via alert.php) met de opgeslagen parameters
   if(isset($_SESSION['error'])){
     print(createError($_SESSION['error'],$_SESSION['errorType'],$_SESSION['errorAdd']));
+    //unset de error zodat hij niet vaker displayed
     unset($_SESSION['error']);
   }
  ?>
@@ -215,15 +235,20 @@ if(isset($_GET['as']) && !(empty($_GET['as']))){
               </div>
               <div class="card-body">
             <?php
+            //query voor het ophalen van de commissie aantal
             $stmt = $pdo->prepare("SELECT c.commissienaam, c.commissiezin, CONCAT(IFNULL(l1.voornaam,''),' ',IFNULL(l1.tussenvoegsel,''),' ',IFNULL(l1.achternaam,'')) AS voorzitter, COUNT(*) AS aantal_leden FROM commissielid cl
 			      JOIN commissie c ON cl.commissieID = c.commissieID
             JOIN lid l1 ON c.commissievoorzitter = l1.lidID
             JOIN lid l2 ON cl.lidID = l2.lidID
             GROUP BY c.commissieID");
             $stmt->execute();
+            //kijk hoeveel resultaten hij heeft
             $count = $stmt->rowCount();
+            //zet het aantal resultaten per pagina
             $resultsPer = 20;
+            //bereken het aantal pagina's
             $pages = ceil($count/$resultsPer);
+            //als er in de url een ander pagina nummer staat zet dan die neer als pageNr anders gewoon paginaNr 1
             if(isset($_GET['p']) && !empty($_GET['p'])){
               $pageNr = $_GET['p'];
             }else{
@@ -242,10 +267,13 @@ if(isset($_GET['as']) && !(empty($_GET['as']))){
                 return(array("",""));
               }
             }
+            //kijk welke onderdelen hij moet disabelen
             $page_status = setPagination($pages, $pageNr);
             $page_status_left = $page_status[0];
             $page_status_right = $page_status[1];
+            //bereken bij hoeveel resultaten hij moet beginnen op basis van welke pagina die is
             $startNr = ($resultsPer*$pageNr)-$resultsPer;
+            //alle commissies ophalen
             $stmt = $pdo->prepare("SELECT c.commissieID, c.commissienaam, c.commissiezin, CONCAT_WS(' ',l1.voornaam, l1.tussenvoegsel, l1.achternaam) AS voorzitter, COUNT(*) AS aantal_leden FROM commissielid cl
 			      JOIN commissie c ON cl.commissieID = c.commissieID
             JOIN lid l1 ON c.commissievoorzitter = l1.lidID
@@ -291,6 +319,7 @@ if(isset($_GET['as']) && !(empty($_GET['as']))){
             <hr>
             <div class="table-responsive">
             <table class="table table-hover">
+              <!-- Laad de table met commissies zien-->
               <caption>Commissies</caption>
               <thead class="thead-zhtc">
                 <tr>
