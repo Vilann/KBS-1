@@ -1,27 +1,45 @@
 <?php
+/*
+##dispuutpagina##
+Op deze pagina kun je:
+-Alle disputen zien waarvan jij een voorzitter bent
+-De dispuut zin aanpassen (motto)
+-dispuut tekstje schrijven/aanpassen deze komt op de dispuut die voor iedereen te zien is
+-Aanpassen/toevoegen banner/foto van jouw dispuut
+ */
 session_start();
-include '../../includes/dbconnect.php';
-include '../alert.php';
+//includes
+include '../../includes/dbconnect.php'; //connectie met de database
+include '../alert.php'; //include alerts
+
+//zet de header zodat de tekens er niet meer raar uitzien
 header('Content-Type: text/html; charset=ISO-8859-1');
+
+//Kijk of er op de 'aanpassen' knop is gedrukt
 if(isset($_POST['submit']) && !(empty($_POST['submit']))){
+  //Kijk of er een error is gevonden tijdens het uploaden van de foto
   if ( $_FILES['fileToUpload']['error'] > UPLOAD_ERR_OK ){
     //
   }else{
+    //als alles goed is gegaan kijk dan of er al een image was
     if(isset($_POST['image']) && !(empty($_POST['image']))){
+      //als dat zo is verwijder deze foto dan
       if (!unlink(dirname(dirname( dirname(__FILE__) ) ) . "/images/dispuutfotos/" . $_POST['image'])){
         print ("Error deleting ".$_POST['image']);
       }else{
         print ("Deleted ".$_POST['image']);
       }
     }
+      //zet het bestand in een variabele
       $fileToUpload = $_FILES['fileToUpload']['name'];
       $target_dir = "uploads/";
       $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
       $uploadOk = 1;
+      //get het bestandssoort
       $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
       $newfilename= date('dmYHis')."-".str_replace(" ", "", basename($_FILES["fileToUpload"]["name"]));;
       $newfilename2 = '../../images/dispuutfotos/'.$newfilename;
-      //die($newfilename2);
+
       // Check if image file is a actual image or fake image
       $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
       if($check !== false) {
@@ -63,11 +81,14 @@ if(isset($_POST['submit']) && !(empty($_POST['submit']))){
           }
       }
   }
+  //als er een nieuwe foto is geupload behoudt dan deze naam
   if(isset($newfilename)){
     //
+  //is dat niet zo behoudt de vorige naam
   }else{
     $newfilename = $_POST['image'];
   }
+  //de query voor het het aanpassen van commissie gegevens
   $stmt = $pdo->prepare("UPDATE dispuut
       SET dispuutnaam=?, dispuutzin=?, dispuuttekst=?, dispuutbanner=?
   		WHERE dispuutID=?");
@@ -79,10 +100,12 @@ if(isset($_POST['submit']) && !(empty($_POST['submit']))){
   $_SESSION['errorAdd'] = "succes!";
   header('Location: dispuutpagina');
 }
-  if(isset($_SESSION['error'])){
-    print(createError($_SESSION['error'],$_SESSION['errorType'],$_SESSION['errorAdd']));
-    unset($_SESSION['error']);
-  }
+//kijk of er errors gezet zijn zo ja voer dan de createerror functie uit (wordt geladen via alert.php) met de opgeslagen parameters
+if(isset($_SESSION['error'])){
+  print(createError($_SESSION['error'],$_SESSION['errorType'],$_SESSION['errorAdd']));
+  //unset de error zodat hij niet vaker displayed
+  unset($_SESSION['error']);
+}
 ?>
 <html lang="en">
       <?php
@@ -95,6 +118,7 @@ if(isset($_POST['submit']) && !(empty($_POST['submit']))){
             </div>
             <br>
             <?php
+              //query om alle commissie gegevens op te halen
               $stmt = $pdo->prepare("SELECT d.dispuutID, dispuutnaam, dispuutvoorzitter, dispuutzin, dispuuttekst, dispuutbanner FROM dispuut d
                 WHERE d.dispuutvoorzitter = ?");
               $stmt->execute(array($_SESSION['lid']));
@@ -155,6 +179,7 @@ if(isset($_POST['submit']) && !(empty($_POST['submit']))){
                           <input type="hidden" name="image" value="<?php print($row['dispuutbanner']);?>">
                           <div class="form-group row">
                             <div class="col-sm-12 px-0 pr-5">
+                              <!-- 'aanpassen' knop -->
                               <input class="btn btn-outline-primary float-right" type="submit" name="submit" value="aanpassen">
                             </div>
                           </div>

@@ -1,4 +1,7 @@
 <?php
+//includes
+//include de db connectie
+//deze wordt in de huidige ersie niet meer gebruikt en doet verder ook niets ;?
 include '../../includes/dbconnect.php';
 header('Content-Type: text/html; charset=ISO-8859-1');
 if(isset($_POST['edit']) && !(empty($_POST['edit']))){

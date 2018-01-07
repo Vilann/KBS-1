@@ -1,25 +1,30 @@
 <?php
-session_start();
-  include '../../includes/dbconnect.php';
-  include '../alert.php';
-  error_reporting(E_ALL & ~E_NOTICE);
+  session_start();
+  //includes
+  include '../../includes/dbconnect.php'; //connectie met de database
+  include '../alert.php'; //include alerts
+  error_reporting(E_ALL & ~E_NOTICE); //geen notices displayen
+  //De functie hieronder kijkt welke commissies horen bij de ingelogde voorzitter en slaat deze op als $ids
   if(isset($_SESSION['admin']['Commissie']) && !isset($_SESSION['admin']['Beheer'])){
     $stmt = $pdo->prepare("SELECT commissieid FROM commissie WHERE commissievoorzitter = ?");
     $stmt->execute(array($_SESSION['lid']));
     $info = $stmt->fetchAll();
     $ids = "";
+    //voeg alle ids toe aan string met een loop
     foreach($data as $row) {
       $ids .= $row['commissieid'];
     }
+    //voeg de string hieronder toe aan de hooftquery
     $queryaddon = "
     WHERE c.commissieID IN($ids)";
   }else{
     $queryaddon = "";
   }
+  //Check of de delete fucntie wordt aangeroepen
   if(isset($_GET['delete']) && !(empty($_GET['delete']))){
+    //als delete gelijk is aan yes en choice is activiteit delete die activiteit
     if($_GET['delete'] == "yes"){
       $id = $_GET['id'];
-      $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
       if($_GET['choice'] == "activiteit"){
         $stmt2 = $pdo->prepare("DELETE FROM activiteit
           WHERE activiteitid=?");
@@ -28,45 +33,58 @@ session_start();
         //
       }
     }
+    //zet een messege
     $_SESSION['error'] = "U heeft succesvol een activiteit verwijderd.";
     $_SESSION['errorType'] = "success";
     $_SESSION['errorAdd'] = "succes!";
     header('Location: activiteiten');
   }
+
+  //stuk code voor het toevoegen van een activiteit
   if(isset($_POST['addActiviteit']) && !(empty($_POST['addActiviteit']))){
+    //kijk of alle gegevens in het/de /idk form zijn ingevuld
     if (isset($_POST['naam']) && isset($_POST['vanaf']) && isset($_POST['tot']) && isset($_POST['vanaftijd']) && isset($_POST['tottijd']) && isset($_POST['locatie']) && isset($_POST['uitleg'])) {
+      //controle of de datum tot eerder is dan de datum vanaf als dat zo is geeft hij een warning
       if(($_POST['tot'] < $_POST['vanaf'])){
-        $_SESSION['error'] = "Er is iets fout gegaan betreft de datum en/of tijd.";
+        $_SESSION['error'] = "Er is iets fout gegaan betreft de gekozen datum en/of tijd.";
         $_SESSION['errorType'] = "danger";
         $_SESSION['errorAdd'] = "Let op!";
         header('Location: activiteiten');
         exit;
       }
+      //controle of de datum tot eerder is dan de datum vanaf als dat zo is geeft hij een warning
       if(($_POST['tot'] == $_POST['vanaf']) && ($_POST['tottijd'] < $_POST['vanaftijd'])){
-        $_SESSION['error'] = "Er is iets fout gegaan betreft de datum en/of tijd.";
+        $_SESSION['error'] = "Er is iets fout gegaan betreft de gekozen datum en/of tijd.";
         $_SESSION['errorType'] = "danger";
         $_SESSION['errorAdd'] = "Let op!";
         header('Location: activiteiten');
         exit;
       }
+      //als hij langs de controles is gegaan voeg de activiteit toe
       $stmt = $pdo->prepare("INSERT INTO activiteit(activiteitnaam, datumvan, datumtot, activiteitlocatie, activiteitinfo, lidID)
         VALUES(?, ?, ?, ?, ?, ?)");
       $stmt->execute(array($_POST['naam'],($_POST['vanaf']." ".$_POST['vanaftijd']),($_POST['tot']." ".$_POST['tottijd']),$_POST['locatie'],$_POST['uitleg'], $_SESSION['lid']));
 
+      //melding voor als alles goed is gegaan
       $_SESSION['error'] = "U heeft succesvol een activiteit toegevoegd";
       $_SESSION['errorType'] = "success";
       $_SESSION['errorAdd'] = "succes!";
     }else{
+      //zet de melding voor als je niet alles hebt ingevuld
       $_SESSION['error'] = "U heeft niet alles ingevuld";
       $_SESSION['errorType'] = "danger";
       $_SESSION['errorAdd'] = "Let op!";
       //error niet alles ingevuld
     }
+    //terug naar activiteitn zonder de post nadat alles met succes / of errors voltooid is
     header('Location: activiteiten');
   }
 
+  //stuk code voor het aanpassen van activiteiten
   if(isset($_POST['editActiviteit']) && !(empty($_POST['editActiviteit']))){
+    //kijk weer of alles van de/het form is ingevuld
     if (isset($_POST['naam']) && isset($_POST['vanaf']) && isset($_POST['tot']) && isset($_POST['vanaftijd']) && isset($_POST['tottijd']) && isset($_POST['locatie']) && isset($_POST['uitleg'])) {
+      //controle of de datum tot eerder is dan de datum vanaf als dat zo is geeft hij een warning
       if(($_POST['tot'] < $_POST['vanaf'])){
         $_SESSION['error'] = "Er is iets fout gegaan betreft de datum en/of tijd.";
         $_SESSION['errorType'] = "danger";
@@ -74,6 +92,7 @@ session_start();
         header('Location: activiteiten');
         exit;
       }
+      //controle of de datum tot eerder is dan de datum vanaf als dat zo is geeft hij een warning
       if(($_POST['tot'] == $_POST['vanaf']) && ($_POST['tottijd'] < $_POST['vanaftijd'])){
         $_SESSION['error'] = "Er is iets fout gegaan betreft de datum en/of tijd.";
         $_SESSION['errorType'] = "danger";
@@ -81,22 +100,27 @@ session_start();
         header('Location: activiteiten');
         exit;
       }
+      //voer een update query uit
       $stmt = $pdo->prepare("UPDATE activiteit SET activiteitnaam=?, datumvan=?, datumtot=?, activiteitlocatie=?, activiteitinfo=?
         WHERE activiteitid = ?");
       $stmt->execute(array($_POST['naam'],($_POST['vanaf']." ".$_POST['vanaftijd']),($_POST['tot']." ".$_POST['tottijd']),$_POST['locatie'],$_POST['uitleg'],$_POST['id']));
+      //warning als alles gelukt is
       $_SESSION['error'] = "U heeft succesvol een activiteit aangepast";
       $_SESSION['errorType'] = "success";
       $_SESSION['errorAdd'] = "succes!";
     }else{
+      //error niet alles ingevuld
       $_SESSION['error'] = "U heeft niet alles ingevuld";
       $_SESSION['errorType'] = "danger";
       $_SESSION['errorAdd'] = "Let op!";
-      //error niet alles ingevuld
     }
+    //terug naar activiteitn zonder de post nadat alles met succes / of errors voltooid is
     header('Location: activiteiten');
   }
+  //kijk of er errors gezet zijn zo ja voer dan de createerror functie uit (wordt geladen via alert.php) met de opgeslagen parameters
   if(isset($_SESSION['error'])){
     print(createError($_SESSION['error'],$_SESSION['errorType'],$_SESSION['errorAdd']));
+    //unset de error zodat hij niet vaker displayed
     unset($_SESSION['error']);
   }
 ?>
@@ -119,6 +143,7 @@ session_start();
             </div>
             <br>
             <?php
+            //selecteer alle activiteiten die of van een commissievoorzitter zijn of alle activiteint als het gaat om een beheerder
             $stmt = $pdo->prepare("SELECT c.commissieID, c.commissievoorzitter, a.lidID, activiteitinfo, activiteitid, activiteitinfo, activiteitnaam, DATE_FORMAT(datumvan, '%d-%m-%Y') as datumvanaf,
             DATE_FORMAT(datumvan, '%H:%i') as tijdvanaf,
             DATE_FORMAT(datumtot, '%d-%m-%Y') as datumtot,
@@ -128,14 +153,19 @@ session_start();
             $queryaddon
             ORDER by activiteitnaam ASC");
             $stmt->execute();
+            //kijk hoeveel resultaten hij heeft
             $count = $stmt->rowCount();
+            //zet het aantal resultaten per pagina
             $resultsPer = 20;
+            //bereken het aantal pagina's
             $pages = ceil($count/$resultsPer);
+            //als er in de url een ander pagina nummer staat zet dan die neer als pageNr anders gewoon paginaNr 1
             if(isset($_GET['p']) && !empty($_GET['p'])){
               $pageNr = $_GET['p'];
             }else{
               $pageNr = 1;
             }
+            //als er in de url een andere sorteer staat aangegeven zie ord(order) dan zet die in de variable anders datumvan als de standaard
             if(isset($_GET['ord']) && !empty($_GET['ord'])){
               $order = $_GET['ord'];
             }else{
@@ -154,10 +184,13 @@ session_start();
                 return(array("",""));
               }
             }
+            //kijk welke onderdelen hij moet disabelen
             $page_status = setPagination($pages, $pageNr);
             $page_status_left = $page_status[0];
             $page_status_right = $page_status[1];
+            //bereken bij hoeveel resultaten hij moet beginnen op basis van welke pagina die is
             $startNr = ($resultsPer*$pageNr)-$resultsPer;
+            //selecteer alle activiteiten die of van een commissievoorzitter zijn of alle activiteint als het gaat om een beheerder
             $stmt = $pdo->prepare("SELECT c.commissieID, c.commissievoorzitter, a.lidID, activiteitinfo, activiteitid, activiteitinfo, activiteitnaam, DATE_FORMAT(datumvan, '%d-%m-%Y') as datumvanaf,
             DATE_FORMAT(datumvan, '%H:%i') as tijdvanaf,
             DATE_FORMAT(datumtot, '%d-%m-%Y') as datumtot,
@@ -179,7 +212,9 @@ session_start();
                   </a>
                 </li>
                 <?php
+                //voeg pagination toe op basis van hoeveel paginas er zijn
                 for($i = 1; $i <= $pages; $i++){
+                  //Geef de pagina waar de gebruiker zich op bevindt een ander kleurtje
                   if($i == $pageNr){
                     print("<li class='page-item active'><a class='page-link zhtc-bg zhtc-brd' href='?p=$i'> $i </a></li>");
                   }else{
@@ -197,6 +232,7 @@ session_start();
             </nav>
             <div class="table-responsive">
             <table class="table table-hover">
+              <!-- Create table waar de activiteiten in staan -->
               <thead class="thead-zhtc">
                 <tr id="orderBy" class="<?php print($order);?>">
                   <th scope="col">Acties</th>
@@ -295,6 +331,8 @@ session_start();
     </div>
 </div>
 <!-- Modals -->
+<!-- Modal voor het verwijderen van een activiteit -->
+
 <div class="modal fade" id="verwijderen" tabindex="-1" role="dialog" aria-labelledby="verwijderenlabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -315,7 +353,7 @@ session_start();
   </div>
 </div>
 
-<!-- Modal om overige poll gegevens in te laden -->
+<!-- Modal voor het toevoegen van een activiteit -->
 <div class="modal fade bd-example-modal-lg" id="addActiviteit" tabindex="-1" role="dialog" aria-labelledby="addActiviteitlabel" aria-hidden="true">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">

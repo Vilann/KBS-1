@@ -1,11 +1,23 @@
 <?php
+  /*
+  ##Commissiepagina##
+  Op deze pagina kun je:
+  -Alle leden van ZHTC inzien
+  -Alle leden aanpassen
+  -Leden uit de vereniging zetten
+  -...
+   */
   session_start();
-  include '../../includes/dbconnect.php';
-  include '../alert.php';
+  //includes
+  include '../../includes/dbconnect.php'; //connectie met de database
+  include '../alert.php'; //include alerts
+
+  //Code die getrigger wordt als er een lid verwijderd wordt
   if(isset($_GET['delete']) && !(empty($_GET['delete']))){
     if($_GET['delete'] == "yes"){
       $id = $_GET['id'];
       if($_GET['choice'] == "leden"){
+        //zet het lid in kwestie op inactief
         $stmt = $pdo->prepare("UPDATE lid
             SET inactief=1
             WHERE lidID=?");
@@ -13,25 +25,28 @@
       }else{
         //
       }
+      //succesmelding
       $_SESSION['error'] = "U heeft succesvol een lid op inactief gezet";
       $_SESSION['errorType'] = "success";
       $_SESSION['errorAdd'] = "succes!";
     }
     header('Location: leden');
   }
+
+  //Deze code wordt geactiveerd als er op aanpassen gedrukt wordt
   if(isset($_POST['edit'])){
     $id = $_POST['id'];
+    //Kijk of alle essentiële onderdelen zijn ingevuld zo ja ga verder
     if (isset($_POST['voornaam']) && isset($_POST['achternaam']) && isset($_POST['geboortedatum']) && isset($_POST['adres']) && isset($_POST['postcode'])
     && isset($_POST['woonplaats']) && isset($_POST['gender'])) {
-      $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+      //prepare query voor het aanpassen van een lid
       $stmt = $pdo->prepare("UPDATE lid
           SET voornaam=?,tussenvoegsel=?,achternaam=?,geboortedatum=?,adres=?,postcode=?,woonplaats=?,geslacht=?
           WHERE lidID=?");
       $stmt->execute(array($_POST['voornaam'],$_POST['tussenvoegsel'],$_POST['achternaam'],$_POST['geboortedatum'],$_POST['adres'],$_POST['postcode'],$_POST['woonplaats'],$_POST['gender'],$id));
-      if (!$stmt) {
-        echo "\nPDO::errorInfo():\n";
-        print_r($dbh->errorInfo());
-      }
+
+      //succesmelding
       $_SESSION['error'] = "Het lid is succesvol aangepast";
       $_SESSION['errorType'] = "success";
       $_SESSION['errorAdd'] = "succes!";
@@ -39,8 +54,11 @@
     unset($_POST);
     header('Location: leden');
   }
+
+  //kijk of er errors gezet zijn zo ja voer dan de createerror functie uit (wordt geladen via alert.php) met de opgeslagen parameters
   if(isset($_SESSION['error'])){
     print(createError($_SESSION['error'],$_SESSION['errorType'],$_SESSION['errorAdd']));
+    //unset de error zodat hij niet vaker displayed
     unset($_SESSION['error']);
   }
 ?>
@@ -58,18 +76,23 @@
             WHERE inactief = 0
             ORDER by achternaam ASC");
             $stmt->execute();
+            //kijk hoeveel resultaten hij heeft
             $count = $stmt->rowCount();
+            //zet het aantal resultaten per pagina
             $resultsPer = 20;
+            //bereken het aantal pagina's
             $pages = ceil($count/$resultsPer);
+            //als er in de url een ander pagina nummer staat zet dan die neer als pageNr anders gewoon paginaNr 1
             if(isset($_GET['p']) && !empty($_GET['p'])){
               $pageNr = $_GET['p'];
             }else{
               $pageNr = 1;
             }
+            //als er in de url een andere sorteer staat aangegeven zie ord(order) dan zet die in de variable anders datumvan als de standaard
             if(isset($_GET['ord']) && !empty($_GET['ord'])){
               $order = $_GET['ord'];
             }else{
-              $order = "voornaam";
+              $order = "datumvan";
             }
             //check of hij op de laatste of op pagina 1 zit
             function setPagination($pages, $pageNr){
@@ -84,10 +107,13 @@
                 return(array("",""));
               }
             }
+            //kijk welke onderdelen hij moet disabelen
             $page_status = setPagination($pages, $pageNr);
             $page_status_left = $page_status[0];
             $page_status_right = $page_status[1];
+            //bereken bij hoeveel resultaten hij moet beginnen op basis van welke pagina die is
             $startNr = ($resultsPer*$pageNr)-$resultsPer;
+            //selecteer alle leden van zhtc die niet verwijderd zijn
             $stmt = $pdo->prepare("SELECT * FROM lid
             WHERE inactief = 0
             ORDER by $order DESC
@@ -104,7 +130,9 @@
                   </a>
                 </li>
                 <?php
+                //voeg pagination toe op basis van hoeveel paginas er zijn
                 for($i = 1; $i <= $pages; $i++){
+                  //Geef de pagina waar de gebruiker zich op bevindt een ander kleurtje
                   if($i == $pageNr){
                     print("<li class='page-item active'><a class='page-link zhtc-bg zhtc-brd' href='?p=$i'> $i </a></li>");
                   }else{
@@ -139,12 +167,13 @@
               </thead>
               <tbody>
                 <?php
+                //zet alle resultaten van de query in een tabel
                 foreach($data as $row) {
                 ?>
                 <tr class="thisId leden" id='<?php print($row['lidID']);?>'>
                   <td>
                     <button class="mb-2 btn btn-xs delModal leden" data-id="<?php print($row['voornaam']." ".$row['achternaam']);?>" data-toggle="modal" data-target="#verwijderen"><i class="icon ion-trash-b"></i></button>
-                    <button class="btn btn-warning btn-xs editmodal leden" data-id="<?php print($row['voornaam']." ".$row['achternaam']);?>" data-toggle="modal" data-target="#edit"><i class="icon ion-edit"></i></button>
+                    <button class="btn btn-warning btn-xs editmodal leden" data-id="<?php print($row['voornaam']." ".$row['achternaam']);?>" data-toggle="modal" data-target="#edit<?php print($row['lidID']);?>"><i class="icon ion-edit"></i></button>
                   </td>
                   <td><?php print($row['voornaam']);?></td>
                   <td><?php print($row['tussenvoegsel']);?></td>
@@ -158,11 +187,13 @@
                   <td><?php print($row['rekeningnummer']);?></td>
                   <td><?php print($row['noodnummer']);?></td>
                 </tr>
-                <div class="modal fade bd-example-modal-lg" id="edit" tabindex="-1" role="dialog" aria-labelledby="editlabel" aria-hidden="true">
+                <!-- Modals -->
+                <!-- Modal voor het aanpassen van leden -->
+                <div class="modal fade bd-example-modal-lg" id="edit<?php print($row['lidID']);?>" tabindex="-1" role="dialog" aria-labelledby="edit<?php print($row['lidID']);?>label" aria-hidden="true">
                   <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
                       <div class="modal-header">
-                        <h5 class="modal-title" id="editlabel">Aanpassen <span class="deleteName"></span></h5>
+                        <h5 class="modal-title" id="edit<?php print($row['lidID']);?>label">Aanpassen <span class="deleteName"></span></h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                           <span aria-hidden="true">&times;</span>
                         </button>
@@ -218,6 +249,7 @@
                                 <div class="row">
                                   <legend class="col-form-legend col-sm-4">* Geslacht</legend>
                                   <?php
+                                    //zet checked bij het geslacht wat in de db staat
                                     $man = "";
                                     $vrouw = "";
                                     $notset = "";
@@ -279,7 +311,7 @@
         </main>
     </div>
 </div>
-<!-- Modals -->
+<!-- Modal voor het verwijderen van leden -->
 <div class="modal fade" id="verwijderen" tabindex="-1" role="dialog" aria-labelledby="verwijderenlabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">

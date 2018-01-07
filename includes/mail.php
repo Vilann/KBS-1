@@ -44,6 +44,7 @@ Secretariaat ZHTC
 P.S. Dit is een noreply email-adres, hier kan niet op gereageerd worden.
 </body></html>
 ";
+    //maakt de mail in HTML
     $subject = "Activeren account ZHTC.nl ";
     $headers[] = NOREPLY_HEADER;
     $headers[] = 'MIME-Version: 1.0';
@@ -53,11 +54,13 @@ P.S. Dit is een noreply email-adres, hier kan niet op gereageerd worden.
 
 function mail_boekhouden($emailNieuwLid)
 {
+    // haalt de informatie op van nieuwe leden en mailt dit naar de persoon die eboekhouden regelt
     include 'includes/dbconnect.php';
     $stmt = $pdo->prepare("SELECT * FROM lid WHERE emailadres=?");
     $stmt->execute(array($emailNieuwLid));
     $info = $stmt->fetch(PDO::FETCH_ASSOC);
     $subject="Registratie nieuw lid ZHTC";
+    //emailadres van e-boekhouder
     $to="E-boekhoud@emailadres";
     $message="Er is een nieuw lid geregistreerd via ZHTC.nl
     Hier is de informatie:".

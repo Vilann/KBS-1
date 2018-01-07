@@ -1,9 +1,22 @@
 <?php
-  include '../../includes/dbconnect.php';
+  /*
+  /bug sortering en pagination werkt niet
+  ##pollpagina##
+  Op deze pagina kun je:
+  -Alle polls zien die in het verleden zijn afgerond
+  -Nieuwe polls toevoegen
+  -...
+  -...
+   */
+  //includes
+  include '../../includes/dbconnect.php'; //connectie met de database
+
+  //Kijk of er een choice is gezet (commissie of dispuut)
   if(isset($_GET['choice']) && !(empty($_GET['id']))){
-    $id = $_GET['id'];
-    $choice = $_GET['choice'];
-    $as = $_GET['as'];
+    $id = $_GET['id']; //id van de commissie/dispuut
+    $choice = $_GET['choice']; //of het gaat om een dispuut of commissie
+    $as = $_GET['as']; //voorzitter of lid
+    //als het gaat om commissie/dispuut veranderd de sql naar dit
     if($choice == "commissie"){
       $choiceSQL1 = "commissielid";
       $choiceSQL2 = "commissieID";
@@ -11,15 +24,16 @@
       $choiceSQL1 = "dispuutlid";
       $choiceSQL2 = "dispuutid";
     }
+    //de tekst aanpassen als het gaat om een voorzitter of dispuut
     if($_GET['as'] == "voorzitter"){
       $titel = "Hier kunt u een nieuwe voorzitter aanwijzen";
-      $tekst = "Klik op de voorzitter die u als nieuwe voorzitter wilt aanwijzen. hou er rekening mee dat zodra deze actie voltooid is je geen voorzitters rechten hebt en opnieuw moet inloggen.";
+      $tekst = "Klik op de voorzitter die u als nieuwe voorzitter wilt aanwijzen. houd er rekening mee dat zodra deze actie voltooid is je geen voorzitters rechten hebt en opnieuw moet inloggen.";
     }else{
       $titel = "Hier kunt u een nieuwe leden aanwijzen";
       $tekst = "Klik op de alle leden die u wilt uitnodigen om deel te nemen aan uw commissie en klik hierna op voltooien.";
     }
   }else{
-    header('Location: index');
+    //header('Location: toevoegenlid');
   }
 ?>
 <html lang="en">
@@ -40,6 +54,7 @@
             <span class="id" id="<?php print($_GET['id']);?>"></span>
             <br>
             <?php
+            //query om alle leden op te halen op basis van de meegegeven variabelen
             $sql = "SELECT * FROM lid l
             WHERE inactief = 0
             AND l.lidID NOT IN (SELECT lidID FROM $choiceSQL1
@@ -48,14 +63,19 @@
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             $stmt = $pdo->prepare($sql);
             $stmt->execute(array($id));
+            //kijk hoeveel resultaten hij heeft
             $count = $stmt->rowCount();
+            //zet het aantal resultaten per pagina
             $resultsPer = 20;
+            //bereken het aantal pagina's
             $pages = ceil($count/$resultsPer);
+            //als er in de url een ander pagina nummer staat zet dan die neer als pageNr anders gewoon paginaNr 1
             if(isset($_GET['p']) && !empty($_GET['p'])){
               $pageNr = $_GET['p'];
             }else{
               $pageNr = 1;
             }
+            //als er in de url een andere sorteer staat aangegeven zie ord(order) dan zet die in de variable anders datumvan als de standaard
             if(isset($_GET['ord']) && !empty($_GET['ord'])){
               $order = $_GET['ord'];
             }else{
@@ -74,10 +94,13 @@
                 return(array("",""));
               }
             }
+            //kijk welke onderdelen hij moet disabelen
             $page_status = setPagination($pages, $pageNr);
             $page_status_left = $page_status[0];
             $page_status_right = $page_status[1];
+            //bereken bij hoeveel resultaten hij moet beginnen op basis van welke pagina die is
             $startNr = ($resultsPer*$pageNr)-$resultsPer;
+            //selecteer alle leden van zhtc die niet verwijderd zijn
             $sql = "SELECT * FROM lid l
             WHERE inactief = 0
             AND l.lidID NOT IN (SELECT lidID FROM $choiceSQL1
@@ -127,6 +150,7 @@
               </thead>
               <tbody class="choice" id="<?php print($_GET['choice']);?>">
                 <?php
+                //alle data in een tabel laden
                 foreach($data as $row) {
                 ?>
                 <tr class="thisId leden clickable-row" id='<?php print($row['lidID']);?>'>
