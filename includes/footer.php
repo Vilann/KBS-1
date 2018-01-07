@@ -21,6 +21,7 @@ TELEFOON
 </div>
 <div class="col-8">
 <h4>SPONSOREN</h4>
+<p> Wilt u ZHTC ook gaan sponsoren? Klik <a href='contact'>hier </a> om contact met ons op te nemen. <p>
 <?php
 
 include("includes/dbconnect.php");
@@ -29,7 +30,7 @@ $stmt->execute();
 $sponsoren = $stmt->fetchAll(PDO::FETCH_ASSOC);
 if ($stmt->rowCount() > 0) {
     foreach ($sponsoren as $sponsor) {
-        print("<img style='margin-left: 1em' src='" . $sponsor['sponsorplaatje'] . "'>");
+        print("<img style='margin-right: 1em' src='" . $sponsor['sponsorplaatje'] . "'>");
     }
 } else {
     die($sponsor);
