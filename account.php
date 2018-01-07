@@ -117,7 +117,7 @@ include 'includes/dbconnect.php';
                       <input id="noodnummer" type="text" class="form-control" value='<?php print($info['noodnummer']); ?>' name="noodnummer" placeholder="0612345678">
                     </div>
                 </div>
-                <button type="submit" class="btn btn-outline-primary zhtc-button" name="infoupdate" value="infoupdate">Aanpassen</button>
+                <!-- <button type="submit" class="btn btn-outline-primary zhtc-button" name="infoupdate" value="infoupdate">Aanpassen</button> -->
               </form>
             </div>
             <div class="col-sm-12 col-xs-12 col-md-5">

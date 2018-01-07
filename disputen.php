@@ -19,6 +19,8 @@
 			JOIN lid l ON d.dispuutvoorzitter = l.lidID
 			JOIN dispuutlid dl ON dl.dispuutID = d.dispuutid
 			WHERE d.dispuutid = ?");
+			// NOTE: vervolgens wordt hierboven alle relevante dispuut informatie opgehaald (met een voorbereid statement) en hieronder
+			// NOTE: wordt de info in een leesbare, makkelijk te gebruiken array gestopt.
             $stmt->execute(array($_GET['dp']));
             $info = $stmt->fetch(PDO::FETCH_ASSOC);
             if ($stmt->rowCount()) {
@@ -35,6 +37,7 @@
             } else {
                 print("Werkt niet, of... of het database tabel waar je naar zoekt is leeg");
             } ?>
+						<?php // NOTE: hieronder wordt elke dispuutskaart afzonderlijk gemaakt ?>
 			<div class="container-fluid">
 				<div class="row">
 					<div class="col-12">
@@ -52,13 +55,13 @@
 											<?php print($info['voornaam']); ?></h5>
 									</div>
 								</div>
-								<?php
+								<?php// NOTE: dit statement haalt de de voornamen van de dispuutleden op uit de database.
                 $stmt = $pdo->prepare("SELECT voornaam FROM lid l JOIN dispuutlid dl ON dl.lidID = l.lidID WHERE dispuutID = ?");
             $stmt->execute(array($dispuutid));
             $leden = $stmt->fetchAll(); ?>
 								<div class="row">
 									<div class="col-5 offset-7">
-
+										<?php // NOTE:  vervolgens worden die namen hier geprint. ?>
 										<p class="card-text text-right my-0">Voorzitter: <span class="text-muted"><?php print(ucfirst($voornaam)); ?></span></p>
 										<p class="card-text text-right my-0">Leden:<span class="text-muted">
 										<?php foreach ($leden as $lid) {
@@ -93,7 +96,8 @@
 		</div>
 	</div>
 			<?php
-        } else {
+        } else {// NOTE: Deze else is de eerste pagina die je ziet. Op het moment dat er op de "meer-knop" wordt gedrukt, wordt het commissieID in de if
+								 // NOTE: op regel 8 ingevuld en laad de pagina met dispuuts informatie.
             ?>
     <div class="container-fluid">
       <div class="row">
@@ -104,14 +108,14 @@
       </div>
 			<hr>
 			<div class="row">
-			<?php
+			<?php// NOTE: hier boven wordt de db verbinding gemaakt en hieronder de relevante data opgehaald
                     $stmt = $pdo->prepare('SELECT * FROM dispuut');
             $stmt->execute();
             $data = $stmt->fetchAll();
             foreach ($data as $row) {
                 ?>
         <div class="col-12">
-          <div class="card mb-4">
+          <div class="card mb-4"><?php // NOTE: Ditis bootstrap code en heeft te maken met de grootte van de kaart. ?>
             <div class="card-body"> <?php // NOTE: alles in deze div staat in de kaart?>
               <h4 class="card-title"><?php print($row['dispuutnaam'])?></h4>
               <p class="card-text">

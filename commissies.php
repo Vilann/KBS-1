@@ -5,12 +5,14 @@
 		<title>ZHTC - commissies</title>
 		<?php include 'includes/header.php';
         include 'includes/dbconnect.php';
-        if (isset($_GET['cm']) && !(empty($_GET['cm']))) {
+        if (isset($_GET['cm']) && !(empty($_GET['cm']))) { // NOTE:  Dit if-statement kijkt of er op de "meer-knop" is gedrukt en of er een geldig commissieID wordt gegeven
             $stmt = $pdo->prepare("SELECT commissievoorzitter as cmvoorzit, commissiebanner as cmbann, commissienaam as cmnaam, c.commissieID as cmID,commissiezin as cmzin, commissietekst as cmtekst, l.voornaam as voornaam, cl.lidID as cmlid, commissieagenda as cmagendaID, commissienotulen as cmnotulenID
 			FROM commissie c
 			JOIN lid l ON c.commissievoorzitter = l.lidID
 			JOIN commissielid cl ON cl.commissieID = c.commissieID
       WHERE c.commissieID = ?");
+			// NOTE: vervolgens wordt hierboven alle relevante commissie informatie opgehaald (met een voorbereid statement) en hieronder
+			// NOTE: wordt de info in een leesbare, makkelijk te gebruiken array gestopt.
             $stmt->execute(array($_GET['cm']));
             $info = $stmt->fetch(PDO::FETCH_ASSOC);
             if ($stmt->rowCount()) {
@@ -27,7 +29,7 @@
             } else {
                 print("Werkt niet, of... of de database tabel waar je naar zoekt is leeg");
             } ?>
-
+<?php // NOTE: hieronder wordt elke commissie kaart afzonderlijk gemaakt ?>
       <div class="container-fluid">
         <div class="row">
           <div class="col-12">
@@ -44,13 +46,13 @@
                     <h5 class="card-text text-left my-0"><?php print($info['voornaam']); ?></h5>
                   </div>
                 </div>
-								<?php
+								<?php // NOTE: dit statement haalt de de voornamen van de commissieleden op uit de database.
                                 $stmt = $pdo->prepare("SELECT voornaam FROM lid l JOIN commissielid cl ON cl.lidID = l.lidID WHERE commissieID = ?");
             $stmt->execute(array($commissieid));
             $leden = $stmt->fetchAll(); ?>
                 <div class="row">
                   <div class="col-5 offset-7">
-
+										<?php // NOTE:  vervolgens worden die namen hier geprint. ?>
                     <p class="card-text text-right my-0">Voorzitter: <span class="text-muted"><?php print ucfirst(($info['voornaam'])); ?></span></p>
                     <p class="card-text text-right my-0">Leden:<span class="text-muted">
                     <?php foreach ($leden as $lid) {
@@ -72,13 +74,13 @@
                 <hr>
                 <div class='wrapper text-center'>
 
-<?php if (isset($_SESSION['lid'])) { ?>
+<?php if (isset($_SESSION['lid'])) { ?> <?php // NOTE: hier staan de google drive linkjes voor de agenda en notulen van de commissie. ?>
                   <div class="btn-group mx-auto" role="group" aria-label="...">
 										<a href="https://drive.google.com/embeddedfolderview?id=<?php print($info['cmagendaID']); ?>" class="btn btn-outline-primary zhtc-button">Agenda</a>
 										<a href="https://drive.google.com/embeddedfolderview?id=<?php print($info['cmnotulenID']); ?>" class="btn btn-outline-primary zhtc-button">Notulen</a>
                   </div> <?php } ?>
-<?php if (isset($_SESSION['lid'])) { ?>
-				<audio autoplay loop ><source src="files/AxelF.wav" type="audio/wav"></audio><?php } ?>
+<?php // NOTE:  dit is een easter egg. if (isset($_SESSION['lid'])) { ?>
+				<!-- <audio autoplay loop ><source src="files/AxelF.wav" type="audio/wav"></audio><?php //} ?> -->
                 </div>
             </div>
         </div>
@@ -86,7 +88,8 @@
     </div>
   </div>
       <?php
-        } else {
+		} else { // NOTE: Deze else is de eerste pagina die je ziet. Op het moment dat er op de "meer-knop" wordt gedrukt, wordt het commissieID in de if
+						 // NOTE: op regel 8 ingevuld en laad de pagina met commissie informatie.
             ?>
     <div class="container-fluid">
       <div class="row">
@@ -105,8 +108,8 @@
             foreach ($data as $row) {
                 ?>
         <div class="col-3" >
-          <div class="card mb-5 h-100"><?php // NOTE: was class="card mb4" geen idee wat mb inhoud?>
-            <div class="card-body p-0"> <?php // NOTE: alles in deze div staat in de kaart?>
+          <div class="card mb-5 h-100"><?php // NOTE: Ditis bootstrap code en heeft te maken met de grootte van de kaart. ?>
+            <div class="card-body p-0"> <?php // NOTE: Alles in deze div staat in de kaart.?>
 							<img class="card-img-top" src="images/commissiefotos/<?php print($row['cmbann'])?>" alt="" ><br><?php// print($row['comm_zin']);?><?php // NOTE: de commissiezin?>
 							<h4 class="card-title"><?php print($row['comm_naam'])?></h4> <?php // NOTE: de naam van de commissie?>
               <p class="card-text">
