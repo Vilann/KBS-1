@@ -91,7 +91,7 @@
             </div>
             <div class="container-fluid">
               <div class="row">
-                <p class="text-center text-muted font-weight-light mx-3">Gesticht in 1952 is ZHTC de oudste vereniging van Zwolle. De vereniging zet zich in voor contacten leggen met andere studenten, kennis opdoen in commissies, vrienden maken, en leuke activiteiten organiseren. Broederschap staat hierbij hoog in het vaandel. ZHTC is ook de enige studentenvereniging met een eigen sociëteit binnen Zwolle. Hier worden veel activiteiten georganiseerd en het is een ontmoetingsplek voor alle leden. Kortom: ZHTC is het juiste begin van iedereens studententijd.</p>
+                <p class="text-center text-muted font-weight-light mx-3">Gesticht in 1952 is ZHTC de oudste vereniging van Zwolle. De vereniging zet zich in voor contacten leggen met andere studenten, kennis opdoen in commissies, vrienden maken, en leuke activiteiten organiseren. Broederschap staat hierbij hoog in het vaandel. ZHTC is ook de enige studentenvereniging met een eigen soci&euml;teit binnen Zwolle. Hier worden veel activiteiten georganiseerd en het is een ontmoetingsplek voor alle leden. Kortom: ZHTC is het juiste begin van iedereens studententijd.</p>
               </div>
             </div>
             <br>

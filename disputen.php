@@ -55,8 +55,7 @@
 								<?php
                 $stmt = $pdo->prepare("SELECT voornaam FROM lid l JOIN dispuutlid dl ON dl.lidID = l.lidID WHERE dispuutID = ?");
             $stmt->execute(array($dispuutid));
-            $leden = $stmt->fetchAll();
-            print_r($leden)?>
+            $leden = $stmt->fetchAll(); ?>
 								<div class="row">
 									<div class="col-5 offset-7">
 

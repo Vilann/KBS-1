@@ -4,7 +4,7 @@ include '../../includes/beveiliging.php';
 beveilig_adminpagina();
 ?>
 <head>
-<meta charset="utf-8">
+<meta http-equiv="Content-type" content="text/html; charset=ISO-8859-1" />
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="description" content="">
 <meta name="author" content="">
@@ -80,8 +80,8 @@ integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfs
           <a href="../index" class="list-group-item collapsed" data-parent="#sidebar"><i class="icon ion-home"></i> <span class="hidden-sm-down"> Adminpanel</span></a>
           <!-- Beheer tools -->
           <?php
-          if(isset($_SESSION['admin']['Beheer'])){
-          ?>
+          if (isset($_SESSION['admin']['Beheer'])) {
+              ?>
           <a id="beheerlink" href="#beheer" class="list-group-item collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"> <span class="hidden-sm-down">ZHTC-beheer tools </span><i class="icon ion-android-arrow-dropdown-circle"></i></a>
           <div class="collapse" id="beheer">
             <!--<a id="beheerpagina" href="/KBS-1/admin/pages/beheerpagina" class="list-group-item" data-parent="#beheer"><i class="icon ion-edit"></i> aanpassen pagina's </a>-->
@@ -92,8 +92,8 @@ integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfs
           </div>
           <!-- Commissie tools -->
           <?php
-          }if(isset($_SESSION['admin']['Commissie'])){
-          ?>
+          } if (isset($_SESSION['admin']['Commissie'])) {
+              ?>
           <a id="commissielink" href="#commissie" class="list-group-item collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"> <span class="hidden-sm-down">ZHTC-commissie tools </span><i class="icon ion-android-arrow-dropdown-circle"></i></a>
           <div class="collapse" id="commissie">
               <a id="commissieleden" href="/KBS-1/admin/pages/commissieleden" class="list-group-item" data-parent="#commissie"><i class="icon ion-person-stalker"></i> Commissie leden </a>
@@ -102,8 +102,8 @@ integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfs
           </div>
           <!-- Dispuut tools -->
           <?php
-          }if(isset($_SESSION['admin']['Dispuut'])){
-          ?>
+          } if (isset($_SESSION['admin']['Dispuut'])) {
+              ?>
           <a id="dispuutlink" href="#dispuut" class="list-group-item collapsed" data-toggle="collapse" data-parent="#sidebar" aria-expanded="false"><span class="hidden-sm-down">ZHTC-dispuut tools </span><i class="icon ion-android-arrow-dropdown-circle"></i></a>
           <div class="collapse" id="dispuut">
             <a id="dispuutleden" href="/KBS-1/admin/pages/dispuutleden" class="list-group-item" data-parent="#dispuut"><i class="icon ion-person-stalker"></i> Disputen leden </a>
