@@ -49,12 +49,12 @@ if (isset($_POST['login'])) {
     // Filter_input is een functie die kijkt of de informatie bestaat.
     // en of de info aan (hier niet) gespecificeerde regels voldoet.
     //
-    // Filter_input zorgt ervoor dat 1) de informatie gefilterd wordt en 2) de informatie 'veilig' is. //NOTE: hoe dan?
+    // Filter_input zorgt ervoor dat 1) de informatie gefilterd wordt en 2) de informatie 'veilig' is.
 
     if (($email = filter_input(INPUT_POST, 'email')) && ($ww = filter_input(INPUT_POST, 'wachtwoord'))) {
         include 'includes/dbconnect.php';
         // We halen het wachtwoord op van het lid met het lidID dat bij het emailadres staat.
-        $stmt = $pdo->prepare("SELECT DISTINCT l.lidID, l.voornaam, l.wachtwoord, c.commissievoorzitter, d.dispuutvoorzitter, b.bestuurslidID,
+        $stmt = $pdo->prepare("SELECT DISTINCT l.lidID, voornaam, wachtwoord, c.commissievoorzitter, d.dispuutvoorzitter, b.bestuurslidID,
           CASE WHEN c.commissievoorzitter = l.lidID THEN 'yes'
           	 WHEN d.dispuutvoorzitter = l.lidID THEN 'yes'
                WHEN b.bestuurslidID = l.lidID THEN 'yes'
@@ -71,27 +71,30 @@ if (isset($_POST['login'])) {
             $info = $stmt->fetch(PDO::FETCH_ASSOC);
             // password_verify is een functie om een gehasht wachtwoord dat gemaakt is met password_hash() te vergelijken met een raw input ww
             // Kijken of het wachtwoord bij de email hoort
-            session_start();
-            if ($info['toegangAdmin'] == "yes") {
-                $adminRechten = array("Beheer"=>$info['bestuurslidID'], "Dispuut"=>$info['dispuutvoorzitter'], "Commissie"=>$info['commissievoorzitter']);
-                $_SESSION['admin'] = $adminRechten;
+            if (password_verify($ww, $info['wachtwoord'])) {
+                session_start();
+                if ($info['toegangAdmin'] == "yes") {
+                    $adminRechten = array("Beheer"=>$info['bestuurslidID'], "Dispuut"=>$info['dispuutvoorzitter'], "Commissie"=>$info['commissievoorzitter']);
+                    $_SESSION['admin'] = $adminRechten;
+                }
+                $_SESSION['lid'] = $info['lidID'];
+                $_SESSION['voornaam'] = $info['voornaam'];
+                $ip= $_SERVER['REMOTE_ADDR'];
+                $stmt=$pdo->prepare("DELETE FROM loginpoging WHERE ip=?");
+                $stmt->execute(array($ip));
+                header("Location: index");
+            } else {
+                foute_inlogpoging();
+                $errors = true;
             }
-            $_SESSION['lid'] = $info['lidID'];
-            $_SESSION['voornaam'] = $info['voornaam'];
-            $ip= $_SERVER['REMOTE_ADDR'];
-            $stmt=$pdo->prepare("DELETE FROM loginpoging WHERE ip=?");
-            $stmt->execute(array($ip));
         } else {
+            // Het emailadres bestaat niet
             foute_inlogpoging();
-            // TODO: Foutinformatie op login.php en terugsturen
             $errors = true;
         }
     } else {
-        foute_inlogpoging();
-        // print("Het emailadres bestaat niet");
-        // // TODO: foutinformatie op login.php en terugsturen
+        // email of ww zijn niet ingevuld
         $errors = true;
-        // //fout inlogpoging registreren
     }
     $pdo = null;
 
@@ -103,13 +106,6 @@ if (isset($_POST['login'])) {
     }
 }
 
-
-    // Testcode om te kijken of de sessie werkt
-    if (isset($_SESSION['voornaam'])) {
-        header("Location: index");
-    } else {
-        print("Je hebt het niet goed ingevuld, ga terug!");
-    }
 
 if (isset($_POST['registreer'])) {
 
@@ -134,7 +130,6 @@ if (isset($_POST['registreer'])) {
         if (isset($_POST['voornaam']) && isset($_POST['achternaam']) && isset($_POST['geboortedatum']) && isset($_POST['adres']) && isset($_POST['postcode'])
       && isset($_POST['woonplaats']) && isset($_POST['gender']) && isset($_POST['email']) && isset($_POST['iban']) && isset($_POST['noodnummer']) && isset($_POST['maat'])) {
             // Als de errors variabele na alle checks fout is, wordt de gebruiker teruggestuurd naar de registratiepagina.
-            // TODO: validate emailadres, validate rekeningnummer, validate noodnummer, validate wachtwoord
             $errors = false;
 
             // Input aanpassen zodat we het lekker kunnen gebruiken
@@ -144,18 +139,11 @@ if (isset($_POST['registreer'])) {
             $medicatie = !empty($_POST['medicatie']) ? $_POST['medicatie'] : null;
             $dieetwensen = !empty($_POST['dieetwensen']) ? $_POST['dieetwensen'] : null;
             $opmerking = !empty($_POST['opmerking']) ? $_POST['opmerking'] : null;
-            // Een lid krijgt een zhtc-emailadres, dat is 'voornaam'.'achternaam'@zhtc.nl
-            // Dit wordt samen met het eigen emailadres opgeslagen, dus een lid heeft 2 emailadressen
-            // NOTE: door zhtc aangegeven dat het niet meer hoeft
-            // $ZHTCemailadres = $voornaam . "." . $achternaam . "@zhtc.nl";
-
             // Als het geslacht niet in de array voorkomt, dan is er met het formulier geknoeid en accepteren we het niet.
-            // TODO: fix dit
             if (!in_array($_POST['gender'], array('man', 'vrouw', 'anders'))) {
                 $errors = true;
                 $errormess = "gender,Kies een geslacht uit de lijst.";
             }
-
 
             // als de geboortedatum nieuwer dan vandaag - 16 is, is er geknoeid met de geboortedatum
             if ($_POST['geboortedatum'] > date('Y-m-d', strtotime("-16 year"))) {
