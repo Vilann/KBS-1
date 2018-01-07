@@ -3,7 +3,7 @@ define("NOREPLY_HEADER", "From: noreply@zhtc.nl");
 function mail_contact($afzender, $verzendernaam, $tekst)
 {
     // Dit is voor de mail naar ZHTC, ze krijgen de mail vanaf het emailadres dat opgegeven is.
-    $zhtc_contactmail = "jelle.santema@gmail.com"; // NOTE: pas dit aan naar secretariaat@zhtc.nl als we het live gooien!
+    $zhtc_contactmail = "secretariaat@zhtc.nl"; // NOTE: pas dit aan naar secretariaat@zhtc.nl als we het live gooien!
 
     $to = $zhtc_contactmail;
     $subject = "Nieuwe mail van " . $verzendernaam;
