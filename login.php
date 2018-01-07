@@ -12,39 +12,43 @@ if (isset($_SESSION['lid'])) {
     <title>ZHTC - Login</title>
 
     <?php include 'includes/header.php';
-if(isset($_GET['dp']) && !(empty($_GET['dp']))){?>
+    if (isset($_GET['dp']) && !(empty($_GET['dp']))) {
+        ?>
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-12 col-lg-5 mr-md-5">
-    <h3 id="getError" class="<?php print($error[0]); ?>">wachtwoord vergeten</h3>
-    <p class="text-muted">Vul hier je emailadres in om je wachtwoord te herstellen.</p>
-    <form id="getErrormess" class="<?php print($error[1]); ?>" action="verwerk" method="post">
+        <h3 id="getError" class="<?php print($error[0]); ?>">Wachtwoord vergeten</h3>
+        <p class="text-muted">Vul hier je emailadres in om je wachtwoord te herstellen.</p>
+        <form id="getErrormess" class="<?php print($error[1]); ?>" action="verwerk" method="post">
           <div class="form-group row">
               <label for="email" class="col-sm-3 col-form-label">Email:</label>
               <div class="col-sm-9 px-0">
-                <input  id="email" type="email" class="form-control" name="email" placeholder="ZHTC-emailadres" required>
+                <input  id="email" type="email" class="form-control" name="email" placeholder="Emailadres" required>
               </div>
           </div>
           <div class="form-group row">
-              <label for="email" class="col-sm-3 col-form-label"> bevestig Email:</label>
+              <label for="email" class="col-sm-3 col-form-label"> Bevestig email:</label>
               <div class="col-sm-9 px-0">
-                <input  id="email" type="email" class="form-control" name="email" placeholder="ZHTC-emailadres" required>
+                <input  id="email" type="email" class="form-control" name="email" placeholder="Emailadres" required>
               </div>
           </div>
           <div class="form-group row">
             <div class="col-sm-9 offset-sm-3 px-0">
-              <input class="btn btn-outline-primary" type="submit" name="wwreset" value="verzenden">
+              <input class="btn btn-outline-primary" type="submit" name="wwreset" value="Verzenden">
             </div>
           </div>
+        </form>
+      </div>
+    </div>
+  </div>
 
-<?php }
 
-
-    else{
-    error_reporting(E_ERROR | E_WARNING | E_PARSE);
-    if (isset($_SESSION["error"])) {
-        $error = explode(",", $_SESSION["error"]);
-        switch ($error[0]) {
+<?php
+    } else {
+        error_reporting(E_ERROR | E_WARNING | E_PARSE);
+        if (isset($_SESSION["error"])) {
+            $error = explode(",", $_SESSION["error"]);
+            switch ($error[0]) {
         case "email":
           $errormess = $error[1];
         break;
@@ -52,8 +56,8 @@ if(isset($_GET['dp']) && !(empty($_GET['dp']))){?>
         //
         break;
       }
-        unset($_SESSION["error"]);
-    } ?>
+            unset($_SESSION["error"]);
+        } ?>
     <div class="container-fluid">
       <div class="row">
         <div class="col-md-12 col-lg-5 mr-md-5">
@@ -63,33 +67,30 @@ if(isset($_GET['dp']) && !(empty($_GET['dp']))){?>
             <div class="form-group row">
                 <label for="email" class="col-sm-3 col-form-label">Email:</label>
                 <div class="col-sm-9 px-0">
-                  <input  id="email" type="email" class="form-control" name="email" placeholder="ZHTC-emailadres" required>
+                  <input  id="email" type="email" class="form-control" name="email" placeholder="Emailadres" required>
                 </div>
             </div>
             <div class="form-group row">
                 <label for="wachtwoord" class="col-sm-3 col-form-label">Wachtwoord:</label>
                 <div class="col-sm-9 px-0">
-                  <input  id="wachtwoord" type="password" class="form-control" name="wachtwoord" value="" required>
-                  <div class="col-sm-9 px-0">
-                    <a href=<?php print("?dp=". "hoi") ?> class="btn btn-outline-primary float-left zhtc-button">wachtwoord vergeten</a></p>
-                  </div>
+                  <input  id="wachtwoord" type="password" class="form-control" name="wachtwoord" placeholder="Wachtwoord" value="" required>
                   <div id="feedwachtwoord" class="invalid-feedback" hidden>
                   </div>
                 </div>
             </div>
             <?php
             $ip= $_SERVER['REMOTE_ADDR'];
-    $stmt=$pdo->prepare("SELECT Count(*) as failed
+        $stmt=$pdo->prepare("SELECT Count(*) as failed
                 FROM   loginpoging
                 WHERE  tijd > Date_sub(Now(), INTERVAL 15 minute) and  ip=?");
-    $stmt->execute(array($ip));
-    $pogingen = $stmt->fetch(PDO::FETCH_ASSOC);
-    // die($pogingen['testbanaan']);
-    if ($pogingen['failed']>=3) {
-        print('3 Foute inlogpogingen,probeer straks <a href="login">opnieuw</a>');
-        unset($_SESSION["failed"]);
-    } else {
-        print('
+        $stmt->execute(array($ip));
+        $pogingen = $stmt->fetch(PDO::FETCH_ASSOC);
+        // die($pogingen['testbanaan']);
+        if ($pogingen['failed']>=3) {
+            print('3 Foute inlogpogingen,probeer straks <a href="login">opnieuw</a>');
+            unset($_SESSION["failed"]);
+        } else {
+            print('
             <div class="form-group row">
               <label for="ingelogdblijven" class="col-sm-3 col-form-label">Ingelogd blijven:</label>
               <div class="my-auto px-0">
@@ -100,10 +101,14 @@ if(isset($_GET['dp']) && !(empty($_GET['dp']))){?>
               <div class="col-sm-9 offset-sm-3 px-0">
                 <input class="btn btn-outline-primary" type="submit" name="login" value="Inloggen">
               </div>
+
+              <div class="col-sm-9 offset-sm-3 px-0">
+                <a href = "?dp=hoi" class="float-left">Wachtwoord vergeten</a></p>
+              </div>
             </div>
 
 ');
-    } ?>
+        } ?>
 
             <hr>
         <p>
@@ -117,7 +122,7 @@ if(isset($_GET['dp']) && !(empty($_GET['dp']))){?>
   </div>
 
 <?php
-}
-include("includes/footer.php");
+    }
+    include("includes/footer.php");
 }
  ?>
