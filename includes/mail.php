@@ -33,15 +33,17 @@ P.S. Dit is een noreply email-adres, hier kan niet op gereageerd worden.
 
 function mail_bevestigen($to, $token, $name)
 {
-    $message ="<html><body>Beste $name,
-Bedankt voor uw registratie op ZHTC.nl.
-
+    $message ="<html><body><p>Beste $name, <br>
+Bedankt voor uw registratie op ZHTC.nl.</p>
+<p>
 <a href=http://testbanaan.zhtc.nl/KBS-1/registreer?email=".$to."&token=".$token.">Klik hier</a> om uw registratie te voltooien en uw account te activeren.
 Als u zich niet aangemeld heeft voor een account mag u deze e-mail als niet verzonden beschouwen.
-
-Bedankt!
+</p>
+<p>
+Bedankt!<br>
 Secretariaat ZHTC
-P.S. Dit is een noreply email-adres, hier kan niet op gereageerd worden.
+</p>
+<i>P.S. Dit is een noreply email-adres, hier kan niet op gereageerd worden.</i></p>
 </body></html>
 ";
     //maakt de mail in HTML
