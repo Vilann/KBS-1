@@ -20,7 +20,6 @@ beveilig_lid();
         $stmt->execute(array($email,$token));
         if ($stmt->RowCount()>0) {
             $id = $stmt->fetch(PDO::FETCH_ASSOC)["lidID"];
-            print($id);
             $stmt = $pdo->prepare("UPDATE lid SET inactief='0', token = NULL WHERE lidID = ?");
             $stmt->execute(array($id));
             if ($stmt->RowCount()>0) {
