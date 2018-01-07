@@ -54,7 +54,8 @@ wachtwoord vergeten*/
                 <div class='dropdown-divider'></div>
                 <p class='dropdown-item'>LidNiveau:	<span class='text-secondary'>Nieuwlid</span></p>
                 <a href='/KBS-1/account' class='dropdown-item'>Account</a>
-                <a href='/KBS-1/admin/index' class='dropdown-item'>Homepagina</a>
+                <a href='/KBS-1/admin/index' class='dropdown-item'>Homepagina (adminpanel)</a>
+                <a href='/KBS-1/index' class='dropdown-item'>Homepagina (website)</a>
                 <div class='dropdown-divider'></div>
                 <a class='btn btn-outline-danger mx-auto' href="/KBS-1/loguit"><i class="icon ion-log-out"></i> <b>Afmelden</b></a>
               </div>

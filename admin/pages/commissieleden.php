@@ -80,6 +80,7 @@
             $stmt->execute(array($id,$ledenArray[0]));
             //als de verwisseling is gedaan zorg er voor dat de huidige voorzitter uitlogt zodat hij daar verder niks meer mee kan doen
             header('Location: ../../loguit');
+            exit;
           }else{
             //code voor als de keuze is om nieuwe leden toe te voegen
             //ga met een loop als alle leden die gekozen zijn
@@ -110,7 +111,6 @@
   if ($stmt->rowCount()) {
       //
   } else {
-      print("Werkt niet");
   }
   //
   //kijk of er errors gezet zijn zo ja voer dan de createerror functie uit (wordt geladen via alert.php) met de opgeslagen parameters

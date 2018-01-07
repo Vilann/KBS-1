@@ -141,18 +141,18 @@
           <?php
           if (isset($_SESSION['lid'])) {
               $stmt = $pdo->prepare("SELECT p.vraag, p.pollID FROM poll p
-            WHERE einddatum >= CURDATE()
-            ORDER BY pollID DESC
-            LIMIT 1");
+              WHERE einddatum >= CURDATE()
+              ORDER BY pollID DESC
+              LIMIT 1");
               $stmt->execute();
               $info = $stmt->fetch(PDO::FETCH_ASSOC);
               $stmt2 = $pdo->prepare("SELECT p.lidID FROM pollresultaat p
-            WHERE p.pollID = ?
-            AND p.lidID = ?");
+              WHERE p.pollID = ?
+              AND p.lidID = ?");
               $stmt2->execute(array($info['pollID'],$_SESSION['lid']));
               $info2 = $stmt2->fetch(PDO::FETCH_ASSOC);
               //die($info2['lidID']." | ".$info['pollID']." | ".$_SESSION['lid']);
-              if (!empty($info2['lidID'])) {
+              if (!empty($info2['lidID']) || empty($info['pollID'])) {
                   //niks
               } else {
                   ?>
