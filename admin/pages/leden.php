@@ -18,15 +18,26 @@
       $id = $_GET['id'];
       if($_GET['choice'] == "leden"){
         //zet het lid in kwestie op inactief
-        $stmt = $pdo->prepare("UPDATE lid
-            SET inactief=1
+        $stmt = $pdo->prepare("DELETE FROM commissielid
+            WHERE lidID=?");
+        $stmt->execute(array($id));
+        $stmt = $pdo->prepare("DELETE FROM dispuutlid
+            WHERE lidID=?");
+        $stmt->execute(array($id));
+        $stmt = $pdo->prepare("DELETE FROM bestuur
+            WHERE bestuurslidID=?");
+        $stmt->execute(array($id));
+        $stmt = $pdo->prepare("DELETE FROM pollresultaat
+            WHERE lidID=?");
+        $stmt->execute(array($id));
+        $stmt = $pdo->prepare("DELETE FROM lid
             WHERE lidID=?");
         $stmt->execute(array($id));
       }else{
         //
       }
       //succesmelding
-      $_SESSION['error'] = "U heeft succesvol een lid op inactief gezet";
+      $_SESSION['error'] = "U heeft succesvol een lid verwijderd";
       $_SESSION['errorType'] = "success";
       $_SESSION['errorAdd'] = "succes!";
     }
@@ -88,11 +99,11 @@
             }else{
               $pageNr = 1;
             }
-            //als er in de url een andere sorteer staat aangegeven zie ord(order) dan zet die in de variable anders datumvan als de standaard
+            //als er in de url een andere sorteer staat aangegeven zie ord(order) dan zet die in de variable anders voornaam als de standaard
             if(isset($_GET['ord']) && !empty($_GET['ord'])){
               $order = $_GET['ord'];
             }else{
-              $order = "datumvan";
+              $order = "voornaam";
             }
             //check of hij op de laatste of op pagina 1 zit
             function setPagination($pages, $pageNr){
@@ -322,7 +333,7 @@
         </button>
       </div>
       <div class="modal-body">
-        <small class="text-muted">Het lid wordt op inactief gezet</small>
+        <small class="text-muted">Het lid wordt verwijderd. let op, als u deze actie voltooid dan dit niet terug te draaien.</small>
       </div>
       <div class="modal-footer">
         <button id="setthisHref" onclick="" class="btn btn-outline-danger" type="button">Verwijderen</button>

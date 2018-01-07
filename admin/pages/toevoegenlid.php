@@ -1,9 +1,9 @@
 <?php
   /*
   /bug sortering en pagination werkt niet
-  ##pollpagina##
+  ##toevoegenlid##
   Op deze pagina kun je:
-  -Alle polls zien die in het verleden zijn afgerond
+  -leden kiezen om toe te voegen aan je dispuut/commissie
   -Nieuwe polls toevoegen
   -...
   -...
@@ -28,12 +28,23 @@
     if($_GET['as'] == "voorzitter"){
       $titel = "Hier kunt u een nieuwe voorzitter aanwijzen";
       $tekst = "Klik op de voorzitter die u als nieuwe voorzitter wilt aanwijzen. houd er rekening mee dat zodra deze actie voltooid is je geen voorzitters rechten hebt en opnieuw moet inloggen.";
+      $choiceSQL3 = "SELECT ".$choice."voorzitter FROM ".$choice;
     }else{
       $titel = "Hier kunt u een nieuwe leden aanwijzen";
       $tekst = "Klik op de alle leden die u wilt uitnodigen om deel te nemen aan uw commissie en klik hierna op voltooien.";
+      $choiceSQL3 = "SELECT lidID FROM ".$choiceSQL1;
     }
   }else{
     //header('Location: toevoegenlid');
+  }
+  if(isset($_GET['ord'])){
+    $href="?choice=".$_GET['choice']."&id=".$_GET['id']."&as=".$_GET['as']."&ord=".$_GET['ord'];
+  }elseif(isset($_GET['p'])){
+    $href="?choice=".$_GET['choice']."&id=".$_GET['id']."&as=".$_GET['as']."&p=".$_GET['p'];
+  }elseif(isset($_GET['p']) && isset($_GET['ord'])){
+    $href="?choice=".$_GET['choice']."&id=".$_GET['id']."&as=".$_GET['as']."&p=".$_GET['p']."&ord=".$_GET['ord'];
+  }else{
+    $href="?choice=".$_GET['choice']."&id=".$_GET['id']."&as=".$_GET['as'];
   }
 ?>
 <html lang="en">
@@ -57,7 +68,7 @@
             //query om alle leden op te halen op basis van de meegegeven variabelen
             $sql = "SELECT * FROM lid l
             WHERE inactief = 0
-            AND l.lidID NOT IN (SELECT lidID FROM $choiceSQL1
+            AND l.lidID NOT IN ($choiceSQL3
             WHERE $choiceSQL2 = ?)
             ORDER by achternaam ASC";
             $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -66,7 +77,7 @@
             //kijk hoeveel resultaten hij heeft
             $count = $stmt->rowCount();
             //zet het aantal resultaten per pagina
-            $resultsPer = 20;
+            $resultsPer = 25;
             //bereken het aantal pagina's
             $pages = ceil($count/$resultsPer);
             //als er in de url een ander pagina nummer staat zet dan die neer als pageNr anders gewoon paginaNr 1
@@ -103,7 +114,7 @@
             //selecteer alle leden van zhtc die niet verwijderd zijn
             $sql = "SELECT * FROM lid l
             WHERE inactief = 0
-            AND l.lidID NOT IN (SELECT lidID FROM $choiceSQL1
+            AND l.lidID NOT IN ($choiceSQL3
             WHERE $choiceSQL2 = ?)
             ORDER by $order ASC
             LIMIT $startNr, $resultsPer";
@@ -121,10 +132,15 @@
                 </li>
                 <?php
                 for($i = 1; $i <= $pages; $i++){
-                  if($i == $pageNr){
-                    print("<li class='page-item active'><a class='page-link zhtc-bg zhtc-brd' href='?p=$i'> $i </a></li>");
+                  if(isset($_GET['ord'])){
+                    $href="?choice=".$_GET['choice']."&id=".$_GET['id']."&as=".$_GET['as']."&ord=".$_GET['ord']."&p=$i";
                   }else{
-                    print("<li class='page-item'><a class='page-link' href='?p=$i'> $i </a></li>");
+                    $href="?choice=".$_GET['choice']."&id=".$_GET['id']."&as=".$_GET['as']."&p=$i";
+                  }
+                  if($i == $pageNr){
+                    print("<li class='page-item active'><a class='page-link zhtc-bg zhtc-brd' href='$href'> $i </a></li>");
+                  }else{
+                    print("<li class='page-item'><a class='page-link' href='$href'> $i </a></li>");
                   }
                 }
                 ?>
@@ -139,13 +155,13 @@
             <table class="table table-hover">
               <thead class="thead-zhtc">
                 <tr id="orderBy" class="<?php print($order);?>">
-                  <th id="voornaam" scope="col"><a href="?p=<?php print($pageNr)?>&ord=voornaam">Voornaam</a></th>
-                  <th id="tussenvoegsel" scope="col"><a href="?p=<?php print($pageNr)?>&ord=tussenvoegsel">Tussenvoegsel</a></th>
-                  <th id="achternaam" scope="col"><a href="?p=<?php print($pageNr)?>&ord=achternaam">Achternaam</a></th>
-                  <th id="geboortedatum" scope="col"><a href="?p=<?php print($pageNr)?>&ord=geboortedatum">Geboortedatum</a></th>
-                  <th id="woonplaats" scope="col"><a href="?p=<?php print($pageNr)?>&ord=woonplaats">Woonplaats</a></th>
-                  <th id="geslacht" scope="col"><a href="?p=<?php print($pageNr)?>&ord=geslacht">Geslacht</a></th>
-                  <th id="emailadres" scope="col"><a href="?p=<?php print($pageNr)?>&ord=emailadres">Emailadres</a></th>
+                  <th id="voornaam" scope="col"><a href="<?php print("?choice=".$_GET['choice']."&id=".$_GET['id']."&as=".$_GET['as']."&p=".$pageNr."&ord=voornaam"); ?>">Voornaam</a></th>
+                  <th id="tussenvoegsel" scope="col"><a href="<?php print("?choice=".$_GET['choice']."&id=".$_GET['id']."&as=".$_GET['as']."&p=".$pageNr."&ord=tussenvoegsel"); ?>">Tussenvoegsel</a></th>
+                  <th id="achternaam" scope="col"><a href="<?php print("?choice=".$_GET['choice']."&id=".$_GET['id']."&as=".$_GET['as']."&p=".$pageNr."&ord=achternaam"); ?>">Achternaam</a></th>
+                  <th id="geboortedatum" scope="col"><a href="<?php print("?choice=".$_GET['choice']."&id=".$_GET['id']."&as=".$_GET['as']."&p=".$pageNr."&ord=geboortedatum"); ?>">Geboortedatum</a></th>
+                  <th id="woonplaats" scope="col"><a href="<?php print("?choice=".$_GET['choice']."&id=".$_GET['id']."&as=".$_GET['as']."&p=".$pageNr."&ord=woonplaats"); ?>">Woonplaats</a></th>
+                  <th id="geslacht" scope="col"><a href="<?php print("?choice=".$_GET['choice']."&id=".$_GET['id']."&as=".$_GET['as']."&p=".$pageNr."&ord=geslacht"); ?>">Geslacht</a></th>
+                  <th id="emailadres" scope="col"><a href="<?php print("?choice=".$_GET['choice']."&id=".$_GET['id']."&as=".$_GET['as']."&p=".$pageNr."&ord=emailadres"); ?>">Emailadres</a></th>
                 </tr>
               </thead>
               <tbody class="choice" id="<?php print($_GET['choice']);?>">
